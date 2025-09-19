@@ -9,64 +9,75 @@
   <div class="container">
     <header class="site-header">
       <div class="brand-left">
-        <img src="branding/logo.jpeg" alt="Options Trading University" class="logo">
+        <img src="branding/logo.jpeg" alt="OTU Logo" class="logo">
         <div>
           <div style="font-weight:900;color:var(--accent-2)">Options Trading University</div>
-          <div class="small">Beginner → Advanced • Message on TikTok to join</div>
+          <div class="small">Structured training • Trade review via TikTok</div>
         </div>
       </div>
       <nav class="nav">
-        <a class="btn-nav" href="index.html">Home</a>
-        <a class="btn-nav" href="education.html">Education</a>
-        <a class="btn-nav" href="charts.html">Charts</a>
-        <a class="btn-nav" href="profits.html">Profits</a>
-        <a class="btn-nav" href="lifestyle.html">Lifestyle</a>
-        <a class="btn-nav" href="contact.html">Contact</a>
+        <a href="index.html">Home</a>
+        <a href="lessons.html">Trading Guides</a>
+        <a href="glossary.html">Glossary</a>
+        <a href="charts.html">Charts</a>
+        <a href="profits.html">Profits</a>
+        <a href="lifestyle.html">Lifestyle</a>
+        <a href="contact.html" class="btn primary">Contact (TikTok)</a>
       </nav>
     </header>
 
     <main>
-      <section class="hero">
-        <h1>Options Trading University</h1>
-        <p>Learn options trading from Modules 1–5, check charts, and see real member proof — gentle popups show wins that pop and go (no spam).</p>
+      <section class="hero card">
+        <h1>Welcome to Options Trading University</h1>
+        <p>Fast lessons, real examples, rotating profit snapshots, and a disciplined approach to trading. To join — <strong>message us on TikTok</strong> (no link). Example: “Found you on the trading page — want trade review & waitlist.”</p>
+
         <div style="margin-top:12px">
-          <a class="btn primary" href="education.html">Open Modules</a>
-          <a class="btn" href="profits.html" style="margin-left:8px">View Profits</a>
+          <a class="btn primary" href="lessons.html">Start the Trading Guides</a>
+          <a class="btn" href="profits.html" style="margin-left:8px">See Profit Gallery</a>
         </div>
 
-        <div class="stats">
-          <div class="stat"><h3 id="totalTrades">—</h3><p>Total Traders</p></div>
+        <div class="stats" style="margin-top:14px">
+          <div class="stat"><h3 id="totalTrades">—</h3><p>Total Trades</p></div>
           <div class="stat"><h3 id="winRate">—</h3><p>Win Rate</p></div>
-          <div class="stat"><h3 id="avgProfit">—</h3><p>Avg Profit</p></div>
-          <div class="stat"><h3 id="topProfit">—</h3><p>Top Profit</p></div>
+          <div class="stat"><h3 id="avgProfit">—</h3><p>Avg Profit (sample)</p></div>
+          <div class="stat"><h3 id="topProfit">—</h3><p>Top Profit (sample)</p></div>
         </div>
       </section>
 
-      <div class="card">
-        <h3 class="section-title">Quick Watchlist</h3>
-        <p class="small">Demo values shown unless API key present in script.js</p>
-        <div id="watchlistList" class="watchlist"></div>
-      </div>
+      <div class="card" style="margin-top:12px">
+        <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
+          <div style="flex:2;min-width:320px">
+            <h3 class="section-title">Featured Charts</h3>
+            <div class="gallery" style="margin-top:12px">
+              <img src="Charts/chart1.jpeg" alt="chart1" class="active">
+              <img src="Charts/chart2.jpeg" alt="chart2">
+              <img src="Charts/chart3.jpeg" alt="chart3">
+              <img src="Charts/chart4.jpeg" alt="chart4">
+            </div>
+          </div>
 
-      <div class="card">
-        <h3 class="section-title">Featured Charts</h3>
-        <div class="gallery" id="homeGallery">
-          <img src="Charts/chart1.jpeg" alt="chart1" class="active">
-          <img src="Charts/chart2.jpeg" alt="chart2">
-          <img src="Charts/chart3.jpeg" alt="chart3">
-          <img src="Charts/chart4.jpeg" alt="chart4">
-          <img src="Charts/chart5.jpeg" alt="chart5">
+          <aside style="flex:1;min-width:260px">
+            <div class="card">
+              <h4 class="section-title">Live Watchlist</h4>
+              <div id="watchlistList" class="watchlist" style="margin-top:10px"></div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <h4 class="section-title">Motivation</h4>
+              <div id="quoteRotator" class="small" style="margin-top:8px">Discipline beats emotion — trade your plan.</div>
+            </div>
+          </aside>
         </div>
       </div>
 
     </main>
 
     <footer>
-      <div class="small">© 2025 Options Trading University — Educational only. To join, message on TikTok (no link).</div>
+      <div class="small">© 2025 Options Trading University — Educational only. Message us on TikTok to join.</div>
     </footer>
   </div>
 
-  <!-- floating ticker container (pop & go) -->
+  <!-- floating ticker (pop & go visual) -->
   <div class="floating-ticker" aria-hidden="true">
     <div class="ticker-wrap"></div>
   </div>
