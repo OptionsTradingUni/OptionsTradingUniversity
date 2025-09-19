@@ -1,90 +1,99 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Options Trading University — Home</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Options Trading University</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
-  <div class="container">
-    <header class="site-header">
-      <div class="brand-left">
-        <img src="branding/logo.jpeg" alt="OTU Logo" class="logo">
-        <div>
-          <div style="font-weight:900;color:var(--accent-2)">Options Trading University</div>
-          <div class="small">Structured training • Trade review via TikTok</div>
-        </div>
-      </div>
-      <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="lessons.html">Trading Guides</a>
-        <a href="glossary.html">Glossary</a>
-        <a href="charts.html">Charts</a>
-        <a href="profits.html">Profits</a>
-        <a href="lifestyle.html">Lifestyle</a>
-        <a href="contact.html" class="btn primary">Contact (TikTok)</a>
-      </nav>
-    </header>
+  <!-- HEADER -->
+  <header>
+    <img src="branding/logo.jpeg" alt="Logo" class="logo">
+    <h1>Options Trading University</h1>
+    <p class="tagline">6500+ Trades • 86% Win Rate</p>
+  </header>
 
-    <main>
-      <section class="hero card">
-        <h1>Welcome to Options Trading University</h1>
-        <p>Fast lessons, real examples, rotating profit snapshots, and a disciplined approach to trading. To join — <strong>message us on TikTok</strong> (no link). Example: “Found you on the trading page — want trade review & waitlist.”</p>
+  <!-- PROFIT SNAPSHOT -->
+  <section id="profit-snapshot">
+    <h2>Live Profits</h2>
+    <div id="popup-container" class="popup"></div>
+  </section>
 
-        <div style="margin-top:12px">
-          <a class="btn primary" href="lessons.html">Start the Trading Guides</a>
-          <a class="btn" href="profits.html" style="margin-left:8px">See Profit Gallery</a>
-        </div>
+  <!-- MOTIVATIONAL QUOTES -->
+  <section id="quotes">
+    <h2>Trader Motivation</h2>
+    <p id="quote-box">Loading wisdom...</p>
+  </section>
 
-        <div class="stats" style="margin-top:14px">
-          <div class="stat"><h3 id="totalTrades">—</h3><p>Total Trades</p></div>
-          <div class="stat"><h3 id="winRate">—</h3><p>Win Rate</p></div>
-          <div class="stat"><h3 id="avgProfit">—</h3><p>Avg Profit (sample)</p></div>
-          <div class="stat"><h3 id="topProfit">—</h3><p>Top Profit (sample)</p></div>
-        </div>
-      </section>
+  <!-- GALLERY CAROUSELS -->
+  <section id="gallery">
+    <h2>Trading Charts</h2>
+    <div class="carousel" id="charts-carousel">
+      <img src="Charts/chart1.jpeg" alt="">
+      <img src="Charts/chart2.jpeg" alt="">
+      <img src="Charts/chart3.jpeg" alt="">
+      <img src="Charts/chart4.jpeg" alt="">
+      <img src="Charts/chart5.jpeg" alt="">
+      <img src="Charts/chart6.jpeg" alt="">
+      <img src="Charts/chart7.jpeg" alt="">
+    </div>
 
-      <div class="card" style="margin-top:12px">
-        <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
-          <div style="flex:2;min-width:320px">
-            <h3 class="section-title">Featured Charts</h3>
-            <div class="gallery" style="margin-top:12px">
-              <img src="Charts/chart1.jpeg" alt="chart1" class="active">
-              <img src="Charts/chart2.jpeg" alt="chart2">
-              <img src="Charts/chart3.jpeg" alt="chart3">
-              <img src="Charts/chart4.jpeg" alt="chart4">
-            </div>
-          </div>
+    <h2>Profit Screenshots</h2>
+    <div class="carousel" id="images-carousel">
+      <!-- Example: img1 to img57 -->
+      <img src="Images/img1.jpeg" alt="">
+      <img src="Images/img2.jpeg" alt="">
+      <img src="Images/img3.jpeg" alt="">
+      <img src="Images/img4.jpeg" alt="">
+      <img src="Images/img5.jpeg" alt="">
+    </div>
 
-          <aside style="flex:1;min-width:260px">
-            <div class="card">
-              <h4 class="section-title">Live Watchlist</h4>
-              <div id="watchlistList" class="watchlist" style="margin-top:10px"></div>
-            </div>
+    <h2>Lifestyle</h2>
+    <div class="carousel" id="lifestyle-carousel">
+      <img src="Lifestyle/life1.jpeg" alt="">
+      <img src="Lifestyle/life2.jpeg" alt="">
+      <img src="Lifestyle/life3.jpeg" alt="">
+      <img src="Lifestyle/life4.jpeg" alt="">
+    </div>
+  </section>
 
-            <div class="card" style="margin-top:12px">
-              <h4 class="section-title">Motivation</h4>
-              <div id="quoteRotator" class="small" style="margin-top:8px">Discipline beats emotion — trade your plan.</div>
-            </div>
-          </aside>
-        </div>
-      </div>
+  <!-- TRAINING MODULES -->
+  <section id="modules">
+    <h2>Full Training Guide</h2>
+    <ul>
+      <li>📘 Module 1: Understanding the Market</li>
+      <li>📘 Module 2: Reading Charts & Patterns</li>
+      <li>📘 Module 3: Options & Risk Management</li>
+      <li>📘 Module 4: Advanced Trading Psychology</li>
+      <li>📘 Module 5: Building Consistent Strategies</li>
+    </ul>
+  </section>
 
-    </main>
+  <!-- GLOSSARY -->
+  <section id="glossary">
+    <h2>Trading Glossary</h2>
+    <dl>
+      <dt>Pips</dt><dd>Smallest unit of forex price movement.</dd>
+      <dt>Leverage</dt><dd>Borrowed capital to amplify trades.</dd>
+      <dt>Stop-Loss</dt><dd>Pre-set exit point to control losses.</dd>
+      <dt>Resistance</dt><dd>Price level where an asset struggles to rise above.</dd>
+      <dt>Support</dt><dd>Price level where an asset tends not to fall below.</dd>
+    </dl>
+  </section>
 
-    <footer>
-      <div class="small">© 2025 Options Trading University — Educational only. Message us on TikTok to join.</div>
-    </footer>
-  </div>
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>Want to learn more? Message us directly on TikTok 📲</p>
+    <button onclick="alert('Go to TikTok and send us a message!')">Message on TikTok</button>
+  </section>
 
-  <!-- floating ticker (pop & go visual) -->
-  <div class="floating-ticker" aria-hidden="true">
-    <div class="ticker-wrap"></div>
-  </div>
-
-  <!-- notify wrap -->
-  <div id="notifySingleWrap"></div>
-
-  <script src="script.js"></script>
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 Options Trading University. All rights reserved.</p>
+  </footer>
 </body>
 </html>
