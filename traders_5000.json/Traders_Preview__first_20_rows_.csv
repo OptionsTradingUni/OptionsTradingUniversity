@@ -1,0 +1,21 @@
+id,name,gender,trading_style,instrument_type,ticker_or_contract,profit_example,profit_category
+1,Sophia Patel,Female,Momentum Trading,Stock,BRK.B,1321.07%,Before Fees
+2,Connor Jones,Male,High Frequency Trading,Stock,META,"$-43,366.01",Net P&L
+3,Lydia Cooper,Female,Carry Trade,Stock,DIS,-86.35%,Weekly P&L
+4,Connor Baker,Male,Trend Following,Stock,META,"$44,981.83",Return (%)
+5,Nevaeh King,Female,Position Trading,Options,MSFT 2025-11-21 P 300,694.92%,Before Fees
+6,Nicholas Richardson,Male,Algorithmic Trading,Options,NVDA 2026-01-21 C 350,-3.77%,Net P&L
+7,Abigail Robinson,Female,Carry Trade,Options,MSFT 2025-11-21 P 300,"$158,527.61",Paper Gain
+8,John Bennett,Male,Scalping,Stock,SQ,259.39%,Daily P&L
+9,Adrian Carter,Male,High Frequency Trading,Stock,SQ,1669.99%,Weekly P&L
+10,Kaden Jones,Male,Carry Trade,Options,MSFT 2025-11-21 P 300,"$178,284.03",Net of Taxes
+11,Natalie Ramirez,Female,Futures Roll,Crypto,MATIC,"$-15,092.42",Daily P&L
+12,Lily Myers,Female,Quantitative Trading,Crypto,ATOM,"$199,331.44",Paper Gain
+13,Emily Long,Female,Momentum Trading,Stock,GOOGL,1563.37%,Absolute $
+14,Bella Carter,Female,Carry Trade,Crypto,LTC,1707.64%,Realized Profit
+15,Camila Mendoza,Female,Trend Following,Options,NVDA 2026-01-21 C 350,"$58,691.31",After Fees
+16,Brooks Castillo,Male,Mean Reversion,Stock,ADBE,"$-23,397.29",Per Trade Profit
+17,Brandon Cook,Male,News Trading,Crypto,SOL,1032.7%,Weekly P&L
+18,Alex Kim,Non-binary,Position Trading,Stock,AAPL,1745.32%,Monthly P&L
+19,Zoey Davis,Female,Scalping,Stock,CRM,"$71,497.62",Unrealized Profit
+20,London Foster,Non-binary,Statistical Arbitrage,Stock,ORCL,246.77%,Before Fees
