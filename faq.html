@@ -6,42 +6,36 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <header class="site-header">
-      <div class="brand-left"><img src="branding/logo.jpeg" class="logo"></div>
-      <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="lessons.html">Trading Guides</a>
-        <a href="glossary.html">Glossary</a>
-        <a href="charts.html">Charts</a>
-        <a href="profits.html">Profits</a>
-        <a href="lifestyle.html">Lifestyle</a>
-        <a href="contact.html" class="btn primary">Contact</a>
-      </nav>
-    </header>
-
-    <main>
-      <section class="card">
-        <h2 class="section-title">Frequently Asked Questions</h2>
-
-        <div style="margin-top:12px">
-          <h4>How do I start trading?</h4>
-          <p>Learn basics (start with Guides), open a broker demo account, paper trade, then start small. Journal every trade.</p>
-
-          <h4>What’s the minimum to start?</h4>
-          <p>Stocks: fractional shares let you start low (<$100). Options: depends on strategy, start small. Forex: micro accounts from $5–$50.</p>
-
-          <h4>Which platforms do you recommend?</h4>
-          <p>TradingView for charts, thinkorswim/Webull for options, Robinhood for simple orders. Choose regulated brokers with good options tools.</p>
-
-          <h4>Do you guarantee profits?</h4>
-          <p>No. We teach strategies and discipline — trading carries risk. Protect capital and follow risk rules.</p>
-        </div>
-      </section>
-    </main>
-
-    <footer><div class="small">© 2025 Options Trading University</div></footer>
+  <div class="header container">
+    <div class="brand"><img src="branding/logo.jpeg" alt="OTU"><div><div class="title">Options Trading University</div><div class="small">FAQ</div></div></div>
+    <nav class="nav"><a href="index.html">Home</a><a href="modules.html">Modules</a><a href="glossary.html">Glossary</a><a href="risk.html">Risk</a></nav>
   </div>
+
+  <main class="container">
+    <section class="card">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+
+      <h4>How do I start trading?</h4>
+      <p>Start with education: read the modules, open a demo account, practice journaling, and learn to manage risk. Then scale slowly.</p>
+
+      <h4>What is the minimum I need?</h4>
+      <p>Depends on instrument. Stocks: fractional shares let you start small. Options: more capital is helpful for diversification. Never trade more than you can afford to lose.</p>
+
+      <h4>Which platforms do you recommend?</h4>
+      <p>TradingView for charts. thinkorswim, Interactive Brokers, Webull for options. Choose regulated brokers with good fills and options tools.</p>
+
+      <h4>How do I join?</h4>
+      <p>Message us on TikTok: copy the suggested DM — "Found you on the trading page — I want a trade review & waitlist." We’ll follow up via DM.</p>
+
+      <h4>Do you guarantee profits?</h4>
+      <p>No. Trading involves risk. Education helps reduce risk but doesn’t guarantee outcomes.</p>
+    </section>
+  </main>
+
+  <div class="sticky-cta" onclick="openTikTokModal()"><div class="dot"></div> DM on TikTok</div>
+  <div class="ticker-bar"><div class="ticker-inner"></div></div>
+  <div id="popup-container"></div>
+
   <script src="script.js"></script>
 </body>
 </html>
