@@ -5,95 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Options Trading University</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script defer src="script.js"></script>
 </head>
 <body>
+
+  <!-- QUOTE BANNER -->
+  <div id="quote-box"></div>
+
   <!-- HEADER -->
   <header>
     <img src="branding/logo.jpeg" alt="Logo" class="logo">
     <h1>Options Trading University</h1>
-    <p class="tagline">6500+ Trades • 86% Win Rate</p>
+    <p>Learn. Trade. Profit.</p>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="training.html">Training</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
   </header>
 
+  <!-- STATS -->
+  <section id="stats">
+    <h2>Our Track Record</h2>
+    <div class="stat-box">
+      <p>Total Trades: <strong>6,500+</strong></p>
+      <p>Win Rate: <strong>86%</strong></p>
+      <p>Profits Shared Daily 🚀</p>
+    </div>
+  </section>
+
   <!-- PROFIT SNAPSHOT -->
-  <section id="profit-snapshot">
-    <h2>Live Profits</h2>
-    <div id="popup-container" class="popup"></div>
-  </section>
-
-  <!-- MOTIVATIONAL QUOTES -->
-  <section id="quotes">
-    <h2>Trader Motivation</h2>
-    <p id="quote-box">Loading wisdom...</p>
-  </section>
-
-  <!-- GALLERY CAROUSELS -->
-  <section id="gallery">
-    <h2>Trading Charts</h2>
-    <div class="carousel" id="charts-carousel">
-      <img src="Charts/chart1.jpeg" alt="">
-      <img src="Charts/chart2.jpeg" alt="">
-      <img src="Charts/chart3.jpeg" alt="">
-      <img src="Charts/chart4.jpeg" alt="">
-      <img src="Charts/chart5.jpeg" alt="">
-      <img src="Charts/chart6.jpeg" alt="">
-      <img src="Charts/chart7.jpeg" alt="">
+  <section id="profits">
+    <h2>Live Profit Snapshots</h2>
+    <div class="carousel">
+      <img src="Images/profit1.jpg" alt="Profit">
+      <img src="Images/profit2.jpg" alt="Profit">
+      <img src="Images/profit3.jpg" alt="Profit">
     </div>
-
-    <h2>Profit Screenshots</h2>
-    <div class="carousel" id="images-carousel">
-      <!-- Example: img1 to img57 -->
-      <img src="Images/img1.jpeg" alt="">
-      <img src="Images/img2.jpeg" alt="">
-      <img src="Images/img3.jpeg" alt="">
-      <img src="Images/img4.jpeg" alt="">
-      <img src="Images/img5.jpeg" alt="">
-    </div>
-
-    <h2>Lifestyle</h2>
-    <div class="carousel" id="lifestyle-carousel">
-      <img src="Lifestyle/life1.jpeg" alt="">
-      <img src="Lifestyle/life2.jpeg" alt="">
-      <img src="Lifestyle/life3.jpeg" alt="">
-      <img src="Lifestyle/life4.jpeg" alt="">
-    </div>
-  </section>
-
-  <!-- TRAINING MODULES -->
-  <section id="modules">
-    <h2>Full Training Guide</h2>
-    <ul>
-      <li>📘 Module 1: Understanding the Market</li>
-      <li>📘 Module 2: Reading Charts & Patterns</li>
-      <li>📘 Module 3: Options & Risk Management</li>
-      <li>📘 Module 4: Advanced Trading Psychology</li>
-      <li>📘 Module 5: Building Consistent Strategies</li>
-    </ul>
-  </section>
-
-  <!-- GLOSSARY -->
-  <section id="glossary">
-    <h2>Trading Glossary</h2>
-    <dl>
-      <dt>Pips</dt><dd>Smallest unit of forex price movement.</dd>
-      <dt>Leverage</dt><dd>Borrowed capital to amplify trades.</dd>
-      <dt>Stop-Loss</dt><dd>Pre-set exit point to control losses.</dd>
-      <dt>Resistance</dt><dd>Price level where an asset struggles to rise above.</dd>
-      <dt>Support</dt><dd>Price level where an asset tends not to fall below.</dd>
-    </dl>
   </section>
 
   <!-- CONTACT -->
   <section id="contact">
-    <h2>Contact Us</h2>
-    <p>Want to learn more? Message us directly on TikTok 📲</p>
-    <button onclick="alert('Go to TikTok and send us a message!')">Message on TikTok</button>
+    <h2>Join Us</h2>
+    <p>Want to start your trading journey? Message us directly on TikTok 📲</p>
+    <button onclick="alert('Message us on TikTok!')">Contact</button>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>&copy; 2025 Options Trading University. All rights reserved.</p>
-  </footer>
+  <!-- FLOATING PROFIT POPUP -->
+  <div id="popup-container"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
