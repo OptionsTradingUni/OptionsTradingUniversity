@@ -10,7 +10,7 @@ a{color:var(--accent)}
 .container{max-width:var(--maxw);margin:0 auto;padding:18px}
 
 /* Header / Nav */
-.header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;background:rgba(255,255,255,0.65);backdrop-filter:blur(6px);position:sticky;top:0;z-index:80;border-bottom:1px solid rgba(15,30,60,0.04)}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;background:rgba(255,255,255,0.9);backdrop-filter:blur(6px);position:sticky;top:0;z-index:80;border-bottom:1px solid rgba(15,30,60,0.04)}
 .brand{display:flex;gap:12px;align-items:center}
 .brand img{height:48px;border-radius:8px;object-fit:cover}
 .brand .title{font-weight:900;color:var(--accent-2)}
@@ -21,7 +21,7 @@ a{color:var(--accent)}
 .btn.primary{background:linear-gradient(90deg,var(--accent-2),var(--accent));color:white;border:none}
 
 /* Quote banner */
-#quote-banner{position:sticky;top:64px;z-index:79;background:linear-gradient(90deg,var(--accent-2),var(--accent));color:white;padding:10px;text-align:center;font-weight:800;letter-spacing:0.3px}
+#quote-banner{position:sticky;top:64px;z-index:79;background:linear-gradient(90deg,var(--accent-2),var(--accent));color:white;padding:12px;text-align:center;font-weight:800;letter-spacing:0.3px}
 
 /* Hero */
 .hero{padding:28px;border-radius:12px;margin:14px 0;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;text-align:center;box-shadow:0 12px 30px rgba(20,40,80,0.12)}
@@ -29,9 +29,10 @@ a{color:var(--accent)}
 .hero p{margin:8px 0 14px;opacity:0.95}
 .cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 
-/* Stats */
-.stats{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:14px}
-.stat{min-width:140px;padding:12px;border-radius:10px;text-align:center;background:var(--card);box-shadow:0 8px 20px rgba(10,20,40,0.04)}
+/* Stats (fade in/out) */
+.stats{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.stat{min-width:120px;padding:10px;border-radius:10px;text-align:center;background:var(--card);box-shadow:0 8px 20px rgba(10,20,40,0.04);opacity:0;transform:translateY(6px);transition:opacity .6s,transform .6s}
+.stat.show{opacity:1;transform:translateY(0)}
 .stat h3{margin:0;color:var(--accent-2);font-size:1.2rem}
 .stat p{margin:6px 0 0;color:var(--muted)}
 
@@ -54,7 +55,13 @@ a{color:var(--accent)}
 .glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
 .term{background:#fff;padding:12px;border-radius:10px;border-left:6px solid var(--accent-2);box-shadow:0 6px 18px rgba(20,40,80,0.03)}
 
-/* Floating ticker */
+/* Watchlist ticker (moving) */
+.watchlist-wrap{overflow:hidden;background:linear-gradient(90deg,#081224,#0a2a4a);border-radius:10px;padding:8px}
+.watchlist-ticker{display:inline-block;white-space:nowrap;animation:watchScroll 18s linear infinite}
+.watchlist-item{display:inline-block;color:#cfe9ff;padding:0 28px;font-weight:800}
+@keyframes watchScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ticker bar bottom */
 .ticker-bar{position:fixed;left:0;right:0;bottom:0;height:44px;background:linear-gradient(90deg,#071530,#0f2340);display:flex;align-items:center;overflow:hidden;z-index:9998;padding:6px 0}
 .ticker-inner{display:flex;gap:18px;white-space:nowrap;animation:tickmove 18s linear infinite}
 .ticker-item{color:#cfe9ff;font-weight:800;padding:6px 10px;border-radius:8px;background:linear-gradient(90deg,#071f3a,#0e3a6b88);box-shadow:0 8px 24px rgba(10,20,40,0.12)}
@@ -75,10 +82,9 @@ a{color:var(--accent)}
 .modal{background:var(--card);padding:18px;border-radius:12px;max-width:540px;width:92%;box-shadow:0 20px 60px rgba(3,10,30,0.45)}
 .modal .close{float:right;border:none;background:transparent;font-size:1.1rem;cursor:pointer}
 
-/* Responsiveness */
+/* Responsive */
 @media(max-width:900px){
   .nav{display:none}
-  .brand .title{font-size:1rem}
   .carousel img{width:220px;height:140px}
   #popup-container{right:12px;left:12px;bottom:70px}
   .ticker-inner{animation-duration:24s}
