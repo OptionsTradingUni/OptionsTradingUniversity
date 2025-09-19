@@ -1,620 +1,79 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Options Trading University — All-in-One</title>
-
-<style>
-/* ---------- All styles (inline) ---------- */
-:root{
-  --bg:#f5f8fb; --card:#fff; --accent:#1e3c72; --accent-2:#2a5298;
-  --muted:#6b7280; --success:#16a34a; --danger:#ef4444; --glass:rgba(255,255,255,0.6);
-  --radius:12px;
-}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;background:linear-gradient(180deg,#eef4ff 0%,var(--bg) 60%);color:#0b1220}
-a{color:var(--accent);text-decoration:none}
-.container{max-width:1100px;margin:0 auto;padding:22px}
-
-/* header */
-header{display:flex;justify-content:space-between;align-items:center;padding:14px 0}
-.brand{display:flex;flex-direction:column}
-.brand h1{margin:0;font-size:18px;color:var(--accent-2);letter-spacing:0.2px}
-nav a{margin-left:10px;padding:8px 10px;border-radius:10px;text-decoration:none;color:#0b1220;font-weight:700}
-nav a:hover{background:var(--glass);box-shadow:0 6px 18px rgba(15,30,60,0.04)}
-
-/* hero */
-.hero{padding:30px;border-radius:12px;margin:18px 0;background:linear-gradient(135deg,var(--accent-2),var(--accent));color:white;text-align:center;box-shadow:0 15px 40px rgba(20,40,80,0.12)}
-.hero h2{margin:0;font-size:1.8rem}
-.hero p{margin:10px 0 16px;opacity:0.95}
-.btn{display:inline-block;padding:10px 16px;border-radius:10px;background:linear-gradient(180deg,#fff8ea,#ffd24d);color:#081224;font-weight:800}
-.btn.primary{background:linear-gradient(180deg,var(--accent-2),var(--accent));color:white}
-
-/* stats */
-.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;justify-content:center}
-.stat{background:var(--card);padding:14px;border-radius:10px;min-width:140px;text-align:center;box-shadow:0 8px 24px rgba(15,30,60,0.04)}
-.stat h3{margin:0;color:var(--accent-2);font-size:1.25rem}
-.stat p{margin:6px 0 0;color:var(--muted);font-size:0.9rem}
-
-/* sections/cards */
-.card{background:var(--card);padding:18px;border-radius:var(--radius);margin-bottom:14px;box-shadow:0 8px 24px rgba(15,30,60,0.06)}
-.section-title{margin:0;color:var(--accent);font-weight:800}
-
-/* gallery */
-.gallery{position:relative;overflow:hidden;border-radius:12px;background:linear-gradient(180deg,#fff,#fcfdff);min-height:260px;display:flex;align-items:center;justify-content:center}
-.gallery img{max-width:100%;max-height:420px;object-fit:contain;opacity:0;position:absolute;transition:opacity .8s ease}
-.gallery img.active{opacity:1;position:relative}
-
-/* profits grid */
-.profit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
-.profit-grid img{width:100%;border-radius:8px;display:block;object-fit:cover}
-
-/* carousel */
-.carousel{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
-.carousel img{width:300px;height:200px;object-fit:cover;border-radius:10px}
-
-/* video */
-.video-wrap video{max-width:100%;border-radius:8px;box-shadow:0 10px 30px rgba(8,20,40,0.06)}
-
-/* watchlist */
-.watchlist{display:flex;flex-direction:column;gap:8px}
-.ticker{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:#fff;border:1px solid rgba(8,20,40,0.03)}
-.ticker .symbol{font-weight:800;color:var(--accent-2)}
-.ticker .change.plus{color:var(--success)}
-.ticker .change.minus{color:var(--danger)}
-
-/* glossary */
-.glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
-.term{background:#fff;padding:12px;border-radius:10px;border-left:6px solid var(--accent-2);box-shadow:0 6px 18px rgba(20,40,80,0.03)}
-.term b{display:block;color:var(--accent)}
-
-/* table */
-.table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;margin-top:12px}
-th,td{padding:8px;border-bottom:1px solid #eef2ff;text-align:left}
-th{background:#fbfdff}
-
-/* notify single */
-#notifySingleWrap{position:fixed;right:18px;bottom:18px;z-index:9999}
-
-/* footer */
-footer{padding:20px;text-align:center;color:#fff;background:linear-gradient(135deg,var(--accent-2),var(--accent));border-radius:12px;margin-top:18px}
-.small{font-size:0.88rem;color:var(--muted)}
-@media(max-width:880px){.stats{flex-direction:column}.carousel img{width:220px;height:150px}}
-</style>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Options Trading University — Home</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
   <div class="container">
-    <!-- Header -->
-    <header>
-      <div class="brand">
-        <h1>Options Trading University</h1>
-        <div class="small">Beginner → Advanced • Message on TikTok to join</div>
+    <header class="site-header">
+      <div class="brand-left">
+        <img src="branding/logo.jpeg" alt="Options Trading University" class="logo">
+        <div>
+          <div style="font-weight:900;color:var(--accent-2)">Options Trading University</div>
+          <div class="small">Beginner → Advanced • Message on TikTok to join</div>
+        </div>
       </div>
-      <nav aria-label="Main navigation">
-        <a href="#home">Home</a>
-        <a href="#education">Education</a>
-        <a href="#glossary">Glossary</a>
-        <a href="#charts">Charts</a>
-        <a href="#profits">Profits</a>
-        <a href="#lifestyle">Lifestyle</a>
-        <a href="#traders">Traders</a>
-        <a href="#faq">FAQs</a>
+      <nav class="nav">
+        <a class="btn-nav" href="index.html">Home</a>
+        <a class="btn-nav" href="education.html">Education</a>
+        <a class="btn-nav" href="charts.html">Charts</a>
+        <a class="btn-nav" href="profits.html">Profits</a>
+        <a class="btn-nav" href="lifestyle.html">Lifestyle</a>
+        <a class="btn-nav" href="contact.html">Contact</a>
       </nav>
     </header>
 
-    <!-- HERO -->
-    <section id="home" class="hero card">
-      <h2>Options Trading University — One Page</h2>
-      <p>Your hub for options trading lessons, real-ish live watchlist (API optional), rotating galleries, and community proofs. To join — <strong>message us on TikTok</strong> (no links). Example message: <em>"Found you on the trading page — want trade review & waitlist."</em></p>
-      <div style="margin-top:12px">
-        <a href="#education" class="btn primary">Start Learning</a>
-        <a href="#profits" class="btn" style="margin-left:8px">See Profits</a>
-      </div>
-
-      <div class="stats" style="margin-top:18px">
-        <div class="stat"><h3 id="totalTrades">—</h3><p>Total Traders (CSV)</p></div>
-        <div class="stat"><h3 id="winRate">—</h3><p>Win Rate</p></div>
-        <div class="stat"><h3 id="avgProfit">—</h3><p>Avg Profit</p></div>
-        <div class="stat"><h3 id="topProfit">—</h3><p>Top Profit</p></div>
-      </div>
-    </section>
-
-    <!-- Live watchlist + charts -->
-    <div class="card">
-      <div style="display:grid;grid-template-columns:2fr 1fr;gap:14px;">
-        <div>
-          <h3 class="section-title">Hero Charts</h3>
-          <div class="gallery" id="heroGallery">
-            <img src="Charts/chart1.jpeg" alt="chart1" class="active">
-            <img src="Charts/chart2.jpeg" alt="chart2">
-            <img src="Charts/chart3.jpeg" alt="chart3">
-            <img src="Charts/chart4.jpeg" alt="chart4">
-            <img src="Charts/chart5.jpeg" alt="chart5">
-            <img src="Charts/chart6.jpeg" alt="chart6">
-            <img src="Charts/chart7.jpeg" alt="chart7">
-          </div>
-
-          <div style="margin-top:12px" class="card">
-            <h4 class="section-title">Monitoring Video</h4>
-            <div class="video-wrap" style="margin-top:8px">
-              <video controls playsinline muted loop style="width:100%;border-radius:10px">
-                <source src="ChartVideo/monitor1.mov" type="video/quicktime">
-                Your browser doesn't support this video format.
-              </video>
-            </div>
-          </div>
+    <main>
+      <section class="hero">
+        <h1>Options Trading University</h1>
+        <p>Learn options trading from Modules 1–5, check charts, and see real member proof — gentle popups show wins that pop and go (no spam).</p>
+        <div style="margin-top:12px">
+          <a class="btn primary" href="education.html">Open Modules</a>
+          <a class="btn" href="profits.html" style="margin-left:8px">View Profits</a>
         </div>
 
-        <aside>
-          <h3 class="section-title">Live Watchlist</h3>
-          <p class="small">Add your API key in JS for real data. Otherwise the site shows demo values.</p>
-          <div id="watchlistList" class="watchlist" style="margin-top:12px"></div>
+        <div class="stats">
+          <div class="stat"><h3 id="totalTrades">—</h3><p>Total Traders</p></div>
+          <div class="stat"><h3 id="winRate">—</h3><p>Win Rate</p></div>
+          <div class="stat"><h3 id="avgProfit">—</h3><p>Avg Profit</p></div>
+          <div class="stat"><h3 id="topProfit">—</h3><p>Top Profit</p></div>
+        </div>
+      </section>
 
-          <div style="margin-top:12px" class="card">
-            <h4 class="section-title">Join Us</h4>
-            <p class="small">To join the community or get 1-on-1 help, <strong>message on TikTok</strong> — no link. Example message: <em>"Found you on the trading page — want trade review & waitlist."</em></p>
-          </div>
-        </aside>
+      <div class="card">
+        <h3 class="section-title">Quick Watchlist</h3>
+        <p class="small">Demo values shown unless API key present in script.js</p>
+        <div id="watchlistList" class="watchlist"></div>
       </div>
-    </div>
 
-    <!-- Education Modules -->
-    <section id="education" class="card">
-      <h3 class="section-title">Modules — Full Curriculum</h3>
-
-      <div style="margin-top:12px">
-        <div class="card">
-          <h4>MODULE 1: OPTIONS TRADING 101</h4>
-          <div style="margin-top:8px">
-            <h5>Lesson 1 — What Is An Option? (Calls & Puts)</h5>
-            <p>Options give you the <strong>right, not the obligation</strong> to buy (Call) or sell (Put) at a specific price before expiration.</p>
-            <ul>
-              <li><b>Call = Bullish</b> — you profit if the stock rises above the strike.</li>
-              <li><b>Put = Bearish</b> — you profit if the stock falls below the strike.</li>
-              <li><b>Leverage:</b> Options amplify % moves relative to stock moves.</li>
-            </ul>
-            <div class="small">Example: With AAPL at $170, buying a $175 call is a bet price exceeds $175 before expiry.</div>
-          </div>
-
-          <div style="margin-top:8px">
-            <h5>Lesson 2 — Option Contract Anatomy</h5>
-            <ul>
-              <li><b>Strike Price</b> — the price controlled by the option.</li>
-              <li><b>Expiration</b> — contract deadline.</li>
-              <li><b>Premium</b> — cost to buy the option.</li>
-              <li><b>Greeks</b> — Delta, Theta, Gamma, Vega (behavior & risk).</li>
-            </ul>
-          </div>
-
-          <div style="margin-top:8px">
-            <h5>Lesson 3 — Why Trade Options?</h5>
-            <ul>
-              <li>Leverage for higher % returns.</li>
-              <li>Defined risk when buying options (max loss = premium).</li>
-              <li>Flexibility for directional or non-directional strategies.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:12px">
-          <h4>MODULE 2: GETTING STARTED TRADING</h4>
-          <div style="margin-top:8px">
-            <h5>Lesson 1 — Platforms & Order Types</h5>
-            <p>Recommended: Webull, TradingView (charts), Robinhood, thinkorswim. Use limit orders to control fills, avoid market orders in illiquid options.</p>
-          </div>
-
-          <div style="margin-top:8px">
-            <h5>Lesson 2 — Choosing Contracts</h5>
-            <ul>
-              <li>Prefer contracts with good volume & open interest.</li>
-              <li>For beginners avoid ultra-short "lotto" contracts.</li>
-              <li>Consider ATM or 1-strike ITM/OTM depending on edge.</li>
-            </ul>
-          </div>
-
-          <div style="margin-top:8px">
-            <h5>Lesson 3 — Risk Management</h5>
-            <ul>
-              <li>Risk 1–5% of account per trade.</li>
-              <li>Journaling and stop rules are essential.</li>
-              <li>No revenge trading—protect capital first.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:12px">
-          <h4>MODULE 3: READING THE CHART</h4>
-          <div style="margin-top:8px">
-            <h5>Lesson 1 — Candlesticks</h5>
-            <p>Green = close > open (bullish). Red = close < open (bearish). Wicks show rejection and extremes.</p>
-          </div>
-
-          <div style="margin-top:8px">
-            <h5>Lesson 2 — Support & Resistance</h5>
-            <p>Identify zones, not exact lines. Use multiple timeframes for confirmation.</p>
-          </div>
-
-          <div style="margin-top:8px">
-            <h5>Lesson 3 — EMAs</h5>
-            <p>Common EMAs: 10, 20, 50. Use for dynamic support & trend bias.</p>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:12px">
-          <h4>MODULE 4: BUILDING YOUR FIRST STRATEGY</h4>
-          <div style="margin-top:8px">
-            <h5>Lesson 1 — Trend Trading</h5>
-            <ul>
-              <li>Find trend via EMAs/higher highs-lows.</li>
-              <li>Enter pullbacks to EMA or support zones.</li>
-              <li>Take profits quickly and cut losses fast.</li>
-            </ul>
-          </div>
-
-          <div style="margin-top:8px">
-            <h5>Lesson 2 — Scalping for Small Accounts</h5>
-            <p>Trade liquid tickers: SPY, QQQ, AAPL. Use 1–5 minute charts, VWAP and short EMAs.</p>
-          </div>
-
-          <div style="margin-top:8px">
-            <h5>Lesson 3 — Journaling</h5>
-            <p>Record entry, exit, size, rationale, and emotions. Review weekly for improvements.</p>
-            <table style="width:100%;margin-top:8px;border-collapse:collapse"><thead><tr><th>Date</th><th>Ticker</th><th>Entry</th><th>Exit</th><th>P/L</th><th>Notes</th></tr></thead>
-            <tbody><tr><td>2025-09-01</td><td>SPY</td><td>$463c</td><td>$469c</td><td>$720</td><td>EMA bounce, scalp</td></tr>
-            <tr><td>2025-09-02</td><td>AAPL</td><td>$170 Call</td><td>$175 Call</td><td>$1,800</td><td>Breakout trade</td></tr></tbody></table>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:12px">
-          <h4>MODULE 5: TRADER MINDSET (BONUS)</h4>
-          <ul>
-            <li>Discipline wins — cut losers fast.</li>
-            <li>Ride winners, but lock partial profits.</li>
-            <li>Focus on process and consistency.</li>
-          </ul>
+      <div class="card">
+        <h3 class="section-title">Featured Charts</h3>
+        <div class="gallery" id="homeGallery">
+          <img src="Charts/chart1.jpeg" alt="chart1" class="active">
+          <img src="Charts/chart2.jpeg" alt="chart2">
+          <img src="Charts/chart3.jpeg" alt="chart3">
+          <img src="Charts/chart4.jpeg" alt="chart4">
+          <img src="Charts/chart5.jpeg" alt="chart5">
         </div>
       </div>
-    </section>
 
-    <!-- Glossary (full, detailed) -->
-    <section id="glossary" class="card">
-      <h3 class="section-title">Glossary — Options Terms & Fintwit Slang</h3>
-      <div class="glossary" style="margin-top:12px">
-        <!-- Comprehensive list copied/expanded from your earlier input -->
-        <div class="term"><b>CALL</b> → You want the stock to go UP.</div>
-        <div class="term"><b>PUT</b> → You want the stock to go DOWN.</div>
-        <div class="term"><b>STRIKE PRICE</b> → The price the option controls.</div>
-        <div class="term"><b>PREMIUM</b> → The price you pay to buy the option.</div>
-        <div class="term"><b>EXPIRATION</b> → The date the option expires.</div>
-        <div class="term"><b>IN THE MONEY (ITM)</b> → Option already profitable.</div>
-        <div class="term"><b>OUT OF THE MONEY (OTM)</b> → Not profitable yet; cheaper but riskier.</div>
-        <div class="term"><b>AT THE MONEY (ATM)</b> → Strike closest to current price.</div>
-        <div class="term"><b>GREEKS</b> → Delta, Theta, Gamma, Vega (how options react).</div>
-        <div class="term"><b>OPEN INTEREST</b> → How many contracts exist; higher = more liquid.</div>
-        <div class="term"><b>VOLUME</b> → Contracts traded today; higher = active.</div>
-        <div class="term"><b>BID / ASK</b> → Buyers (bid) / Sellers (ask); watch spread.</div>
-        <div class="term"><b>BAGHOLDER</b> → Stuck in a losing play, hoping.</div>
-        <div class="term"><b>CUT</b> → Close a losing trade.</div>
-        <div class="term"><b>SCALP</b> → Quick in/out trade for small profit.</div>
-        <div class="term"><b>RIP</b> → Stock running hard up.</div>
-        <div class="term"><b>DUMP</b> → Stock tanking fast.</div>
-        <div class="term"><b>FOMO</b> → Fear of missing out (avoid it).</div>
-        <div class="term"><b>SWEEP</b> → Big aggressive options buy (usually institutions).</div>
-        <div class="term"><b>BLOCK</b> → Large order placed less aggressively than sweep.</div>
-        <div class="term"><b>LOTTO</b> → Super risky cheap play expiring soon.</div>
-        <div class="term"><b>SLAP / SMACK</b> → Aggressive buys (slap ask) / sells (hit bid).</div>
-        <div class="term"><b>ATH / ATL</b> → All-time high / Low.</div>
-        <div class="term"><b>BTFD</b> → "Buy the f* dip".</div>
-        <div class="term"><b>CHOP</b> → Sideways, no clean trades.</div>
-        <div class="term"><b>REJECT</b> → Price hit level and reversed hard.</div>
-        <div class="term"><b>BREAKOUT / BREAKDOWN</b> → Price breaks support/resistance strongly.</div>
-        <div class="term"><b>GAPPER</b> → Stock that gaps overnight.</div>
-        <div class="term"><b>FADE</b> → Trade against a move as it loses steam.</div>
-        <div class="term"><b>PUMP / RUG PULL</b> → Hype move / fake breakout.</div>
-        <div class="term"><b>DILUTION</b> → Company issues more shares (bearish).</div>
-        <div class="term"><b>SIZING UP / DOWN</b> → Change position size.</div>
-        <div class="term"><b>AVERAGING DOWN</b> → Adding to losing trade (risky).</div>
-        <div class="term"><b>THIN</b> → Low liquidity; risky fills.</div>
-        <div class="term"><b>WICKED OUT</b> → Stopped out by a wick spike.</div>
-        <div class="term"><b>VOL EXPLOSION</b> → Sudden big move + volume spike.</div>
-        <div class="term"><b>STUFFED</b> → Big seller stops upside instantly.</div>
-        <div class="term"><b>NO FILLS</b> → Couldn't get filled (fast move or illiquid).</div>
-        <div class="term"><b>FILLER CANDLE</b> → Useless candle with no conviction.</div>
-        <div class="term"><b>TRENDING / FLAT / RANGE</b> → Market states (trending vs choppy).</div>
-        <div class="term"><b>ROLLING</b> → Moving position to later expiration.</div>
-      </div>
-    </section>
-
-    <!-- Profits gallery -->
-    <section id="profits" class="card">
-      <h3 class="section-title">Profit Screenshots (img1 → img57)</h3>
-      <p class="small">Images rotate on Profits page; homepage shows gallery thumbnails. Files referenced from <code>Images/</code>.</p>
-      <div id="profitGrid" class="profit-grid" style="margin-top:12px">
-        <!-- JS will populate img1..img57 -->
-      </div>
-    </section>
-
-    <!-- Lifestyle -->
-    <section id="lifestyle" class="card">
-      <h3 class="section-title">Lifestyle</h3>
-      <p class="small">Lifestyle images: <code>Lifestyle/life1.jpeg</code> … <code>life9.jpeg</code></p>
-      <div id="lifestyleCarousel" class="carousel" style="margin-top:12px"></div>
-    </section>
-
-    <!-- Traders table -->
-    <section id="traders" class="card">
-      <h3 class="section-title">Traders (from traders_5000.csv)</h3>
-      <p class="small">Loaded from <code>data/traders_5000.csv</code>. A few rows shown here; full table available.</p>
-      <div class="table-wrap"><table id="traderTable"></table></div>
-    </section>
-
-    <!-- Risk & FAQ -->
-    <section id="faq" class="card">
-      <h3 class="section-title">Risk Management & FAQs</h3>
-
-      <div style="margin-top:10px">
-        <h4>Risk Management — core rules</h4>
-        <ul>
-          <li>Risk 1–5% of your account per trade.</li>
-          <li>Predefine stop-loss and position size before entry.</li>
-          <li>Use risk/reward targets (e.g., 1:2 or 1:3).</li>
-          <li>Keep a trading journal and review weekly.</li>
-          <li>Avoid revenge trading and over-leveraging.</li>
-        </ul>
-      </div>
-
-      <div style="margin-top:8px">
-        <h4>Frequently Asked</h4>
-        <p><b>How do I start trading?</b> Learn basics, open a broker, practice demo, start small, track every trade.</p>
-        <p><b>What’s minimum?</b> Stocks: fractional shares let you start <$100. Forex: micro accounts $5–$50. Start with what you can afford to lose.</p>
-        <p><b>Platforms?</b> Webull, Robinhood, thinkorswim for stocks/options. TradingView for charting. MT4/MT5 for forex.</p>
-        <p class="small">To join the group/waitlist — <strong>message on TikTok</strong> (no links). Example: "Found you on the trading page — want trade review & waitlist."</p>
-      </div>
-    </section>
+    </main>
 
     <footer>
-      <div class="small">© 2025 Options Trading University — Educational content only. Message us on TikTok to join (no links).</div>
+      <div class="small">© 2025 Options Trading University — Educational only. To join, message on TikTok (no link).</div>
     </footer>
   </div>
 
-  <!-- ---------- Inline JS (all behavior) ---------- -->
-  <script>
-  /* =================== CONFIG ===================
-     If you want real quotes, paste your API keys below:
-     - FINNHUB_API_KEY: https://finnhub.io
-     - ALPHA_VANTAGE_KEY: https://www.alphavantage.co
-     If empty, the watchlist will display simulated demo values.
-  =================================================*/
-  const FINNHUB_API_KEY = ""; // optional
-  const ALPHA_VANTAGE_KEY = ""; // optional
-  const WATCHLIST = ['SPY','QQQ','AAPL','TSLA','AMZN','NVDA','MSFT','NFLX'];
+  <!-- floating ticker container (pop & go) -->
+  <div class="floating-ticker" aria-hidden="true">
+    <div class="ticker-wrap"></div>
+  </div>
 
-  /* ---------- small helpers ---------- */
-  function fetchText(path){ return fetch(path).then(r=>{ if(!r.ok) throw new Error('not found'); return r.text(); }); }
-  function parseCSV(text){
-    // robust-ish CSV parsing: split lines, handle quoted commas simply
-    const lines = text.split(/\r?\n/).filter(Boolean);
-    const rows = [];
-    for(const line of lines){
-      const row = [];
-      let cur = '', inQ = false;
-      for(let i=0;i<line.length;i++){
-        const ch = line[i];
-        if(ch === '"' ){ inQ = !inQ; continue; }
-        if(ch === ',' && !inQ){ row.push(cur); cur = ''; continue; }
-        cur += ch;
-      }
-      row.push(cur);
-      rows.push(row);
-    }
-    return rows;
-  }
-  function toNumber(s){
-    if(!s) return NaN;
-    s = String(s).replace(/[\$, %\(\)]/g,'').replace(/,/g,'').trim();
-    if(s === '') return NaN;
-    const n = parseFloat(s);
-    return isFinite(n) ? n : NaN;
-  }
+  <!-- notify wrap -->
+  <div id="notifySingleWrap"></div>
 
-  /* ---------- CSV stats & table ---------- */
-  async function loadTradersCSV(){
-    try{
-      const txt = await fetchText('data/traders_5000.csv');
-      const rows = parseCSV(txt);
-      if(!rows.length) return;
-      const header = rows[0].map(h=>h.trim());
-      const data = rows.slice(1).map(r=>{
-        const o = {};
-        for(let i=0;i<header.length;i++) o[header[i] || i] = (r[i]||'').trim();
-        return o;
-      }).filter(d=>Object.keys(d).length>0);
-
-      // stats
-      let total = data.length, wins = 0, losses = 0, sum=0, profCount=0, top=-Infinity, topRow=null;
-      data.forEach(d=>{
-        const raw = d.profit_example || d.Profit || d.profit || d['profit_example'] || '';
-        const n = toNumber(raw);
-        if(!isNaN(n)){ profCount++; sum += n; if(n>0) wins++; if(n<0) losses++; if(n>top){ top=n; topRow=d; } }
-      });
-      const winRate = profCount ? Math.round(100*(wins/(profCount))) : 0;
-      const avgProfit = profCount ? (sum/profCount).toFixed(2) : '0';
-
-      // fill DOM
-      document.getElementById('totalTrades').textContent = total.toLocaleString();
-      document.getElementById('winRate').textContent = winRate + '%';
-      document.getElementById('avgProfit').textContent = isFinite(avgProfit) ? ('$' + Number(avgProfit).toLocaleString()) : 'N/A';
-      document.getElementById('topProfit').textContent = isFinite(top) ? ('$' + Number(top).toLocaleString()) : 'N/A';
-
-      // fill table (first 200 rows to keep page snappy)
-      const table = document.getElementById('traderTable');
-      if(table){
-        let html = '<thead><tr>';
-        header.forEach(h=> html += '<th>'+h+'</th>');
-        html += '</tr></thead><tbody>';
-        data.slice(0,200).forEach(r=>{
-          html += '<tr>';
-          header.forEach(h => html += '<td>' + (r[h] ? r[h].replace(/</g,'&lt;') : '') + '</td>');
-          html += '</tr>';
-        });
-        html += '</tbody>';
-        table.innerHTML = html;
-      }
-
-      // prepare name pool for gentle notices
-      window._OTU_namePool = data.map(d => (d.name || d.Name || d[1] || '').trim()).filter(Boolean);
-    }catch(e){
-      console.warn('Could not load CSV:', e.message);
-    }
-  }
-
-  /* ---------- single rotating (non-spammy) notice ---------- */
-  let notifyQueue = [], notifyBusy = false;
-  function showNotifySingle(obj){
-    notifyQueue.push(obj); processNotifyQueue();
-  }
-  function processNotifyQueue(){
-    if(notifyBusy || notifyQueue.length === 0) return;
-    notifyBusy = true;
-    const n = notifyQueue.shift();
-    let wrap = document.getElementById('notifySingleWrap');
-    if(!wrap){ wrap = document.createElement('div'); wrap.id = 'notifySingleWrap'; document.body.appendChild(wrap); wrap.style.position='fixed'; wrap.style.right='18px'; wrap.style.bottom='18px'; wrap.style.zIndex=9999; }
-    wrap.innerHTML = `<div style="background:linear-gradient(180deg,#fff,#f4fbff);padding:12px;border-radius:12px;box-shadow:0 10px 26px rgba(20,40,80,0.12);min-width:300px;display:flex;gap:10px;align-items:center">
-      <div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#2a5298,#1e3c72);color:white;display:flex;align-items:center;justify-content:center;font-weight:800">P</div>
-      <div style="flex:1"><strong>${n.title}</strong><div class="small" style="margin-top:6px;color:#374151">${n.text}</div></div>
-      <div class="small" style="color:#6b7280">${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
-    </div>`;
-    setTimeout(()=>{ wrap.innerHTML=''; notifyBusy=false; setTimeout(processNotifyQueue,800); }, 4500);
-  }
-  function scheduleCSVNotices(){
-    if(!window._OTU_namePool || !window._OTU_namePool.length) return;
-    setInterval(()=>{
-      const name = window._OTU_namePool[Math.floor(Math.random()*window._OTU_namePool.length)];
-      const samples = [
-        {title:'New Member Joined', text:`${name} just joined the trading crew — welcome!`},
-        {title:'Quick Cashout', text:`${name} cashed out a scalp — check profit gallery.`},
-        {title:'First Trade Win', text:`${name} banked a win on their first trade.`},
-        {title:'Watchlist Add', text:`${name} added AAPL to their watchlist.`}
-      ];
-      showNotifySingle(samples[Math.floor(Math.random()*samples.length)]);
-    }, 7000 + Math.random()*3000);
-  }
-
-  /* ---------- galleries: profit grid & lifestyle ---------- */
-  function populateProfitGrid(){
-    const wrap = document.getElementById('profitGrid');
-    if(!wrap) return;
-    let html = '';
-    for(let i=1;i<=57;i++){
-      const src = `Images/img${i}.jpeg`;
-      html += `<img src="${src}" alt="profit${i}" loading="lazy">`;
-    }
-    wrap.innerHTML = html;
-    // lazy: add light click-to-open handler optionally later
-  }
-  function populateLifestyle(){
-    const wrap = document.getElementById('lifestyleCarousel');
-    if(!wrap) return;
-    let html='';
-    for(let i=1;i<=9;i++){
-      html += `<img src="Lifestyle/life${i}.jpeg" alt="life${i}">`;
-    }
-    wrap.innerHTML = html;
-  }
-
-  /* ---------- hero gallery rotator ---------- */
-  function setupGalleryRotator(){
-    document.querySelectorAll('.gallery').forEach(g=>{
-      const imgs = Array.from(g.querySelectorAll('img'));
-      if(!imgs.length) return;
-      imgs.forEach((im,i)=>{ im.style.opacity = i===0 ? 1 : 0; if(i===0) im.classList.add('active'); });
-      let idx = 0;
-      setInterval(()=>{
-        imgs[idx].classList.remove('active'); imgs[idx].style.opacity = 0;
-        idx = (idx+1) % imgs.length;
-        imgs[idx].classList.add('active'); imgs[idx].style.opacity = 1;
-      }, 4500);
-    });
-  }
-
-  /* ---------- watchlist (supports Finnhub or Alpha Vantage) ---------- */
-  async function fetchQuoteFinnhub(sym){
-    if(!FINNHUB_API_KEY) throw new Error('No Finnhub key');
-    const url = `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(sym)}&token=${FINNHUB_API_KEY}`;
-    const r = await fetch(url); if(!r.ok) throw new Error('Finnhub error'); return r.json();
-  }
-  async function fetchQuoteAlpha(sym){
-    if(!ALPHA_VANTAGE_KEY) throw new Error('No Alpha key');
-    const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(sym)}&apikey=${ALPHA_VANTAGE_KEY}`;
-    const r = await fetch(url); if(!r.ok) throw new Error('Alpha error'); const j = await r.json(); return j['Global Quote'] || j;
-  }
-  async function updateWatchlist(){
-    const container = document.getElementById('watchlistList');
-    if(!container) return;
-    container.innerHTML = '';
-    // if no keys, simulate
-    if(!FINNHUB_API_KEY && !ALPHA_VANTAGE_KEY){
-      WATCHLIST.forEach(s=>{
-        const price = (100 + Math.random()*900).toFixed(2);
-        const ch = ((Math.random()-0.45)*(Math.random()*5)).toFixed(2);
-        const div = document.createElement('div'); div.className='ticker';
-        div.innerHTML = `<div style="display:flex;flex-direction:column"><div class="symbol">${s}</div><div class="small muted">$${price}</div></div><div style="text-align:right"><div class="price">$${price}</div><div class="change ${ch<0?'minus':'plus'}">${ch<0?'':'+'}${ch}</div></div>`;
-        container.appendChild(div);
-      });
-      return;
-    }
-    // try to fetch actual quotes, falling back per symbol
-    for(const s of WATCHLIST){
-      try{
-        if(FINNHUB_API_KEY){
-          const q = await fetchQuoteFinnhub(s);
-          const price = q.c; const diff = (q.c - q.pc).toFixed(2);
-          const div = document.createElement('div'); div.className='ticker';
-          div.innerHTML = `<div style="display:flex;flex-direction:column"><div class="symbol">${s}</div><div class="small muted">${price?price.toFixed(2):'—'}</div></div><div style="text-align:right"><div class="price">$${price?price.toFixed(2):'—'}</div><div class="change ${diff<0?'minus':'plus'}">${diff<0?'':'+'}${diff}</div></div>`;
-          container.appendChild(div);
-        } else {
-          const q = await fetchQuoteAlpha(s);
-          const price = parseFloat(q['05. price'] || q['05 price'] || q.c || 0);
-          const prev = parseFloat(q['08. previous close'] || q['08 previous close'] || q.pc || 0);
-          const diff = (price - prev).toFixed(2);
-          const div = document.createElement('div'); div.className='ticker';
-          div.innerHTML = `<div style="display:flex;flex-direction:column"><div class="symbol">${s}</div><div class="small muted">${price?price.toFixed(2):'—'}</div></div><div style="text-align:right"><div class="price">$${price?price.toFixed(2):'—'}</div><div class="change ${diff<0?'minus':'plus'}">${diff<0?'':'+'}${diff}</div></div>`;
-          container.appendChild(div);
-        }
-      }catch(e){
-        // fallback simulated for this symbol
-        const price = (100 + Math.random()*900).toFixed(2);
-        const ch = ((Math.random()-0.45)*(Math.random()*5)).toFixed(2);
-        const div = document.createElement('div'); div.className='ticker';
-        div.innerHTML = `<div style="display:flex;flex-direction:column"><div class="symbol">${s}</div><div class="small muted">$${price}</div></div><div style="text-align:right"><div class="price">$${price}</div><div class="change ${ch<0?'minus':'plus'}">${ch<0?'':'+'}${ch}</div></div>`;
-        container.appendChild(div);
-      }
-    }
-  }
-
-  /* ---------- init ---------- */
-  document.addEventListener('DOMContentLoaded', ()=>{
-    // fill grids & galleries
-    populateProfitGrid();
-    populateLifestyle();
-    setupGalleryRotator();
-
-    // load CSV, stats, and schedule notices
-    loadTradersCSV().then(()=>{
-      if(window._OTU_namePool && window._OTU_namePool.length){
-        // initial gentle welcome
-        showNotifySingle({title:'Welcome', text: window._OTU_namePool[Math.floor(Math.random()*window._OTU_namePool.length)] + ' visited the page.'});
-        scheduleCSVNotices();
-      }
-    });
-
-    // watchlist
-    updateWatchlist();
-    setInterval(updateWatchlist, 15000);
-  });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
