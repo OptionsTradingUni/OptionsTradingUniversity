@@ -1,189 +1,211 @@
-/* script.js - shared behavior for multi-page site
-   - Loads names from data/traders_5000.csv to create gentle popups
-   - Spawns floating profit ticker items (images) one-by-one
-   - Rotates gallery images
-   - Simulated watchlist updates (no API needed)
-   - Rotating motivational quotes
+/* script.js - shared site behavior
+   - Loads traders_5000.csv (names + optional profit column)
+   - Randomized, non-spammy floating profit alerts
+   - Floating image ticker (pop & go)
+   - Carousel auto-scroll
+   - Quote banner rotator
+   - Simulated watchlist ticker bar
+   - Sticky TikTok CTA modal
 */
 
-// CONFIG (no API required)
-const WATCHLIST = ['AAPL','TSLA','SPY','QQQ','AMZN','NVDA','BTC','ETH'];
-const TOTAL_TRADES = 6500;
-const WIN_RATE = 86;
-const FLOATING_IMAGES_COUNT = 57; // per your repo (img1..img57)
-const LIFESTYLE_COUNT = 9;
+// CONFIG
+const IMAGES_COUNT = 57;        // Images/img1..img57.jpeg
+const CHARTS_COUNT = 7;         // Charts/chart1..chart7.jpeg
+const LIFESTYLE_COUNT = 9;      // Lifestyle/life1..life9.jpeg
+const CSV_PATH = 'data/traders_5000.csv';
+const ALERT_INTERVAL_MS = 7000; // popup cadence
+const TICKER_ITEM_INTERVAL_MS = 2600;
+const WATCHLIST = ['AAPL','TSLA','NVDA','SPY','QQQ','AMZN','MSFT','BTCUSD'];
 
-// Utilities
-function fetchText(url){ return fetch(url).then(r=>{ if(!r.ok) throw new Error('fetch failed'); return r.text(); }); }
+/* ---------------- CSV parser ---------------- */
+function splitCSVLine(line){
+  const res=[]; let cur=''; let inQ=false;
+  for(let i=0;i<line.length;i++){
+    const ch = line[i];
+    if(ch === '"') { inQ = !inQ; continue; }
+    if(ch === ',' && !inQ){ res.push(cur); cur=''; continue; }
+    cur += ch;
+  }
+  res.push(cur);
+  return res;
+}
 function parseCSV(text){
-  const lines = text.split(/\r?\n/).filter(Boolean);
+  const lines = text.replace(/\r/g,'').split('\n').filter(Boolean);
+  if(!lines.length) return [];
+  const headers = splitCSVLine(lines[0]).map(h=>h.trim().toLowerCase());
   const rows = [];
-  for(const line of lines){
-    const row=[]; let cur='', inQ=false;
-    for(let i=0;i<line.length;i++){
-      const ch = line[i];
-      if(ch === '"'){ inQ = !inQ; continue; }
-      if(ch === ',' && !inQ){ row.push(cur); cur=''; continue; }
-      cur += ch;
-    }
-    row.push(cur);
-    rows.push(row);
+  for(let i=1;i<lines.length;i++){
+    const parts = splitCSVLine(lines[i]);
+    const obj = {};
+    for(let j=0;j<headers.length;j++) obj[headers[j]] = (parts[j] || '').trim();
+    rows.push(obj);
   }
   return rows;
 }
-function toNumber(v){ if(!v) return NaN; v = String(v).replace(/[\$,()%\s]/g,'').replace(/,/g,''); const n = parseFloat(v); return Number.isFinite(n) ? n : NaN; }
-
-/* ---------------- CSV Stats & Names (for popups) ---------------- */
-async function loadNamesFromCSV(){
+async function loadCSV(path){
   try{
-    const txt = await fetchText('data/traders_5000.csv');
-    const rows = parseCSV(txt);
-    if(!rows.length) return [];
-    const header = rows[0].map(h=>h.trim().toLowerCase());
-    const nameIdx = header.indexOf('name') >= 0 ? header.indexOf('name') : (header.indexOf('full_name') >=0 ? header.indexOf('full_name') : 1);
-    const profitIdx = header.findIndex(h=>/profit/i.test(h));
-    const pool = [];
-    for(let i=1;i<rows.length;i++){
-      const r = rows[i];
-      const name = (r[nameIdx] || '').trim();
-      let profit = null;
-      if(profitIdx >=0) profit = toNumber(r[profitIdx]);
-      pool.push({name: name || `Trader${i}`, profit});
-    }
-    return pool.filter(x=>x.name);
+    const r = await fetch(path);
+    if(!r.ok) throw new Error('CSV fetch failed');
+    const txt = await r.text();
+    return parseCSV(txt);
   }catch(e){
-    console.warn('CSV load failed:', e.message);
+    console.warn('CSV load error:', e.message);
     return [];
   }
 }
 
-/* ---------------- Popup system (single, non-spammy) ---------------- */
-let notifyQueue = [], notifyBusy=false;
-function pushNotify(obj){ notifyQueue.push(obj); processNotifyQueue(); }
-function processNotifyQueue(){
-  if(notifyBusy || !notifyQueue.length) return;
-  notifyBusy = true;
-  const n = notifyQueue.shift();
-  let wrap = document.getElementById('notifySingleWrap');
-  if(!wrap){ wrap = document.createElement('div'); wrap.id = 'notifySingleWrap'; document.body.appendChild(wrap); }
-  wrap.innerHTML = `<div class="notify-card"><div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(90deg,#2a5298,#1e3c72);display:flex;align-items:center;justify-content:center;color:white;font-weight:800">P</div>
-    <div style="flex:1"><strong>${n.title}</strong><div style="margin-top:6px;color:#374151">${n.text}</div></div>
-    <div style="color:#6b7280;font-size:0.9rem">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div></div>`;
-  setTimeout(()=>{ wrap.innerHTML=''; notifyBusy=false; setTimeout(processNotifyQueue,700); }, 4800);
+/* ---------------- popup alerts ---------------- */
+const popupEl = document.getElementById('popup-container');
+let namePool = [];
+let popupTimerHandle = null;
+
+function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function showPopupFor(tr){
+  if(!popupEl) return;
+  const profitText = tr.profit || ('$' + (Math.floor(Math.random()*8000)+150).toLocaleString());
+  popupEl.innerHTML = `<div class="title">${escapeHtml(tr.name)}</div><div class="meta">cashed out ${escapeHtml(profitText)} — shared in group</div>`;
+  popupEl.classList.add('visible');
+  setTimeout(()=> popupEl.classList.remove('visible'), 4200);
 }
 
-/* schedule gentle popups using CSV names */
-function scheduleCSVPopups(pool){
-  if(!pool || !pool.length) return;
-  setInterval(()=>{
-    const p = pool[Math.floor(Math.random()*pool.length)];
-    // choose message style
-    const templates = [
-      {t: 'Quick Cashout', txt: `${p.name} cashed out a tidy scalp — snapshot posted.`},
-      {t: 'Trade Win', txt: `${p.name} locked gains on a swing — nice discipline.`},
-      {t: 'New Member Win', txt: `New member ${p.name} scored an early win.`},
-      {t: 'Shared Setup', txt: `${p.name} shared a high-conviction setup.`}
-    ];
-    const pick = templates[Math.floor(Math.random()*templates.length)];
-    pushNotify({title: pick.t, text: pick.txt});
-  }, 8000 + Math.random()*7000);
+function schedulePopups(){
+  if(popupTimerHandle) clearInterval(popupTimerHandle);
+  popupTimerHandle = setInterval(()=>{
+    if(!namePool.length) return;
+    const t = namePool[Math.floor(Math.random()*namePool.length)];
+    showPopupFor(t);
+  }, ALERT_INTERVAL_MS + Math.random()*3500);
 }
 
-/* ---------------- Floating profit ticker (pop & go) ---------------- */
-function spawnTickerItem(imgSrc, textSmall){
-  const wrap = document.querySelector('.floating-ticker .ticker-wrap');
-  if(!wrap) return;
-  const item = document.createElement('div'); item.className='ticker-item';
-  item.innerHTML = `<img src="${imgSrc}" alt=""><div style="font-weight:800">${textSmall}</div>`;
-  wrap.appendChild(item);
-  item.addEventListener('animationend', ()=> item.remove());
+/* ---------------- floating image ticker (spawn) ---------------- */
+function spawnTickerImage(imgSrc, label){
+  const container = document.querySelector('.ticker-inner');
+  if(!container) return;
+  const el = document.createElement('div');
+  el.style.display = 'inline-flex';
+  el.style.alignItems = 'center';
+  el.style.gap = '8px';
+  el.className = 'ticker-item';
+  el.innerHTML = `<img src="${imgSrc}" alt="" style="width:56px;height:36px;border-radius:6px;object-fit:cover;box-shadow:0 6px 18px rgba(0,0,0,0.12)"><div style="min-width:80px;font-weight:800">${escapeHtml(label)}</div>`;
+  container.appendChild(el);
+  setTimeout(()=> el.remove(), 28000);
 }
-function startFloatingTicker(total=57, interval=2600){
+function startFloatingImageTicker(total=IMAGES_COUNT, interval=TICKER_ITEM_INTERVAL_MS){
   let i=1;
   setInterval(()=>{
     const img = `Images/img${i}.jpeg`;
-    spawnTickerItem(img, `Profit #${i}`);
+    spawnTickerImage(img, `Profit #${i}`);
     i++; if(i>total) i=1;
   }, interval);
 }
 
-/* ---------------- Gallery rotator ---------------- */
-function setupGalleryRotator(){
-  document.querySelectorAll('.gallery').forEach(g=>{
-    const imgs = Array.from(g.querySelectorAll('img'));
-    if(!imgs.length) return;
-    imgs.forEach((im,i)=>{ im.style.opacity = i===0?1:0; if(i===0) im.classList.add('active'); });
-    let idx = 0;
-    setInterval(()=>{
-      imgs[idx].classList.remove('active'); imgs[idx].style.opacity = 0;
-      idx = (idx+1) % imgs.length;
-      imgs[idx].classList.add('active'); imgs[idx].style.opacity = 1;
-    }, 4200);
-  });
-}
-
-/* ---------------- Simulated watchlist ---------------- */
-function updateWatchlistUI(){
-  const el = document.getElementById('watchlistList'); if(!el) return;
-  el.innerHTML = '';
-  WATCHLIST.forEach(s=>{
-    const price = (20 + Math.random()*980).toFixed(2);
-    const ch = (Math.random()*2-1).toFixed(2);
-    const row = document.createElement('div'); row.className='ticker-row';
-    row.innerHTML = `<div><div style="font-weight:800">${s}</div><div class="small muted">$${price}</div></div><div style="text-align:right"><div style="font-weight:800">$${price}</div><div class="${ch<0?'change minus':'change plus'}">${ch<0?ch:'+'+ch}</div></div>`;
-    el.appendChild(row);
-  });
-}
-
-/* ---------------- Motivational quotes ---------------- */
+/* ---------------- quote banner ---------------- */
 const QUOTES = [
-  "Discipline beats emotion — trade your plan.",
-  "Protect capital first, profits follow.",
-  "Small consistent edges compound into big results.",
-  "Cut losers fast, let winners run.",
-  "Learn. Journal. Repeat."
+  "Discipline beats emotion — trade the plan.",
+  "Protect capital first. The rest follows.",
+  "Small edges, applied consistently, compound.",
+  "Cut losers fast. Let winners run.",
+  "Journal every trade — data kills ego.",
+  "Plan the trade; trade the plan.",
+  "Risk control > chasing returns."
 ];
-function startQuoteRotator(elId, interval=5000){
-  const el = document.getElementById(elId); if(!el) return;
-  let i=0; el.textContent = QUOTES[0];
-  setInterval(()=>{ i=(i+1)%QUOTES.length; el.textContent = QUOTES[i]; }, interval);
+let qIdx = 0;
+function rotateQuotes(){
+  const el = document.getElementById('quote-banner');
+  if(!el) return;
+  el.textContent = QUOTES[qIdx];
+  qIdx = (qIdx+1)%QUOTES.length;
+}
+setInterval(rotateQuotes, 5200);
+
+/* ---------------- watchlist (simulated) ---------------- */
+function initWatchlist(){
+  const el = document.getElementById('watchlistList');
+  if(!el) return;
+  const list = WATCHLIST.map(s=>{
+    return {s, p: (100 + Math.random()*1200).toFixed(2), c: (Math.random()*2-1).toFixed(2)};
+  });
+  function render(){
+    el.innerHTML = '';
+    list.forEach(t=>{
+      const row = document.createElement('div');
+      row.style.display='flex'; row.style.justifyContent='space-between'; row.style.padding='8px'; row.style.borderBottom='1px solid #f1f5f9';
+      row.innerHTML = `<div style="font-weight:800">${t.s}</div><div>$${t.p} <span style="color:${t.c>=0? 'green':'#ef4444'}">${t.c}%</span></div>`;
+      el.appendChild(row);
+    });
+  }
+  setInterval(()=>{
+    list.forEach(t=>{ let change=(Math.random()-0.45)*(Math.random()*2); t.p = Math.max(0.5,(parseFloat(t.p)+change)).toFixed(2); t.c = (change>=0?'+':'')+change.toFixed(2); });
+    render();
+  },2500);
+  render();
 }
 
-/* ---------------- Populate profit & lifestyle grids ---------------- */
-function populateProfitGrid(containerId='profitGrid', total=57){
-  const wrap = document.getElementById(containerId); if(!wrap) return;
-  let html='';
-  for(let i=1;i<=total;i++){ html += `<img src="Images/img${i}.jpeg" alt="profit${i}" loading="lazy">`; }
-  wrap.innerHTML = html;
+/* ---------------- carousel auto-scroll ---------------- */
+function initCarousels(){
+  document.querySelectorAll('.carousel').forEach(carousel=>{
+    let scrollAmount = 0;
+    setInterval(()=>{
+      if(scrollAmount >= carousel.scrollWidth - carousel.clientWidth) scrollAmount = 0;
+      else scrollAmount += Math.max(220, carousel.clientWidth * 0.6);
+      carousel.scrollTo({ left: scrollAmount, behavior:'smooth' });
+    }, 3600);
+  });
 }
-function populateLifestyle(containerId='lifestyleCarousel', total=9){
-  const wrap = document.getElementById(containerId); if(!wrap) return;
-  let html='';
-  for(let i=1;i<=total;i++){ html += `<img src="Lifestyle/life${i}.jpeg" alt="life${i}">`; }
-  wrap.innerHTML = html;
+
+/* ---------------- ticker bar init ---------------- */
+function initTickerBar(){
+  const bar = document.querySelector('.ticker-inner');
+  if(!bar) return;
+  function makeItem(sym){
+    const change = (Math.random()*2 - 1).toFixed(2);
+    const price = (100 + Math.random()*1200).toFixed(2);
+    return `<div class="ticker-item">${sym} <span style="opacity:0.9"> $${price} </span> <span style="color:${change>=0? '#9ee79b':'#ff9b9b'}">${change}%</span></div>`;
+  }
+  const items = [];
+  for(let s of WATCHLIST) items.push(makeItem(s));
+  bar.innerHTML = items.concat(items).join('');
+}
+
+/* ---------------- TikTok modal ---------------- */
+function openTikTokModal(){ const m=document.querySelector('.modal-backdrop'); if(m) m.style.display='flex'; }
+function initModal(){
+  if(document.querySelector('.modal-backdrop')) return;
+  const md = document.createElement('div'); md.className='modal-backdrop';
+  md.innerHTML = `<div class="modal" role="dialog" aria-modal="true">
+    <button class="close">✕</button>
+    <h3 style="margin-top:0">Message on TikTok</h3>
+    <p class="small">To join the community or request a trade review, send a private DM on TikTok. Suggested message (copy):</p>
+    <div style="background:#f5f9ff;padding:12px;border-radius:8px;margin-top:8px;font-family:monospace">
+      Hi — I found your Options Trading University page. I'd like a trade review and to join the waitlist. — <i>Your name</i>
+    </div>
+    <div style="margin-top:14px;text-align:right"><button class="btn-close">Close</button></div>
+  </div>`;
+  document.body.appendChild(md);
+  md.querySelector('.close').addEventListener('click', ()=> md.style.display='none');
+  md.querySelector('.btn-close').addEventListener('click', ()=> md.style.display='none');
 }
 
 /* ---------------- INIT ---------------- */
-document.addEventListener('DOMContentLoaded', async ()=>{
-  // set static stats
-  const totalEl = document.getElementById('totalTrades'); if(totalEl) totalEl.textContent = TOTAL_TRADES.toLocaleString();
-  const winEl = document.getElementById('winRate'); if(winEl) winEl.textContent = WIN_RATE + '%';
-  document.getElementById && startQuoteRotator('quoteRotator', 5000);
+(async function initSite(){
+  rotateQuotes(); // immediate
+  initModal();
+  initCarousels();
+  initWatchlist();
+  initTickerBar();
+  startFloatingImageTicker();
 
-  // populate galleries
-  populateProfitGrid();
-  populateLifestyle();
-  setupGalleryRotator();
+  // load CSV and schedule popups
+  const rows = await loadCSV(CSV_PATH);
+  namePool = rows.map(r=>{
+    const keys = Object.keys(r);
+    // try find name-like key
+    const nk = keys.find(k=>/name|full/i.test(k)) || keys[0];
+    const pk = keys.find(k=>/profit|pnl|gain|amount/i.test(k));
+    return { name: (r[nk] || '').trim() || 'Trader', profit: pk ? r[pk] : ''};
+  }).filter(x=>x.name);
+  if(!namePool.length) namePool = [{name:'Alex'},{name:'Jordan'},{name:'Taylor'},{name:'Casey'}];
+  schedulePopups();
 
-  // watchlist updates
-  updateWatchlistUI();
-  setInterval(updateWatchlistUI, 15000);
-
-  // floating ticker
-  startFloatingTicker(FLOATING_IMAGES_COUNT, 2700);
-
-  // load CSV for popups & names
-  const pool = await loadNamesFromCSV();
-  if(pool && pool.length){ scheduleCSVPopups(pool); }
-
-});
+})();
