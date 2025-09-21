@@ -38,17 +38,25 @@
   <div class="page">
     <header class="topbar"><h1>Profit Snapshots</h1></header>
     <main class="container">
-      <p>Public snapshots uploaded directly from trades.</p>
+      <p>Snapshots of trades. Automatically loads from your repo folders.</p>
       <div class="gallery" id="profits-gallery"></div>
     </main>
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
   <script>
     const gallery=document.getElementById("profits-gallery");
-    for(let i=1;i<=57;i++){ // auto-load img1.jpeg ... img57.jpeg
+    const folders=["Images","images","Profits","profits"];
+    for(let i=1;i<=100;i++){ 
       let img=document.createElement("img");
-      img.src=`profits/img${i}.jpeg`;
       img.alt=`Profit ${i}`;
+      let tried=0;
+      function tryNext(){
+        if(tried>=folders.length){ img.remove(); return; }
+        img.src=`${folders[tried]}/img${i}.jpeg`;
+        tried++;
+      }
+      img.onerror=tryNext;
+      tryNext();
       gallery.appendChild(img);
     }
   </script>
