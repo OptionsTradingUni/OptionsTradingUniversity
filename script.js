@@ -1,252 +1,258 @@
-/* script.js - shared behavior (CSV popups, quotes, carousels, watchlist, stats) */
+/* ========= BASIC CONFIG (overridden by config.js if present) ========= */
+window.SITE_CONFIG = Object.assign({
+  TWELVE_API_KEY: "xxxx", // overridden by config.js if present
+  watchlistSymbols: ["AAPL","MSFT","TSLA","SPY","NVDA","AMZN"],
+  testimonialsJsonPath: "data/json/testimonials.json",
+  modulesJsonPath: "data/json/modules.json",
+  glossaryJsonPath: "data/json/glossary.json",
+  tradersCsvPath: "data/traders_5000.csv"
+}, window.SITE_CONFIG || {});
 
-/* CONFIG */
-const IMAGES_COUNT = 57;          // Images/img1..img57.jpeg
-const LIFESTYLE_COUNT = 9;        // Lifestyle/life1..life9.jpeg
-const CSV_PATH = 'data/traders_5000.csv';
-const POPUP_INTERVAL = 6500;      // ms between popups
-const POPUP_DISPLAY_MS = 4200;    // ms popup visible
-const QUOTE_ROTATE_MS = 5200;     // ms between quotes
+/* ========= UTIL ========= */
+function $(sel, ctx=document){ return ctx.querySelector(sel); }
+function $all(sel, ctx=document){ return Array.from(ctx.querySelectorAll(sel)); }
+function escapeHtml(s){ if(!s) return ""; return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-/* ---- Utility: robust CSV parse ---- */
-function splitCSVLine(line){
-  const res = []; let cur = ''; let inQ = false;
-  for (let i=0;i<line.length;i++){
-    const ch = line[i];
-    if (ch === '"') { inQ = !inQ; continue; }
-    if (ch === ',' && !inQ) { res.push(cur); cur=''; continue; }
-    cur += ch;
+/* ========= SIDEBAR TOGGLE ========= */
+(function(){
+  const burger = $('#burger'); const sidebar = $('#sidebar');
+  if(burger && sidebar){
+    burger.addEventListener('click', ()=> sidebar.classList.toggle('open'));
   }
-  res.push(cur);
-  return res;
-}
-function parseCSV(text){
-  const lines = text.replace(/\r/g,'').split('\n').filter(Boolean);
-  if (!lines.length) return [];
-  const headers = splitCSVLine(lines[0]).map(h=>h.trim().toLowerCase());
-  const out = [];
-  for (let i=1;i<lines.length;i++){
-    const parts = splitCSVLine(lines[i]);
-    const obj = {};
-    for (let j=0;j<headers.length;j++) obj[headers[j]] = (parts[j]||'').trim();
-    out.push(obj);
-  }
-  return out;
-}
-async function loadCSV(path){
+})();
+
+/* ========= TIKTOK MODAL ========= */
+function openTikTokModal(){ const m = $('#tt-modal'); if(m) m.style.display = 'flex'; }
+function closeTikTokModal(){ const m = $('#tt-modal'); if(m) m.style.display = 'none'; }
+window.openTikTokModal = openTikTokModal;
+window.closeTikTokModal = closeTikTokModal;
+
+/* ========= STATS APPEAR/DISAPPEAR (no counting/moving) ========= */
+(function(){
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add('visible');
+      else e.target.classList.remove('visible');
+    });
+  }, {threshold:0.35});
+  $all('.fade-stat').forEach(el=> obs.observe(el));
+})();
+
+/* ========= TRADER CSV COUNT ========= */
+(async function(){
+  const badge = $('#trader-count-badge');
+  if(!badge) return;
   try{
-    const r = await fetch(path);
-    if(!r.ok) throw new Error('CSV fetch failed: '+r.status);
-    const txt = await r.text();
-    return parseCSV(txt);
+    const res = await fetch(window.SITE_CONFIG.tradersCsvPath, {cache:'no-store'});
+    const text = await res.text();
+    const lines = text.trim().split(/\r?\n/).filter(Boolean);
+    badge.textContent = `Traders: ${lines.length}+`;
   }catch(e){
-    console.warn('CSV load error', e.message);
-    return [];
+    badge.textContent = `Traders: 5000+`;
+  }
+})();
+
+/* ========= WATCHLIST (Twelve Data) with quota-friendly caching ========= */
+const TD_KEY = (window.SITE_CONFIG.TWELVE_API_KEY && window.SITE_CONFIG.TWELVE_API_KEY.trim()) || "xxxx";
+const CACHE_TTL_MS = 60 * 1000; // 60s
+const LS_KEY = "otu_quote_cache_v1";
+
+function getCache(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||"{}"); }catch{ return {}; } }
+function setCache(obj){ try{ localStorage.setItem(LS_KEY, JSON.stringify(obj)); }catch{} }
+
+async function fetchQuote(symbol){
+  symbol = symbol.toUpperCase().trim();
+  const cache = getCache();
+  const now = Date.now();
+  if(cache[symbol] && (now - cache[symbol].t) < CACHE_TTL_MS){
+    return cache[symbol].data;
+  }
+  const url = `https://api.twelvedata.com/quote?symbol=${encodeURIComponent(symbol)}&apikey=${encodeURIComponent(TD_KEY)}`;
+  try{
+    const r = await fetch(url);
+    const j = await r.json();
+    if(j.status === "error" || !j.symbol){ throw new Error(j.message || "bad"); }
+    cache[symbol] = {t: now, data: j};
+    setCache(cache);
+    return j;
+  }catch(e){
+    cache[symbol] = {t: now, data: {symbol, name:symbol, price: null}};
+    setCache(cache);
+    return cache[symbol].data;
   }
 }
 
-/* ---- QUOTES (long list) ---- */
-const QUOTES = [
-  "Discipline beats emotion — trade the plan.",
-  "Protect capital first; profits follow.",
-  "Small edges, applied consistently, compound.",
-  "Cut losers fast. Let winners run.",
-  "Journal every trade — data kills ego.",
-  "Plan the trade; trade the plan.",
-  "Risk control > chasing returns.",
-  "Consistency creates results over time.",
-  "A good trader thinks in probabilities, not certainties.",
-  "Don't chase FOMO — wait for your setup.",
-  "Position size is the single biggest lever of survival.",
-  "Backtest to validate, then forward test to trust.",
-  "Avoid trading when emotionally compromised.",
-  "Understand fees and slippage — they matter.",
-  "A clear edge beats a complicated system.",
-  "Edge + Discipline = Long-term results.",
-  "Learn to lose small and win big.",
-  "Trade what you know; expand deliberately.",
-  "Keep a routine: pre-market, market, post-market review.",
-  "The market will always be there tomorrow — preserve capital."
-];
-
-/* rotate quote banner */
-let qIdx = 0;
-function rotateQuotes(){
-  const el = document.getElementById('quote-banner');
-  if (!el) return;
-  el.textContent = QUOTES[qIdx];
-  qIdx = (qIdx + 1) % QUOTES.length;
-}
-setInterval(rotateQuotes, QUOTE_ROTATE_MS);
-rotateQuotes(); // immediate load
-
-/* ---- Populate profit carousel (Images/img1..img57) ---- */
-function populateProfitCarousel(){
-  const cont = document.getElementById('profitCarousel');
-  if(!cont) return;
-  cont.innerHTML = '';
-  for (let i=1;i<=IMAGES_COUNT;i++){
-    const img = document.createElement('img');
-    img.src = `Images/img${i}.jpeg`;
-    img.alt = `Profit ${i}`;
-    // graceful fallback: if image 404, browser will show broken image — user ensures files exist
-    cont.appendChild(img);
+function renderTile(data){
+  const wrap = document.createElement('div');
+  wrap.className = 'tile';
+  const px = parseFloat(data.price);
+  const chg = parseFloat(data.percent_change);
+  if(!isNaN(chg)){
+    if(chg > 0) wrap.classList.add('up');
+    if(chg < 0) wrap.classList.add('down');
   }
+  wrap.innerHTML = `
+    <div class="sym">${escapeHtml(data.symbol || '')}</div>
+    <div class="px">${data.price ? '$'+Number(px).toFixed(2) : '—'}</div>
+    <div class="chg">${isNaN(chg)? '' : (chg>0? '▲':'▼')} ${isNaN(chg)? '' : Math.abs(chg).toFixed(2)}%</div>
+  `;
+  return wrap;
 }
 
-/* ---- Populate lifestyle carousel ---- */
-function populateLifestyle(){
-  const cont = document.getElementById('lifestyleCarousel');
-  if(!cont) return;
-  cont.innerHTML = '';
-  for (let i=1;i<=LIFESTYLE_COUNT;i++){
-    const img = document.createElement('img');
-    img.src = `Lifestyle/life${i}.jpeg`;
-    img.alt = `Lifestyle ${i}`;
-    cont.appendChild(img);
+async function initWatchlist(){
+  const grid = $('#watchlist-grid');
+  const add = $('#watchlist-add');
+  const input = $('#watchlist-input');
+  if(!grid) return;
+
+  let symbols = (localStorage.getItem('otu_watchlist') || '').split(',').filter(Boolean);
+  if(symbols.length === 0) symbols = window.SITE_CONFIG.watchlistSymbols.slice();
+
+  async function draw(){
+    grid.innerHTML = '';
+    for(const s of symbols){
+      const d = await fetchQuote(s);
+      grid.appendChild(renderTile(d));
+    }
   }
+
+  add?.addEventListener('click', ()=>{
+    const v = (input.value || '').toUpperCase().trim();
+    if(!v) return;
+    if(!symbols.includes(v)){
+      symbols.unshift(v);
+      localStorage.setItem('otu_watchlist', symbols.join(','));
+      draw();
+    }
+    input.value = '';
+  });
+
+  draw();
+  setInterval(draw, 90 * 1000);
 }
+initWatchlist();
 
-/* ---- Chart carousel: ensure images exist in Charts/chart1..chart7.jpeg (case-sensitive) ----
-   If an image fails to load on GitHub Pages because filename or case differs, fix file names in repo.
-*/
+/* ========= INFINITE-STYLE IMAGE LOADING ========= */
+function loadSequentialImages({containerId, folder, prefix, start=1, pad=2, exts=["jpg","jpeg","png","webp"], maxMiss=12}){
+  const grid = document.getElementById(containerId);
+  if(!grid) return;
+  let i = start, missed = 0;
 
-/* ---- Watchlist ticker (moving) ---- */
-const WATCHLIST = ['AAPL','TSLA','NVDA','SPY','QQQ','AMZN','MSFT','BTCUSD','META','AMD','INTC'];
-function initWatchlistTicker(){
-  const el = document.getElementById('watchlistTicker');
-  if(!el) return;
-  // Create repeating items to make smooth loop
-  function makeItem(sym){
-    const price = (100 + Math.random()*2400).toFixed(2);
-    const ch = (Math.random()*3 - 1.5).toFixed(2);
-    const cls = ch >= 0 ? 'pos' : 'neg';
-    return `<span class="watchlist-item">${sym} <strong>$${price}</strong> <span class="${cls}">${ch}%</span></span>`;
-  }
-  const items = [];
-  for (let i=0;i<WATCHLIST.length;i++) items.push(makeItem(WATCHLIST[i]));
-  // duplicate content so CSS loop can scroll
-  el.innerHTML = items.concat(items).join('');
-  // periodically nudge new values (simulate live changes)
-  setInterval(()=>{
-    const nodes = el.querySelectorAll('.watchlist-item');
-    nodes.forEach((n,i)=>{
-      if (Math.random() < 0.12){
-        const sym = WATCHLIST[i % WATCHLIST.length];
-        const price = (100 + Math.random()*2400).toFixed(2);
-        const ch = (Math.random()*3 - 1.5).toFixed(2);
-        n.innerHTML = `${sym} <strong>$${price}</strong> <span class="${ch>=0? 'pos':'neg'}">${ch}%</span>`;
+  function tryNextBatch(batch=12){
+    let loadedAny = false;
+    const frag = document.createDocumentFragment();
+    for(let k=0;k<batch;k++){
+      const base = prefix + String(i).padStart(pad,'0');
+      const img = new Image();
+      let tried = 0;
+
+      function tryExt(){
+        if(tried >= exts.length){
+          missed++; i++;
+          if(missed >= maxMiss) observer && observer.disconnect();
+          return;
+        }
+        const src = `${folder}/${base}.${exts[tried]}`;
+        img.src = src;
       }
+      img.loading = "lazy";
+      img.alt = `${prefix} ${i}`;
+      img.onerror = ()=>{ tried++; tryExt(); };
+      img.onload = ()=>{
+        missed = 0; loadedAny = true;
+        const el = document.createElement('img');
+        el.src = img.src; el.alt = img.alt;
+        frag.appendChild(el);
+        i++;
+      };
+      tryExt();
+    }
+    if(loadedAny) grid.appendChild(frag);
+  }
+
+  tryNextBatch(16);
+
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ tryNextBatch(12); }
     });
-  }, 3200);
+  }, {root:null, rootMargin:"600px", threshold:0});
+  observer.observe(grid.lastElementChild || grid);
 }
 
-/* ---- Stats fade in/out (not counting) ---- */
-function initStatsAnimation(){
-  const nodes = document.querySelectorAll('.stat');
-  if(!nodes || !nodes.length) return;
-  let idx = 0;
-  function showNext(){
-    nodes.forEach(n => n.classList.remove('show'));
-    nodes[idx].classList.add('show');
-    idx = (idx + 1) % nodes.length;
+/* ========= PROFITS & LIFESTYLE GRIDS ========= */
+document.addEventListener('DOMContentLoaded', ()=>{
+  loadSequentialImages({
+    containerId:'profits-grid', folder:'profits', prefix:'profit', start:1, pad:2, exts:["png","jpg","jpeg","webp"], maxMiss:10
+  });
+  loadSequentialImages({
+    containerId:'lifestyle-grid', folder:'lifestyle', prefix:'life', start:1, pad:2, exts:["jpg","jpeg","png","webp"], maxMiss:10
+  });
+});
+
+/* ========= TESTIMONIALS PREVIEW ========= */
+(async function(){
+  const box = $('#testimonials-preview');
+  if(!box) return;
+  try{
+    const res = await fetch(window.SITE_CONFIG.testimonialsJsonPath, {cache:'no-store'});
+    const items = await res.json();
+    let list = items;
+    if(items.length > 6){
+      list = [];
+      const used = new Set();
+      while(list.length < 6){
+        const r = Math.floor(Math.random()*items.length);
+        if(!used.has(r)){ used.add(r); list.push(items[r]); }
+      }
+    }
+    box.innerHTML = list.map(t=>`
+      <article class="testi">
+        <div class="name">${escapeHtml(t.name || 'Trader')}</div>
+        <div class="txt">${escapeHtml(t.text || '').replace(/\n/g,'\n')}</div>
+      </article>
+    `).join('');
+  }catch(e){
+    box.innerHTML = `<p class="fineprint">Upload <code>${window.SITE_CONFIG.testimonialsJsonPath}</code> to show testimonials.</p>`;
   }
-  // show first immediately
-  showNext();
-  // rotate visible stat every 3.5 seconds
-  setInterval(showNext, 3500);
-}
+})();
 
-/* ---- Popup: use CSV names (and profit column if present) ---- */
-let popupHandle = null;
-async function initPopups(){
-  const rows = await loadCSV(CSV_PATH);
-  // determine name key
-  let nameKey = null, profitKey = null;
-  if (rows.length){
-    const keys = Object.keys(rows[0]);
-    nameKey = keys.find(k => /name|full|username/i.test(k)) || keys[0];
-    profitKey = keys.find(k => /profit|pnl|gain|amount|cash/i.test(k));
-  }
-  const pool = (rows.length ? rows.map(r => ({ name: r[nameKey] || 'Trader', profit: profitKey ? r[profitKey] : '' })) : [{name:'Alex'},{name:'Jordan'},{name:'Taylor'},{name:'Casey'}]);
-  // schedule popups
-  const popupEl = document.getElementById('popup-container');
-  if(!popupEl) return;
-  function showOne(){
-    const t = pool[Math.floor(Math.random()*pool.length)];
-    const profitText = t.profit && t.profit.length ? t.profit : '$' + (Math.floor(Math.random()*9000)+200).toLocaleString();
-    popupEl.innerHTML = `<div class="title">${escapeHtml(t.name)}</div><div class="meta">cashed out ${escapeHtml(profitText)} — shared in group</div>`;
-    popupEl.classList.add('visible');
-    setTimeout(()=> popupEl.classList.remove('visible'), POPUP_DISPLAY_MS);
-  }
-  // first show after small delay so page loads
-  setTimeout(showOne, 1200);
-  popupHandle = setInterval(showOne, POPUP_INTERVAL + Math.random()*2000);
-}
+/* ========= TICKER BAR ========= */
+(function(){
+  const el = $('#ticker');
+  if(!el) return;
+  const items = [
+    "Mentorship-first access • DM to begin",
+    "Risk managed, process driven",
+    "Modules • Glossary • Calculators • Charts",
+    "Upload more images to /lifestyle & /profits — auto-detected",
+    "Twelve Data watchlist — cached for API quota"
+  ];
+  const inner = document.createElement('div'); inner.className='ticker-inner';
+  inner.innerHTML = items.concat(items).map(t=>`<span class="ticker-item">${escapeHtml(t)}</span>`).join('');
+  el.appendChild(inner);
+})();
 
-/* ---- ticker bar bottom (market small items) ---- */
-function initTickerBar(){
-  const bar = document.getElementById('tickerInner');
-  if(!bar) return;
-  const items = ['AAPL +1.2%','TSLA +2.8%','NVDA +3.9%','SPY +0.6%','QQQ +0.9%','AMZN -0.4%','BTCUSD +1.7%'];
-  bar.innerHTML = items.concat(items).map(t => `<div class="ticker-item">${t}</div>`).join('');
-}
-
-/* ---- Modal for TikTok DM ---- */
-function openTikTokModal(){ const m=document.querySelector('.modal-backdrop'); if(m) m.style.display='flex'; }
-function initModal(){
-  if(document.querySelector('.modal-backdrop')) return;
-  const md = document.createElement('div'); md.className = 'modal-backdrop';
-  md.innerHTML = `<div class="modal" role="dialog" aria-modal="true">
-    <button class="close">✕</button>
-    <h3 style="margin-top:0">Message on TikTok</h3>
-    <p class="small">To join the community or request a trade review, send a private DM on TikTok. Suggested message (copy):</p>
-    <div style="background:#f5f9ff;padding:12px;border-radius:8px;margin-top:8px;font-family:monospace">
-      Hi — I found your Options Trading University page. I'd like a trade review and to join the waitlist. — <i>Your name</i>
-    </div>
-    <div style="margin-top:14px;text-align:right"><button class="btn-close">Close</button></div>
-  </div>`;
-  document.body.appendChild(md);
-  md.querySelector('.close').addEventListener('click', ()=> md.style.display='none');
-  md.querySelector('.btn-close').addEventListener('click', ()=> md.style.display='none');
-}
-
-/* ---- helper escapeHtml ---- */
-function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-/* ---- Init site ---- */
-(async function init(){
-  // populate carousels
-  populateProfitCarousel();
-  populateLifestyle();
-
-  // watchlist ticker
-  initWatchlistTicker();
-
-  // stats fade show
-  initStatsAnimation();
-
-  // quote rotation already scheduled (above)
-
-  // ticker bar bottom
-  initTickerBar();
-
-  // modal
-  initModal();
-
-  // popups from CSV
-  initPopups();
-
-  // small: auto-scroll for carousel elements
-  setTimeout(()=>{
-    document.querySelectorAll('.carousel').forEach(car => {
-      let x = 0;
-      setInterval(()=>{
-        if(!car.scrollWidth) return;
-        if (x >= car.scrollWidth - car.clientWidth) x = 0;
-        else x += Math.max(220, Math.round(car.clientWidth * 0.6));
-        car.scrollTo({ left: x, behavior: 'smooth' });
-      }, 3600);
-    });
-  }, 800);
+/* ========= OPTIONAL: POPUPS FROM CSV (silent if missing) ========= */
+/* Expect data/trades.csv with columns: time,symbol,action,pnl */
+(async function(){
+  try{
+    const res = await fetch('data/trades.csv', {cache:'no-store'});
+    if(!res.ok) return;
+    const text = await res.text();
+    const rows = text.trim().split(/\r?\n/).slice(1);
+    if(rows.length === 0) return;
+    setInterval(()=>{
+      const r = rows[Math.floor(Math.random()*rows.length)].split(',');
+      const div = document.createElement('div');
+      div.style.position='fixed'; div.style.right='16px'; div.style.bottom='16px';
+      div.style.background='#101a33'; div.style.color='#fff'; div.style.padding='10px 12px';
+      div.style.border='1px solid #22305a'; div.style.borderRadius='10px';
+      div.style.boxShadow='0 10px 30px rgba(0,0,0,.25)'; div.style.zIndex=80;
+      div.style.fontSize='14px';
+      div.textContent = `${r[1]} ${r[2]} • P&L: ${r[3]}`;
+      document.body.appendChild(div);
+      setTimeout(()=> div.remove(), 5000);
+    }, 45000);
+  }catch(e){}
 })();
