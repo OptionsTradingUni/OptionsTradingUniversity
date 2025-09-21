@@ -285,3 +285,15 @@ document.addEventListener('DOMContentLoaded', initTeam);
 
 /* ---------- Debug handle ---------- */
 window.OTU = { version:'2025.09.full', config:CFG };
+
+/* ====== Homepage Stats ====== */
+document.addEventListener('DOMContentLoaded', ()=>{
+  $$('.stat h2').forEach(h=>{
+    const t=parseInt(h.dataset.count||'0',10);
+    if(t>0) countUp(h,t);
+    // add + to non-percentage stats
+    if(!h.textContent.includes('%') && !h.textContent.includes('+')){
+      h.textContent = h.textContent + '+';
+    }
+  });
+});
