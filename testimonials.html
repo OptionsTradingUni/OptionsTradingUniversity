@@ -3,61 +3,121 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Testimonials - Options Trading University</title>
-  <link rel="stylesheet" href="style.css">
   <style>
-    body { font-family: Arial, sans-serif; margin:0; background:#f5f9ff; color:#222; }
-    .sidebar { width:220px; background:#0b1328; position:fixed; top:0; bottom:0; left:0; padding:20px; color:#fff; }
-    .sidebar a { color:#fff; display:block; padding:10px 0; text-decoration:none; }
-    .sidebar a:hover { color:#ffd166; }
-    .page { margin-left:240px; padding:20px; }
-    h1 { color:#2a7fff; margin-bottom:20px; }
-    .testimonial-card {
-      background:#fff;
-      border:1px solid #ddd;
-      border-radius:8px;
-      padding:15px;
-      margin-bottom:15px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.08);
+    body { margin:0; font-family:Arial, sans-serif; background:#f5f9ff; color:#222; }
+
+    /* Sidebar */
+    .sidebar {
+      position:fixed; top:0; left:0; bottom:0;
+      width:220px; background:#0b1328; color:#fff;
+      transform:translateX(-220px); transition:transform .3s ease;
+      padding:20px;
     }
-    .testimonial-author { font-weight:700; margin-bottom:5px; color:#2a7fff; }
-    .testimonial-content { font-style:italic; color:#444; }
-    .role { font-weight:400; font-size:0.9em; color:#777; margin-left:8px; }
+    .sidebar.active { transform:translateX(0); }
+    .sidebar h2 { margin:0 0 20px; color:#ffd166; }
+    .sidebar a { display:block; color:#fff; padding:8px 0; text-decoration:none; }
+    .sidebar a:hover { color:#ffd166; }
+
+    /* Page */
+    .page { margin-left:0; padding:20px; transition:margin-left .3s ease; }
+    .sidebar.active ~ .page { margin-left:240px; }
+
+    /* Topbar */
+    .topbar {
+      background:linear-gradient(90deg,#2a7fff,#ff4081);
+      color:#fff; padding:15px; display:flex;
+      justify-content:space-between; align-items:center;
+    }
+    .burger { font-size:20px; background:none; border:none; color:#fff; cursor:pointer; }
+
+    h1 { margin:20px 0; font-size:1.8em; color:#2a7fff; }
+
+    /* Testimonial Card */
+    .testimonial-card {
+      background:#fff; border-radius:8px; padding:20px;
+      box-shadow:0 3px 8px rgba(0,0,0,.1);
+      margin:20px auto; max-width:600px; text-align:center;
+    }
+    .testimonial-author { font-weight:700; font-size:1.1em; color:#2a7fff; }
+    .testimonial-role { font-size:.9em; color:#777; margin-left:6px; }
+    .testimonial-content { margin-top:12px; font-style:italic; line-height:1.5; color:#333; }
+
+    /* Nav Buttons */
+    .nav-buttons { margin-top:20px; text-align:center; }
+    .btn {
+      display:inline-block; padding:8px 16px; margin:0 8px;
+      background:#2a7fff; color:#fff; border:none; border-radius:4px;
+      cursor:pointer; transition:background .2s;
+    }
+    .btn:hover { background:#1e5fd9; }
   </style>
 </head>
 <body>
-  <aside class="sidebar">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
     <h2>OTU</h2>
     <a href="index.html">Home</a>
     <a href="modules.html">Modules</a>
     <a href="testimonials.html" class="active">Testimonials</a>
     <a href="contact.html">Contact</a>
+    <a href="terms.html">Disclaimer</a>
   </aside>
 
+  <!-- Page -->
   <div class="page">
-    <h1>What Our Members Say</h1>
-    <div id="testimonials-container">Loading testimonials...</div>
+    <header class="topbar">
+      <button class="burger" id="burger">☰</button>
+      <div>Testimonials</div>
+    </header>
+
+    <main>
+      <h1>What Our Members Say</h1>
+      <div id="testimonial-container">Loading testimonials...</div>
+      <div class="nav-buttons">
+        <button class="btn" id="prevBtn">Previous</button>
+        <button class="btn" id="nextBtn">Next</button>
+      </div>
+    </main>
   </div>
 
   <script>
+    // Sidebar toggle
+    document.getElementById("burger").addEventListener("click",()=>{
+      document.getElementById("sidebar").classList.toggle("active");
+    });
+
+    let testimonials = [];
+    let currentIndex = 0;
+
+    function renderTestimonial() {
+      if (testimonials.length === 0) return;
+      const t = testimonials[currentIndex];
+      document.getElementById("testimonial-container").innerHTML = `
+        <div class="testimonial-card">
+          <div class="testimonial-author">${t.name}
+            <span class="testimonial-role">${t.role}</span>
+          </div>
+          <div class="testimonial-content">"${t.feedback}"</div>
+        </div>
+      `;
+    }
+
+    document.getElementById("prevBtn").addEventListener("click",()=>{
+      if (currentIndex > 0) { currentIndex--; renderTestimonial(); }
+    });
+    document.getElementById("nextBtn").addEventListener("click",()=>{
+      if (currentIndex < testimonials.length-1) { currentIndex++; renderTestimonial(); }
+    });
+
     fetch('testimonials.json')
-      .then(res => {
-        if (!res.ok) throw new Error("File not found");
-        return res.json();
+      .then(res=>res.json())
+      .then(data=>{
+        testimonials = data;
+        currentIndex = 0;
+        renderTestimonial();
       })
-      .then(data => {
-        const container = document.getElementById("testimonials-container");
-        container.innerHTML = "";
-        data.forEach(t => {
-          container.innerHTML += `
-            <div class="testimonial-card">
-              <div class="testimonial-author">${t.name} <span class="role">${t.role}</span></div>
-              <div class="testimonial-content">"${t.feedback}"</div>
-            </div>
-          `;
-        });
-      })
-      .catch(err => {
-        document.getElementById("testimonials-container").innerText = "Could not load testimonials.";
+      .catch(err=>{
+        document.getElementById("testimonial-container").innerText="Could not load testimonials.";
         console.error(err);
       });
   </script>
