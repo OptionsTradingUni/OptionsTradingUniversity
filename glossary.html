@@ -6,7 +6,14 @@
   <title>Glossary - OTU</title>
   <style>
     body{margin:0;font-family:sans-serif;background:#f4f7ff;color:#0f1a33;}
-    a{text-decoration:none;}
+
+    /* 🔧 Global anchor reset */
+    a, a:visited, a:hover, a:active {
+      text-decoration:none !important;
+      color:inherit !important;
+      outline:none;
+    }
+
     .sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:#0b1328;color:#fff;padding-top:10px;}
     .brand{display:flex;align-items:center;gap:10px;padding:10px;font-weight:800;}
     .brand-logo{width:30px;height:30px;border-radius:6px;object-fit:cover;}
@@ -14,15 +21,18 @@
     .side-nav{display:flex;flex-direction:column;padding:10px;gap:5px;}
     .side-nav a{color:#d8e2ff;padding:8px;border-radius:6px;font-weight:600;display:block;}
     .side-nav a.active{background:#163067;}
+
     .page{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
     .container{max-width:900px;margin:0 auto;padding:20px;}
     .topbar{background:#fff;border-bottom:1px solid #e3e9f2;display:flex;justify-content:space-between;align-items:center;padding:10px;}
     .burger{display:none;font-size:20px;background:none;border:none;cursor:pointer;animation:shake 2s infinite;}
     @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-2px);}40%{transform:translateX(2px);}60%{transform:translateX(-2px);}80%{transform:translateX(2px);}}
     .brand-inline{font-weight:900;background:linear-gradient(90deg,#2a7fff,#ff4081);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .term-card{background:#fff;border:1px solid #e3e9f2;border-radius:10px;padding:12px;margin:10px 0;cursor:pointer;}
-    .term-card h3{margin:0;color:#ff4081;}
-    .definition{display:none;margin-top:6px;line-height:1.5;}
+
+    .term-card{background:#fff;border:1px solid #e3e9f2;border-radius:10px;padding:14px;margin:12px 0;cursor:pointer;transition:0.3s;}
+    .term-card h3{margin:0;color:#ff4081;font-size:18px;}
+    .definition{display:none;margin-top:10px;line-height:1.7;background:#f9fbff;padding:12px;border-radius:8px;color:#333;box-shadow:inset 0 1px 4px rgba(0,0,0,.05);}
+
     .footer{margin-top:auto;background:#0b1328;color:#9cb2ff;text-align:center;padding:12px;}
     @media(max-width:768px){.sidebar{display:none;}.page{margin-left:0;}.burger{display:block;}}
   </style>
@@ -47,6 +57,7 @@
 
     <main class="container">
       <h1 style="color:#ff4081">📖 Glossary of Terms</h1>
+      <p style="color:#555;margin-bottom:20px;">Tap a term to expand its explanation. Each entry is styled for clear, easy reading.</p>
       <div id="glossary-list"></div>
     </main>
 
@@ -69,7 +80,8 @@
         list.appendChild(card);
       });
     });
-    const burger=document.getElementById('burger');const sidebar=document.getElementById('sidebar');burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
+    const burger=document.getElementById('burger');const sidebar=document.getElementById('sidebar');
+    burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
   </script>
 </body>
 </html>
