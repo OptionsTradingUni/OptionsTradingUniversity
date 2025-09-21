@@ -3,145 +3,224 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Options Trading University</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="branding/logo.jpeg" type="image/jpeg">
+  <title>Options Trading University — Mentored Options Education</title>
+  <meta name="description" content="Mentor-led options training with transparent results, long-form modules, calculators, charts, and a supportive community. DM a mentor to get started." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Header / Nav -->
-  <header class="header container" role="banner">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar" aria-label="Sidebar">
     <div class="brand">
-      <img src="branding/logo.jpeg" alt="Options Trading University" />
-      <div>
-        <div class="title">Options Trading University</div>
-        <div class="small">Beginner → Advanced • DM on TikTok to join</div>
-      </div>
+      <a href="index.html" class="brand-link">
+        <img src="branding/logo.png" alt="OTU logo" class="brand-logo" onerror="this.style.display='none'">
+        <span>Options Trading University</span>
+      </a>
     </div>
-
-    <nav class="nav" role="navigation" aria-label="Main navigation">
-      <a href="index.html">Home</a>
+    <nav class="side-nav" aria-label="Primary">
+      <a href="index.html" class="active">Home</a>
       <a href="modules.html">Modules</a>
-      <a href="charts.html">Charts</a>
-      <a href="profits.html">Proofs</a>
-      <a href="lifestyle.html">Lifestyle</a>
       <a href="glossary.html">Glossary</a>
-      <a href="risk.html">Risk</a>
+      <a href="testimonials.html">Testimonials</a>
+      <a href="watchlist.html">Watchlist</a>
+      <a href="profits.html">Results</a>
+      <a href="calculators.html">Calculators</a>
+      <a href="lifestyle.html">Lifestyle</a>
+      <a href="charts.html">Charts</a>
+      <a href="chartvideo.html">Chart Videos</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="terms.html">Disclaimer & Terms</a>
       <a href="faq.html">FAQ</a>
-      <button class="btn primary" onclick="openTikTokModal()">Contact (TikTok)</button>
     </nav>
-  </header>
+    <div class="side-footer">
+      <button class="btn-outline" onclick="openTikTokModal()">Message a Mentor</button>
+    </div>
+  </aside>
 
-  <!-- Quote banner -->
-  <div id="quote-banner" aria-live="polite">Loading motivation...</div>
-
-  <main class="container" id="maincontent">
-
-    <!-- HERO -->
-    <section class="hero" aria-labelledby="hero-title">
-      <h1 id="hero-title">📈 Options Trading University</h1>
-      <p>Full curriculum, live-style proofs, practical strategies, and trade reviews via TikTok DM. Suggested DM: <strong>"Found you on the trading page — I want a trade review"</strong></p>
-      <div class="cta">
-        <button class="btn primary" onclick="openTikTokModal()">📲 Message on TikTok</button>
-        <a class="btn" href="modules.html">Open Curriculum</a>
+  <!-- Main page -->
+  <div class="page">
+    <header class="topbar">
+      <button class="burger" id="burger" aria-label="Open menu">☰</button>
+      <nav class="top-links" aria-label="Top navigation">
+        <a href="index.html" class="logo-link">OTU</a>
+        <a href="modules.html">Modules</a>
+        <a href="glossary.html">Glossary</a>
+        <a href="testimonials.html">Testimonials</a>
+        <a href="watchlist.html">Watchlist</a>
+      </nav>
+      <div class="top-cta">
+        <button class="btn" onclick="openTikTokModal()">Message a Mentor</button>
       </div>
+    </header>
 
-      <div class="stats" role="status" aria-live="polite" aria-atomic="true">
-        <div class="stat" id="stat-trades"><h3>6,500+</h3><p>Total Trades</p></div>
-        <div class="stat" id="stat-win"><h3>86%</h3><p>Win Rate</p></div>
-        <div class="stat" id="stat-styles"><h3>3</h3><p>Trading Styles</p></div>
-        <div class="stat" id="stat-members"><h3>4.2k+</h3><p>Discord Members</p></div>
+    <main class="container" id="main">
+      <!-- Hero -->
+      <section class="card hero" aria-labelledby="hero-head">
+        <div class="hero-text">
+          <h1 id="hero-head">Learn Options the Right Way — Structure, Risk, Mentorship</h1>
+          <p>
+            Build a routine you can run for years: curated curriculum, calculators, live watchlist, real charts, and direct mentor access.
+            The site auto-loads images from your folders and long content from JSON, so it scales as you grow.
+          </p>
+          <div class="cta-row">
+            <button class="btn" onclick="openTikTokModal()">Start with a Mentor</button>
+            <a class="btn ghost" href="modules.html">Browse Modules</a>
+          </div>
+          <div class="mini-badges" id="mini-badges">
+            <span id="trader-count-badge">Traders: …</span>
+            <span>Tools: Calculators • Charts • Watchlist</span>
+            <span>Access: DM to begin</span>
+          </div>
+        </div>
+        <div class="hero-media">
+          <video controls playsinline muted poster="charts/thumb.jpg" onerror="this.style.display='none'">
+            <source src="chartVideo/intro.mp4" type="video/mp4">
+          </video>
+        </div>
+      </section>
+
+      <!-- Stats (fade only) -->
+      <section class="card stats" id="stats">
+        <div class="stat fade-stat">
+          <h2 aria-label="Total trades">4,280</h2>
+          <p>Total trades recorded</p>
+        </div>
+        <div class="stat fade-stat">
+          <h2 aria-label="Win rate">72%</h2>
+          <p>Win rate (last 12 months)</p>
+        </div>
+        <div class="stat fade-stat">
+          <h2 aria-label="Average profit">$146</h2>
+          <p>Average profit per trade</p>
+        </div>
+      </section>
+
+      <!-- Watchlist preview -->
+      <section class="card" id="home-watchlist">
+        <div class="card-head">
+          <h2>Live Watchlist Preview</h2>
+          <div class="watchlist-controls">
+            <input id="watchlist-input" placeholder="Add symbol (e.g., AAPL)" />
+            <button class="btn sm" id="watchlist-add">Add</button>
+          </div>
+        </div>
+        <div class="watchlist-grid" id="watchlist-grid" aria-live="polite"></div>
+        <p class="fineprint">Data via Twelve Data (cached briefly to protect your quota). <a href="watchlist.html">Full watchlist</a>.</p>
+      </section>
+
+      <!-- Profit snapshots -->
+      <section class="card">
+        <h2>Profit Snapshots</h2>
+        <p>Public snapshots for transparency. Upload to <code>/profits</code> and they appear here automatically.</p>
+        <div class="snap-grid" id="profits-grid" aria-live="polite"></div>
+        <p class="fineprint"><a href="profits.html">Open full gallery</a>.</p>
+      </section>
+
+      <!-- Lifestyle -->
+      <section class="card">
+        <h2>Lifestyle & Moments</h2>
+        <p>Add new images to <code>/lifestyle</code> — cars, homes, events — they’ll auto-load in a smooth grid.</p>
+        <div class="snap-grid" id="lifestyle-grid" aria-live="polite"></div>
+        <p class="fineprint"><a href="lifestyle.html">Open Lifestyle gallery</a>.</p>
+      </section>
+
+      <!-- Modules teaser -->
+      <section class="card">
+        <h2>A Curriculum You Can Finish</h2>
+        <p>
+          Foundations → Greeks → Core strategies → Defined-risk spreads → Neutral setups → Event trading → Risk & psychology → Playbook & automation.
+        </p>
+        <div class="cta-row">
+          <a class="btn" href="modules.html">Open Modules</a>
+          <button class="btn ghost" onclick="openTikTokModal()">Talk to a mentor</button>
+        </div>
+      </section>
+
+      <!-- Calculators teaser -->
+      <section class="card">
+        <h2>Trade with Tools</h2>
+        <p>Compound growth, profit/loss, payoff diagrams — visualize before you risk capital.</p>
+        <div class="cta-row">
+          <a class="btn" href="calculators.html">Open Calculators</a>
+          <a class="btn ghost" href="charts.html">View Charts</a>
+        </div>
+      </section>
+
+      <!-- Testimonials preview -->
+      <section class="card">
+        <h2>What Traders Say</h2>
+        <div id="testimonials-preview" class="testi-preview" aria-live="polite"></div>
+        <div class="cta-row">
+          <a class="btn" href="testimonials.html">Read more</a>
+          <button class="btn ghost" onclick="openTikTokModal()">Message a mentor</button>
+        </div>
+      </section>
+
+      <!-- Team teaser -->
+      <section class="card">
+        <h2>Mentors</h2>
+        <ul>
+          <li>The Wealth Prince — Senior Options Mentor (defined-risk, routine design)</li>
+          <li>Crosby Lane — Technical strategist (chart structure, earnings)</li>
+          <li>Danielle Brooks — Risk & psychology coach (journaling, tilt control)</li>
+        </ul>
+        <div class="cta-row">
+          <a class="btn" href="about.html">Meet the Team</a>
+          <a class="btn ghost" href="contact.html">Contact</a>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="card">
+        <h2>Get Started</h2>
+        <p>Review modules, try the tools, then send a brief DM so a mentor can set your plan.</p>
+        <div class="cta-row">
+          <button class="btn" onclick="openTikTokModal()">DM a Mentor</button>
+          <a class="btn ghost" href="faq.html">Read FAQ</a>
+        </div>
+      </section>
+
+      <!-- Legal -->
+      <section class="card">
+        <h2>Transparency & Responsibility</h2>
+        <p>Educational content only. Options involve risk. Past results don’t guarantee future performance.</p>
+        <p class="fineprint">See <a href="terms.html">Disclaimer & Terms</a>.</p>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="Site footer">
+      <div class="ticker" id="ticker" aria-hidden="true"></div>
+      <div class="foot-row">
+        <div>© 2025 Options Trading University</div>
+        <div class="foot-links">
+          <a href="terms.html">Disclaimer & Terms</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">Contact</a>
+        </div>
       </div>
-    </section>
-
-    <!-- Charts & Monitor -->
-    <section class="card">
-      <h3 class="section-title">Featured Charts & Monitor</h3>
-      <div class="carousel" role="region" aria-label="Charts carousel" id="chartsCarousel">
-        <!-- Keep case-sensitive filenames: Charts/chart1.jpeg ... chart7.jpeg -->
-        <img src="Charts/chart1.jpeg" alt="Chart 1">
-        <img src="Charts/chart2.jpeg" alt="Chart 2">
-        <img src="Charts/chart3.jpeg" alt="Chart 3">
-        <img src="Charts/chart4.jpeg" alt="Chart 4">
-        <img src="Charts/chart5.jpeg" alt="Chart 5">
-        <img src="Charts/chart6.jpeg" alt="Chart 6">
-        <img src="Charts/chart7.jpeg" alt="Chart 7">
-      </div>
-
-      <div style="margin-top:12px">
-        <video controls playsinline style="width:100%;border-radius:10px" aria-label="Chart monitoring video">
-          <source src="ChartVideo/monitor1.mov" type="video/quicktime">
-          Your browser doesn't support embedded video.
-        </video>
-      </div>
-    </section>
-
-    <!-- Profit snapshots (auto-populated from Images/img1..img57.jpeg) -->
-    <section class="card">
-      <h3 class="section-title">Profit Snapshots (Live)</h3>
-      <div class="carousel" id="profitCarousel" role="region" aria-label="Profit snapshots">
-        <!-- JS will populate all images here (Images/img1.jpeg ... img57.jpeg) -->
-      </div>
-      <div class="small" style="margin-top:10px">Screenshots are for educational/context proof. DM on TikTok to request trade reviews and sources.</div>
-    </section>
-
-    <!-- Watchlist (moving ticker) -->
-    <section class="card">
-      <h3 class="section-title">Watchlist — Live Ticker</h3>
-      <div class="watchlist-wrap" aria-hidden="false">
-        <div id="watchlistTicker" class="watchlist-ticker" role="marquee" aria-live="off"></div>
-      </div>
-      <div class="small" style="margin-top:10px">This is a simulated ticker for learning and demo—use real feeds for live trading.</div>
-    </section>
-
-    <!-- Modules preview -->
-    <section class="card">
-      <h3 class="section-title">Training Highlights — Quick Preview</h3>
-      <div class="modules-grid" role="list">
-        <article class="module" role="listitem"><h4>Foundations</h4><div class="small">Markets, accounts, orders, math basics.</div></article>
-        <article class="module" role="listitem"><h4>Options 101</h4><div class="small">Calls, puts, strikes, expiries, premiums.</div></article>
-        <article class="module" role="listitem"><h4>Chart Reading</h4><div class="small">Candlesticks, EMAs, VWAP & levels.</div></article>
-        <article class="module" role="listitem"><h4>Risk Mgmt</h4><div class="small">Sizing, stops, drawdown controls.</div></article>
-        <article class="module" role="listitem"><h4>Advanced Plays</h4><div class="small">Spreads, condors, volatility strategies.</div></article>
-        <article class="module" role="listitem"><h4>Journaling</h4><div class="small">Templates & weekly review.</div></article>
-      </div>
-      <div style="margin-top:12px;text-align:center"><a class="btn" href="modules.html">Open full modules</a></div>
-    </section>
-
-    <!-- Lifestyle -->
-    <section class="card">
-      <h3 class="section-title">Lifestyle — Rewards of Discipline</h3>
-      <div class="carousel" id="lifestyleCarousel" role="region" aria-label="Lifestyle gallery">
-        <!-- JS will populate Lifestyle/life1..life9.jpeg -->
-      </div>
-      <div style="margin-top:10px;text-align:center"><a class="btn" href="lifestyle.html">See more</a></div>
-    </section>
-
-    <!-- Quick glossary snippet -->
-    <section class="card">
-      <h3 class="section-title">Quick Glossary</h3>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
-        <div class="term"><b>CALL</b><div class="small">Right to buy at strike</div></div>
-        <div class="term"><b>PUT</b><div class="small">Right to sell at strike</div></div>
-        <div class="term"><b>IV</b><div class="small">Implied volatility</div></div>
-        <div class="term"><b>THETA</b><div class="small">Time decay</div></div>
-        <div style="width:100%;text-align:center;margin-top:12px"><a class="btn" href="glossary.html">Open full glossary</a></div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Floating profit popup (bottom-right) -->
-  <div id="popup-container" aria-hidden="true"></div>
-
-  <!-- Sticky DM CTA -->
-  <div class="sticky-cta" onclick="openTikTokModal()"><div class="dot"></div> DM on TikTok</div>
-
-  <!-- ticker bar bottom -->
-  <div class="ticker-bar" aria-hidden="true">
-    <div class="ticker-inner" id="tickerInner"></div>
+    </footer>
   </div>
 
-  <!-- Modal (injected by script.js if not present) -->
+  <!-- TikTok DM Modal -->
+  <div class="modal-backdrop" id="tt-modal" style="display:none" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="close" aria-label="Close" onclick="closeTikTokModal()">✕</button>
+      <h3 style="margin-top:0">Message on TikTok</h3>
+      <p class="small">Suggested DM (copy):</p>
+      <div class="suggest">
+        Hi — I found your Options Trading University page. I'd like a mentor to help me set up a plan and review my trades. — <i>Your name</i>
+      </div>
+      <div class="right">
+        <button class="btn ghost" onclick="closeTikTokModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Config (optional private file), then main scripts -->
+  <script src="config-sample.js"></script>
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
