@@ -9,22 +9,32 @@
   <aside class="sidebar" id="sidebar">
     <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
     <nav class="side-nav">
-      <a href="index.html">Home</a><a href="liveprofits.html">Live Profits</a>
+      <a href="index.html">Home</a>
+      <a href="liveprofits.html">Live Profits</a>
       <a href="watchlist.html" class="active">Watchlist</a>
-      <a href="profits.html">Profit Snapshots</a><a href="lifestyle.html">Lifestyle</a><a href="charts.html">Charts</a>
-      <a href="chartvideo.html">Videos</a><a href="modules.html">Modules</a><a href="glossary.html">Glossary</a>
-      <a href="testimonials.html">Testimonials</a><a href="team.html">Team</a><a href="contact.html">Contact</a><a href="terms.html">Disclaimer</a>
+      <a href="profits.html">Profit Snapshots</a>
+      <a href="lifestyle.html">Lifestyle</a>
+      <a href="charts.html">Charts</a>
+      <a href="chartvideo.html">Videos</a>
+      <a href="modules.html">Modules</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="testimonials.html">Testimonials</a>
+      <a href="team.html">Team</a>
+      <a href="contact.html">Contact</a>
+      <a href="terms.html">Disclaimer</a>
     </nav>
   </aside>
 
   <div class="page">
-    <header class="topbar"><button class="burger" id="burger">☰</button><h2>Live Watchlist</h2><span></span></header>
+    <header class="topbar"><button class="burger" id="burger">☰</button><h2>Watchlist</h2><span></span></header>
     <main class="container">
       <section class="card">
-        <div class="watchlist-controls">
-          <input id="watchlist-input" placeholder="Add symbol (AAPL)">
-          <button id="watchlist-add" class="btn">Add</button>
-        </div>
+        <h3>Add a symbol to watch</h3>
+        <input id="watchlist-input" placeholder="Enter symbol e.g. AAPL" style="padding:10px; border:1px solid #e3e9f2; border-radius:6px; width:200px; margin-right:8px;">
+        <button id="watchlist-add" class="btn">Add</button>
+      </section>
+      <section class="card">
+        <h3>Live Prices</h3>
         <div id="watchlist-grid" class="watchlist-grid"></div>
         <p class="muted">Quotes cached ~60s to protect API quota.</p>
       </section>
@@ -32,6 +42,7 @@
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
-  <script src="config.js"></script><script src="script.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
