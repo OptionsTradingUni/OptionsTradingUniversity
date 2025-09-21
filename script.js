@@ -21,44 +21,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   $$('.stat h2').forEach(el=>{ const t=parseInt(el.dataset.count||0,10); if(t>0) countUp(el,t); });
 });
 
-/* ---------- Twelve Data watchlist with quota-safe caching ---------- */
-const TD_KEY=(window.SITE_CONFIG&&window.SITE_CONFIG.TWELVE_API_KEY)||"";
-const LS_QUOTES="otu_td_cache_v3"; const QUOTE_TTL=60*1000;
-const getCache=()=>{ try{return JSON.parse(localStorage.getItem(LS_QUOTES)||"{}")}catch{return{}} };
-const setCache=o=>{ try{localStorage.setItem(LS_QUOTES,JSON.stringify(o))}catch{} };
-
-async function tdQuote(symbol){
-  symbol=symbol.toUpperCase().trim(); const cache=getCache(); const now=Date.now();
-  if(cache[symbol]&&(now-cache[symbol].t)<QUOTE_TTL) return cache[symbol].data;
-  const url=`https://api.twelvedata.com/quote?symbol=${encodeURIComponent(symbol)}&apikey=${encodeURIComponent(TD_KEY)}`;
-  try{
-    const r=await fetch(url); const j=await r.json();
-    if(j.status==="error" || !j.symbol) throw new Error(j.message||"bad");
-    cache[symbol]={t:now,data:j}; setCache(cache); return j;
-  }catch(e){
-    const demo={symbol,price:(100+Math.random()*100).toFixed(2),percent_change:(Math.random()*4-2).toFixed(2)};
-    cache[symbol]={t:now,data:demo}; setCache(cache); return demo;
-  }
-}
-function watchTile(q){
-  const d=document.createElement('div'); d.className='tile';
-  const chg=parseFloat(q.percent_change); if(!isNaN(chg)){ if(chg>0) d.classList.add('up'); else if(chg<0) d.classList.add('down'); }
-  d.innerHTML=`<div class="sym">${esc(q.symbol||'')}</div>
-               <div class="px">${q.price?('$'+Number(q.price).toFixed(2)):'—'}</div>
-               <div class="chg">${isNaN(chg)?'':(chg>0?'▲ ':'▼ ')+Math.abs(chg).toFixed(2)+'%'}</div>`;
-  return d;
-}
-async function initWatchlist(){
-  const grid=$('#watchlist-grid'); if(!grid) return;
-  const input=$('#watchlist-input'), add=$('#watchlist-add');
-  let list=(localStorage.getItem('otu_watch')||"").split(',').filter(Boolean);
-  if(list.length===0) list=["AAPL","MSFT","TSLA","SPY","NVDA","AMZN"];
-  async function draw(){ grid.innerHTML=''; for(const s of list){ const q=await tdQuote(s); grid.appendChild(watchTile(q)); } }
-  add?.addEventListener('click',()=>{ const v=(input.value||'').toUpperCase().trim(); if(v&&!list.includes(v)){ list.unshift(v); localStorage.setItem('otu_watch',list.join(',')); draw(); } input.value=''; });
-  draw(); setInterval(draw,90000);
-}
-document.addEventListener('DOMContentLoaded', initWatchlist);
-
 /* ---------- Home: live profit TICKER ---------- */
 function initLiveTicker(){
   const wrap=$('#live-ticker'); if(!wrap) return;
@@ -73,7 +35,7 @@ function initLiveTicker(){
 }
 document.addEventListener('DOMContentLoaded', initLiveTicker);
 
-/* ---------- Profits page: dynamic rotating carousel ---------- */
+/* ---------- Profit Snapshots: dynamic rotating carousel ---------- */
 function initProfitCarousel(){
   const stage=$('#profit-stage'); if(!stage) return;
   const caption=$('#profit-caption'); const prev=$('#profit-prev'); const next=$('#profit-next'); const playBtn=$('#profit-play');
@@ -112,7 +74,7 @@ function initProfitCarousel(){
 }
 document.addEventListener('DOMContentLoaded', initProfitCarousel);
 
-/* ---------- Lifestyle page: paginated gallery ---------- */
+/* ---------- Lifestyle: paginated grid ---------- */
 function initLifestyle(){
   const grid=$('#lifestyle-grid'); if(!grid) return;
   const nav=$('#lifestyle-nav'); const perPage=12; const exts=["jpeg","jpg","png","webp"]; const folder="Lifestyle"; const base="life";
@@ -140,7 +102,7 @@ function initLifestyle(){
 }
 document.addEventListener('DOMContentLoaded', initLifestyle);
 
-/* ---------- Charts page: load available chart images ---------- */
+/* ---------- Charts: load available images ---------- */
 function initCharts(){
   const grid=$('#charts-grid'); if(!grid) return;
   const exts=["jpeg","jpg","png","webp"]; const folder="Charts"; const base="chart";
@@ -156,7 +118,7 @@ function initCharts(){
 }
 document.addEventListener('DOMContentLoaded', initCharts);
 
-/* ---------- ChartVideo page: load available .mov ---------- */
+/* ---------- Chart Videos: load available .mov ---------- */
 function initVideos(){
   const vg=$('#video-grid'); if(!vg) return;
   (async()=>{
@@ -164,8 +126,10 @@ function initVideos(){
     while(miss<3){
       const url=`ChartVideo/monitor${i}.mov`;
       try{ const r=await fetch(url,{method:"HEAD"}); if(r.ok){
-        const wrap=document.createElement('div'); wrap.className='card'; wrap.innerHTML=
-          `<video controls preload="metadata" style="width:100%;border-radius:10px"><source src="${url}" type="video/quicktime"></video>`;
+        const wrap=document.createElement('div'); wrap.className='card'; wrap.style.margin='0';
+        wrap.innerHTML=`<video controls preload="metadata" style="width:100%;border-radius:10px">
+                          <source src="${url}" type="video/quicktime">
+                        </video>`;
         vg.appendChild(wrap); miss=0;
       }else{ miss++; } }catch{ miss++; }
       i++;
@@ -173,3 +137,66 @@ function initVideos(){
   })();
 }
 document.addEventListener('DOMContentLoaded', initVideos);
+
+/* ---------- Watchlist (Twelve Data) ---------- */
+const TD_KEY=(window.SITE_CONFIG&&window.SITE_CONFIG.TWELVE_API_KEY)||"";
+const LS_QUOTES="otu_td_cache_v4"; const QUOTE_TTL=60*1000;
+const getCache=()=>{ try{return JSON.parse(localStorage.getItem(LS_QUOTES)||"{}")}catch{return{}} };
+const setCache=o=>{ try{localStorage.setItem(LS_QUOTES,JSON.stringify(o))}catch{} };
+
+async function tdQuote(symbol){
+  symbol=symbol.toUpperCase().trim(); const cache=getCache(); const now=Date.now();
+  if(cache[symbol]&&(now-cache[symbol].t)<QUOTE_TTL) return cache[symbol].data;
+  const url=`https://api.twelvedata.com/quote?symbol=${encodeURIComponent(symbol)}&apikey=${encodeURIComponent(TD_KEY)}`;
+  try{
+    const r=await fetch(url); const j=await r.json();
+    if(j.status==="error" || !j.symbol) throw new Error(j.message||"bad");
+    cache[symbol]={t:now,data:j}; setCache(cache); return j;
+  }catch(e){
+    const demo={symbol,price:(100+Math.random()*100).toFixed(2),percent_change:(Math.random()*4-2).toFixed(2)};
+    cache[symbol]={t:now,data:demo}; setCache(cache); return demo;
+  }
+}
+function watchTile(q){
+  const d=document.createElement('div'); d.className='tile';
+  const chg=parseFloat(q.percent_change); if(!isNaN(chg)){ if(chg>0) d.classList.add('up'); else if(chg<0) d.classList.add('down'); }
+  d.innerHTML=`<div class="sym">${esc(q.symbol||'')}</div>
+               <div class="px">${q.price?('$'+Number(q.price).toFixed(2)):'—'}</div>
+               <div class="chg">${isNaN(chg)?'':(chg>0?'▲ ':'▼ ')+Math.abs(chg).toFixed(2)+'%'}</div>`;
+  return d;
+}
+async function initWatchlist(){
+  const grid=$('#watchlist-grid'); if(!grid) return;
+  const input=$('#watchlist-input'), add=$('#watchlist-add');
+  let list=(localStorage.getItem('otu_watch')||"").split(',').filter(Boolean);
+  if(list.length===0) list=["AAPL","MSFT","TSLA","SPY","NVDA","AMZN"];
+  async function draw(){ grid.innerHTML=''; for(const s of list){ const q=await tdQuote(s); grid.appendChild(watchTile(q)); } }
+  add?.addEventListener('click',()=>{ const v=(input.value||'').toUpperCase().trim(); if(v&&!list.includes(v)){ list.unshift(v); localStorage.setItem('otu_watch',list.join(',')); draw(); } input.value=''; });
+  draw(); setInterval(draw,90000);
+}
+document.addEventListener('DOMContentLoaded', initWatchlist);
+
+/* ---------- Testimonials (fallback realistic names) ---------- */
+function initTestimonials(){
+  const box=$('#testi'); if(!box) return;
+  const names=["Ava Thompson","Noah Carter","Mia Hernandez","Ethan Brooks","Chloe Robinson","Liam Parker","Isabella Murphy","Jackson Reed","Amelia Bailey","Benjamin Hayes","Scarlett Cooper","Lucas Ward","Harper Powell","Elijah Foster","Emily Jordan"];
+  const data = names.map(n=>({name:n,text:"I joined to get structure and accountability. The walkthroughs made options click and the mentor feedback kept me focused."}));
+  box.innerHTML=data.map(t=>`<article class="card"><h3>${t.name}</h3><p>${t.text}</p></article>`).join('');
+}
+document.addEventListener('DOMContentLoaded', initTestimonials);
+
+/* ---------- Glossary (mini, with search; fallback) ---------- */
+function initGlossary(){
+  const q=$('#gq'), box=$('#glossary-list'); if(!q||!box) return;
+  const base=[
+    {term:"Call option",definition:"Right to buy an asset at a set price before a date."},
+    {term:"Put option",definition:"Right to sell an asset at a set price before a date."},
+    {term:"Strike",definition:"Price at which the option can be exercised."},
+    {term:"Theta",definition:"Time decay — how much an option is expected to drop per day."},
+    {term:"Delta",definition:"Sensitivity of an option price to a $1 move in the underlying."}
+  ];
+  function render(list){ box.innerHTML=list.map(g=>`<article class="card"><h3>${g.term}</h3><p>${g.definition}</p></article>`).join(''); }
+  render(base);
+  q.addEventListener('input',()=>{ const v=q.value.toLowerCase(); render(base.filter(x=>x.term.toLowerCase().includes(v))); });
+}
+document.addEventListener('DOMContentLoaded', initGlossary);
