@@ -22,7 +22,7 @@ function countUp(el, target, duration=1100, fmt=v=>v){
 async function loadStatsFromCsv(){
   const h1=$$('.stat h2')[0], h2=$$('.stat h2')[1], h3=$$('.stat h2')[2];
   if(!h1||!h2||!h3) return;
-  let total=0, wins=0, pnlSum=0, parsed=false;
+  let total=0, wins=0, pnlSum=0;
   try{
     const res=await fetch((window.SITE_CONFIG&&window.SITE_CONFIG.tradersCsvPath)||'data/traders_5000.csv',{cache:'no-store'});
     if(!res.ok) throw new Error('csv missing');
@@ -41,19 +41,14 @@ async function loadStatsFromCsv(){
       if(!isNaN(pnl)) pnlSum+=pnl;
     });
     if(total>0){
-      parsed=true;
       const winRate=Math.round((wins/total)*100);
       const avg=Math.round(pnlSum/Math.max(1,total));
       h1.dataset.count=total; h2.dataset.count=winRate; h3.dataset.count=avg;
     }
-  }catch(e){ /* ignore, fall back to defaults already in HTML */ }
-  // animate either parsed numbers or defaults in markup
-  const vals=$$('.stat h2');
-  vals.forEach((el,i)=>{
+  }catch(e){ /* fallback: use defaults */ }
+  [h1,h2,h3].forEach((el,i)=>{
     const tgt=Number(el.dataset.count||el.textContent||0);
-    if(i===1){ countUp(el,tgt,1100, v=>v); }          // percent
-    else if(i===2){ countUp(el,tgt,1100, v=>v); }     // dollars
-    else { countUp(el,tgt); }
+    countUp(el,tgt);
   });
 }
 document.addEventListener('DOMContentLoaded', loadStatsFromCsv);
@@ -73,7 +68,7 @@ async function tdQuote(symbol){
     if(j.status==="error" || !j.symbol) throw new Error(j.message||"bad");
     cache[symbol]={t:now,data:j}; setCache(cache); return j;
   }catch(e){
-    // fallback so tiles still render when quota is used up
+    // fallback if quota used up
     const demo={symbol,price:(100+Math.random()*100).toFixed(2),percent_change:(Math.random()*4-2).toFixed(2)};
     cache[symbol]={t:now,data:demo}; setCache(cache); return demo;
   }
@@ -103,8 +98,8 @@ async function initWatchlist(){
 }
 document.addEventListener('DOMContentLoaded', initWatchlist);
 
-/* Infinite loaders aligned to your folders and filenames */
-function loadSeqByIndex(containerId, folder, name, start=1, maxMiss=12, exts=["jpeg","jpg","png","webp"]){
+/* Infinite loaders — corrected for your Images/img1.jpeg..img57.jpeg */
+function loadSeqByIndex(containerId, folder, name, start=1, maxMiss=12, exts=["jpeg","jpg"]){
   const grid=document.getElementById(containerId); if(!grid) return;
   let i=start, miss=0;
   async function tryOne(idx){
@@ -133,13 +128,13 @@ function loadSeqByIndex(containerId, folder, name, start=1, maxMiss=12, exts=["j
   batch(18);
 }
 document.addEventListener('DOMContentLoaded', ()=>{
-  loadSeqByIndex('profits-grid','Images','img',1,8);         // Images/img1.jpeg…
-  loadSeqByIndex('lifestyle-grid','Lifestyle','life',1,8);   // Lifestyle/life1.jpeg…
-  loadSeqByIndex('charts-grid','Charts','chart',1,8);        // Charts/chart1.jpeg…
-  loadSeqByIndex('team-grid','Images','mentor',1,4);         // optional Images/mentor1.jpeg…
+  loadSeqByIndex('profits-grid','Images','img',1,8,["jpeg","jpg"]);     // Profit snapshots
+  loadSeqByIndex('lifestyle-grid','Lifestyle','life',1,8,["jpeg","jpg"]); // Lifestyle
+  loadSeqByIndex('charts-grid','Charts','chart',1,8,["jpeg","jpg"]);      // Charts
+  loadSeqByIndex('team-grid','Images','mentor',1,4,["jpeg","jpg"]);       // Optional team images
 });
 
-/* ChartVideo page: auto-detect monitorN.mov */
+/* ChartVideo auto-detect monitorN.mov */
 function initVideos(){
   const vg=$('#video-grid'); if(!vg) return;
   const max=40;
@@ -152,6 +147,3 @@ function initVideos(){
   }
 }
 document.addEventListener('DOMContentLoaded', initVideos);
-
-/* JSON helpers with soft fallback */
-async function loadJson(path){ try{ const r=await fetch(path,{cache:'no-store'}); if(!r.ok) throw 0; return await r.json(); }catch{ return null; } }
