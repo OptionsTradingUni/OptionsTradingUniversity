@@ -1,22 +1,71 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Testimonials — OTU</title><link rel="stylesheet" href="style.css"></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Testimonials - OTU</title>
+  <style>
+    body{margin:0;font-family:sans-serif;background:#f4f7ff;color:#0f1a33;}
+    a{text-decoration:none;}
+    .sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:#0b1328;color:#fff;padding-top:10px;}
+    .brand{display:flex;align-items:center;gap:10px;padding:10px;font-weight:800;}
+    .brand-logo{width:30px;height:30px;border-radius:6px;object-fit:cover;}
+    .brand span{background:linear-gradient(90deg,#2a7fff,#ff4081);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;}
+    .side-nav{display:flex;flex-direction:column;padding:10px;gap:5px;}
+    .side-nav a{color:#d8e2ff;padding:8px;border-radius:6px;font-weight:600;display:block;}
+    .side-nav a.active{background:#163067;}
+    .page{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
+    .container{max-width:900px;margin:0 auto;padding:20px;}
+    .topbar{background:#fff;border-bottom:1px solid #e3e9f2;display:flex;justify-content:space-between;align-items:center;padding:10px;}
+    .burger{display:none;font-size:20px;background:none;border:none;cursor:pointer;animation:shake 2s infinite;}
+    @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-2px);}40%{transform:translateX(2px);}60%{transform:translateX(-2px);}80%{transform:translateX(2px);}}
+    .brand-inline{font-weight:900;background:linear-gradient(90deg,#2a7fff,#ff4081);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .testimonial{background:#fff;border:1px solid #e3e9f2;border-radius:10px;padding:14px;margin:12px 0;}
+    .testimonial h4{margin:0;color:#2a7fff;}
+    .testimonial p{margin:6px 0 0;line-height:1.5;}
+    .footer{margin-top:auto;background:#0b1328;color:#9cb2ff;text-align:center;padding:12px;}
+    @media(max-width:768px){.sidebar{display:none;}.page{margin-left:0;}.burger{display:block;}}
+  </style>
+</head>
 <body>
-  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
-    <nav class="side-nav"><a href="index.html">Home</a><a href="testimonials.html" class="active">Testimonials</a></nav></aside>
-  <div class="page"><header class="topbar"><button class="burger" id="burger">☰</button></header>
-    <main class="container"><section class="card"><h1>Testimonials</h1><div id="testi"></div></section></main>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
+    <nav class="side-nav">
+      <a href="index.html">Home</a>
+      <a href="testimonials.html" class="active">Testimonials</a>
+      <a href="modules.html">Modules</a>
+      <a href="glossary.html">Glossary</a>
+    </nav>
+  </aside>
+
+  <div class="page">
+    <header class="topbar">
+      <button class="burger" id="burger">☰</button>
+      <div class="brand-inline">Options Trading University</div>
+      <span></span>
+    </header>
+
+    <main class="container">
+      <h1 style="color:#2a7fff">🌟 Member Testimonials</h1>
+      <div id="testimonials-list"></div>
+    </main>
+
+    <footer class="footer">© 2025 Options Trading University</footer>
   </div>
-  <script src="config.js"></script><script src="script.js"></script>
+
+  <script src="config.js"></script>
   <script>
-    (async function(){
-      const box=document.getElementById('testi');
-      try{
-        const r=await fetch(window.SITE_CONFIG.testimonialsJsonPath,{cache:'no-store'});
-        const data=await r.json();
-        box.innerHTML=data.map(t=>`<article class="card"><h2>${t.name}</h2><p>${t.text}</p></article>`).join('');
-      }catch{ box.innerHTML='<p>Upload data/json/testimonials.json</p>'; }
-    })();
+    document.addEventListener("DOMContentLoaded",async()=>{
+      const data=await loadJSON("testimonials.json");
+      const list=document.getElementById("testimonials-list");
+      data.forEach(t=>{
+        const card=document.createElement("div");
+        card.className="testimonial";
+        card.innerHTML=`<h4>${t.name}</h4><p>${t.testimonial}</p>`;
+        list.appendChild(card);
+      });
+    });
+    const burger=document.getElementById('burger');const sidebar=document.getElementById('sidebar');burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
   </script>
 </body>
 </html>
