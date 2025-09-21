@@ -15,12 +15,11 @@
     .side-nav a { color:#d8e2ff;padding:8px;border-radius:6px;font-weight:600;display:block; }
     .side-nav a.active { background:#163067; }
     .page { margin-left:220px;display:flex;flex-direction:column;min-height:100vh; }
-    .container { max-width:900px;margin:0 auto;padding:20px; }
-    .topbar { background:#fff;border-bottom:1px solid #e3e9f2;display:flex;justify-content:space-between;align-items:center;padding:10px; }
+    .container { padding:20px; }
+    .topbar { background:#fff;border-bottom:1px solid #e3e9f2;padding:10px; }
     h1 { color:#2a7fff; }
-    .gallery { display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:20px; }
-    .gallery img { width:100%;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.15);transition:transform .3s; }
-    .gallery img:hover { transform:scale(1.05); }
+    .carousel { display:flex;overflow:hidden;gap:12px; }
+    .carousel img { height:180px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.15); }
     .footer { margin-top:auto;background:#0b1328;color:#9cb2ff;text-align:center;padding:12px; }
   </style>
 </head>
@@ -32,33 +31,29 @@
       <a href="profits.html" class="active">Profit Snapshots</a>
       <a href="lifestyle.html">Lifestyle</a>
       <a href="charts.html">Charts</a>
-      <a href="chartvideo.html">Videos</a>
     </nav>
   </aside>
   <div class="page">
     <header class="topbar"><h1>Profit Snapshots</h1></header>
     <main class="container">
-      <p>Snapshots of trades. Automatically loads from your repo folders.</p>
-      <div class="gallery" id="profits-gallery"></div>
+      <div class="carousel" id="profits-carousel"></div>
     </main>
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
   <script>
-    const gallery=document.getElementById("profits-gallery");
-    const folders=["Images","images","Profits","profits"];
-    for(let i=1;i<=100;i++){ 
+    const car=document.getElementById("profits-carousel");
+    for(let i=1;i<=57;i++){ 
       let img=document.createElement("img");
+      img.src=`Images/img${i}.jpeg`; // match your repo
       img.alt=`Profit ${i}`;
-      let tried=0;
-      function tryNext(){
-        if(tried>=folders.length){ img.remove(); return; }
-        img.src=`${folders[tried]}/img${i}.jpeg`;
-        tried++;
-      }
-      img.onerror=tryNext;
-      tryNext();
-      gallery.appendChild(img);
+      img.onerror=()=>img.remove();
+      car.appendChild(img);
     }
+    // Auto-scroll
+    setInterval(()=>{
+      car.scrollBy({ left:220, behavior:'smooth' });
+      if(car.scrollLeft+car.clientWidth>=car.scrollWidth) car.scrollTo({left:0,behavior:'smooth'});
+    },2500);
   </script>
 </body>
 </html>
