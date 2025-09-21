@@ -2,13 +2,11 @@
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lifestyle — OTU</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html">OTU</a></div></aside>
-  <div class="page">
-    <header class="topbar"><button class="burger" id="burger">☰</button></header>
+  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
+    <nav class="side-nav"><a href="index.html">Home</a><a href="lifestyle.html" class="active">Lifestyle</a></nav></aside>
+  <div class="page"><header class="topbar"><button class="burger" id="burger">☰</button></header>
     <main class="container">
-      <h1>Lifestyle</h1>
-      <p>These images are loaded from the <code>/lifestyle</code> folder. Upload any new photos, and they will appear automatically.</p>
-      <div class="snap-grid" id="lifestyle-grid"></div>
+      <section class="card"><h1>Lifestyle and moments</h1><p>Upload photos to <code>/lifestyle</code> as life01.jpg, life02.jpg, …</p><div class="snap-grid" id="lifestyle-grid"></div></section>
     </main>
   </div>
   <script src="config.js"></script><script src="script.js"></script>
