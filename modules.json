@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Module 1: Foundations of Options Trading",
+    "content": "This module introduces you to the world of options, explaining the difference between calls and puts, strike prices, expiration dates, and how options differ from stocks. You'll also learn why traders use options—to hedge, to speculate, and to leverage capital. Expect simple analogies, such as comparing options to insurance contracts, to make the concepts stick."
+  },
+  {
+    "title": "Module 2: Understanding Market Mechanics",
+    "content": "Here, we dive into the mechanics of how the options market works. Topics include the role of market makers, how bids and asks create liquidity, and the impact of open interest and volume. We also discuss how implied volatility influences option pricing and why traders watch it closely."
+  },
+  {
+    "title": "Module 3: Risk and Money Management",
+    "content": "This is one of the most important modules. It explains why managing risk matters more than chasing profits. You’ll learn about position sizing, setting stop-losses, and the 2% risk rule. We include real examples showing how traders preserve their accounts during losing streaks while staying in the game for the long term."
+  }
+]
