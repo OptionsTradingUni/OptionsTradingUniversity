@@ -145,3 +145,50 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#f2f6ff;co
   .ticker .item{ font-size:13px }
   .ticker{ gap:16px }
 }
+
+/* Inline brand name in topbar */
+.brand-inline {
+  font-weight:800;
+  font-size:16px;
+  color:#123468;
+}
+
+/* Sidebar responsive fix */
+@media(max-width:900px){
+  .sidebar { transform:translateX(-100%); transition:transform .25s ease }
+  .sidebar.open { transform:translateX(0) }
+  .page { margin-left:0 } /* full width on mobile */
+}
+
+/* Quick Navigation - app cards */
+.quicknav{
+  display:grid;
+  gap:14px;
+  grid-template-columns:repeat(2,1fr);
+}
+.quicknav a{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:#fff;
+  border:1px solid var(--line);
+  padding:20px 12px;
+  border-radius:14px;
+  font-size:14px;
+  font-weight:600;
+  color:var(--ink);
+  box-shadow:var(--shadow);
+  text-decoration:none;
+}
+.quicknav a span{ font-size:22px }
+@media(min-width:768px){
+  .quicknav{ grid-template-columns:repeat(4,1fr) }
+}
+
+/* Ticker small font on iPhone */
+.ticker .item{ font-size:16px }
+@media(max-width:600px){
+  .ticker .item{ font-size:13px }
+  .ticker{ gap:16px }
+}
