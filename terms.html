@@ -1,21 +1,143 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Contact - OTU</title>
-<style>
-body{margin:0;font-family:sans-serif;background:#f4f7ff;color:#0f1a33;text-align:center;}
-form{max-width:500px;margin:30px auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1);}
-input,textarea{width:100%;margin:10px 0;padding:10px;border:1px solid #ccc;border-radius:6px;}
-button{padding:10px 16px;background:#2a7fff;color:#fff;border:none;border-radius:6px;cursor:pointer;}
-</style>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Disclaimer - Options Trading University</title>
+  <style>
+    body { margin:0; font-family:Arial,sans-serif; background:#f5f9ff; color:#222; }
+
+    /* Sidebar */
+    .sidebar {
+      position:fixed; top:0; left:0; bottom:0;
+      width:220px; background:#0b1328; color:#fff;
+      transform:translateX(-220px); transition:transform .3s ease;
+      padding:20px;
+    }
+    .sidebar.active { transform:translateX(0); }
+    .sidebar h2 { margin:0 0 20px; color:#ffd166; }
+    .sidebar a { display:block; color:#fff; padding:8px 0; text-decoration:none; }
+    .sidebar a:hover { color:#ffd166; }
+
+    /* Page */
+    .page { margin-left:0; padding:20px; transition:margin-left .3s ease; }
+    .sidebar.active ~ .page { margin-left:240px; }
+
+    /* Topbar */
+    .topbar {
+      background:linear-gradient(90deg,#2a7fff,#ff4081);
+      color:#fff; padding:15px; display:flex;
+      justify-content:space-between; align-items:center;
+    }
+    .burger { font-size:20px; background:none; border:none; color:#fff; cursor:pointer; }
+
+    h1 { margin:20px 0; font-size:1.8em; color:#2a7fff; }
+
+    /* Accordion Style */
+    .accordion {
+      background:#fff;
+      border-radius:8px;
+      box-shadow:0 3px 8px rgba(0,0,0,0.1);
+      margin:20px auto; max-width:700px;
+      overflow:hidden;
+    }
+    .accordion-item {
+      border-bottom:1px solid #ddd;
+    }
+    .accordion-header {
+      background:#f0f4ff;
+      cursor:pointer;
+      padding:15px;
+      font-weight:600;
+      color:#2a7fff;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .accordion-header:hover { background:#e6ecff; }
+    .accordion-header span { font-size:1.2em; }
+    .accordion-content {
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      padding:0 15px;
+    }
+    .accordion-content p {
+      margin:15px 0;
+      line-height:1.6;
+    }
+    .accordion-item.active .accordion-content {
+      max-height:500px;
+      padding-bottom:15px;
+    }
+  </style>
 </head>
 <body>
-  <h1 style="color:#1749d4">📬 Contact Us</h1>
-  <form>
-    <input type="text" placeholder="Your Name" required>
-    <input type="email" placeholder="Your Email" required>
-    <textarea rows="5" placeholder="Your Message"></textarea>
-    <button type="submit">Send</button>
-  </form>
-  <p>Or email us directly: <a href="mailto:eddyward863@gmail.com">support@optionstradinguni.com</a></p>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <h2>OTU</h2>
+    <a href="index.html">Home</a>
+    <a href="modules.html">Modules</a>
+    <a href="testimonials.html">Testimonials</a>
+    <a href="contact.html">Contact</a>
+    <a href="terms.html" class="active">Disclaimer</a>
+  </aside>
+
+  <div class="page">
+    <header class="topbar">
+      <button class="burger" id="burger">☰</button>
+      <div>Disclaimer</div>
+    </header>
+
+    <main>
+      <h1>Important Disclaimer</h1>
+
+      <div class="accordion">
+        <div class="accordion-item">
+          <div class="accordion-header">Risk Warning <span>+</span></div>
+          <div class="accordion-content">
+            <p>Trading options involves substantial risk and is not suitable for every investor. You may lose more than your initial investment. Always trade with money you can afford to lose.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header">Past Performance <span>+</span></div>
+          <div class="accordion-content">
+            <p>Any profits, case studies, or testimonials shown on this website are for educational illustration only. Past results do not guarantee future performance.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header">Educational Purpose <span>+</span></div>
+          <div class="accordion-content">
+            <p>All content provided by OTU is strictly for educational purposes. Nothing here should be considered financial, investment, or trading advice.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header">Liability <span>+</span></div>
+          <div class="accordion-content">
+            <p>By using this site, you acknowledge that OTU, its mentors, and affiliates are not responsible for financial losses incurred. You trade at your own risk.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Sidebar toggle
+    document.getElementById("burger").addEventListener("click",()=>{
+      document.getElementById("sidebar").classList.toggle("active");
+    });
+
+    // Accordion toggle
+    document.querySelectorAll(".accordion-header").forEach(header=>{
+      header.addEventListener("click",()=>{
+        const item = header.parentElement;
+        item.classList.toggle("active");
+        const span = header.querySelector("span");
+        span.textContent = item.classList.contains("active") ? "−" : "+";
+      });
+    });
+  </script>
 </body>
 </html>
