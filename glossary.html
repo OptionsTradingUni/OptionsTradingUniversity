@@ -1,35 +1,24 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Glossary — Options Trading University</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Glossary — OTU</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <aside class="sidebar" id="sidebar">
-    <div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
-    <nav class="side-nav"><a href="index.html">Home</a><a href="glossary.html" class="active">Glossary</a></nav>
-  </aside>
+  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
+    <nav class="side-nav"><a href="index.html">Home</a><a href="glossary.html" class="active">Glossary</a></nav></aside>
   <div class="page">
     <header class="topbar"><button class="burger" id="burger">☰</button><nav class="top-links"><a href="index.html">OTU</a></nav></header>
     <main class="container">
-      <h1>Glossary</h1>
-      <div id="glossary-list"></div>
+      <section class="card"><h1>Glossary</h1><input id="gq" placeholder="Search term" style="padding:8px;width:100%;max-width:360px;border:1px solid #e7ecf7;border-radius:8px"><div id="glossary-list" style="margin-top:12px"></div></section>
     </main>
   </div>
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+  <script src="config.js"></script><script src="script.js"></script>
   <script>
     (async function(){
-      const box = document.getElementById('glossary-list');
-      try{
-        const res = await fetch(window.SITE_CONFIG.glossaryJsonPath);
-        const data = await res.json();
-        box.innerHTML = data.map(g=>`
-          <article class="card"><h2>${g.term}</h2><p>${g.definition}</p></article>
-        `).join('');
-      }catch(e){ box.textContent='Upload glossary.json'; }
+      const box=document.getElementById('glossary-list'); const q=document.getElementById('gq');
+      let data=[];
+      async function load(){ const r=await fetch(window.SITE_CONFIG.glossaryJsonPath,{cache:'no-store'}); data=await r.json(); render(data); }
+      function render(list){ box.innerHTML=list.map(g=>`<article class="card"><h2>${g.term}</h2><p>${g.definition}</p></article>`).join(''); }
+      q.addEventListener('input',()=>{ const v=q.value.toLowerCase(); render(data.filter(x=>x.term.toLowerCase().includes(v))); });
+      try{ await load(); }catch{ box.innerHTML='<p>Upload data/json/glossary.json</p>'; }
     })();
   </script>
 </body>
