@@ -2,18 +2,20 @@
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Testimonials — OTU</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html">OTU</a></div></aside>
-  <div class="page">
-    <header class="topbar"><button class="burger" id="burger">☰</button></header>
-    <main class="container"><h1>Testimonials</h1><div id="testi-list"></div></main>
+  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
+    <nav class="side-nav"><a href="index.html">Home</a><a href="testimonials.html" class="active">Testimonials</a></nav></aside>
+  <div class="page"><header class="topbar"><button class="burger" id="burger">☰</button></header>
+    <main class="container"><section class="card"><h1>Testimonials</h1><div id="testi"></div></section></main>
   </div>
   <script src="config.js"></script><script src="script.js"></script>
   <script>
     (async function(){
-      const box=document.getElementById('testi-list');
-      const res=await fetch(window.SITE_CONFIG.testimonialsJsonPath);
-      const data=await res.json();
-      box.innerHTML=data.map(t=>`<article class="card"><h2>${t.name}</h2><p>${t.text}</p></article>`).join('');
+      const box=document.getElementById('testi');
+      try{
+        const r=await fetch(window.SITE_CONFIG.testimonialsJsonPath,{cache:'no-store'});
+        const data=await r.json();
+        box.innerHTML=data.map(t=>`<article class="card"><h2>${t.name}</h2><p>${t.text}</p></article>`).join('');
+      }catch{ box.innerHTML='<p>Upload data/json/testimonials.json</p>'; }
     })();
   </script>
 </body>
