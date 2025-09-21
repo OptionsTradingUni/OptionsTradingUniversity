@@ -1,9 +1,44 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Watchlist - OTU</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body { margin:0; font-family:sans-serif; background:#f4f7ff; color:#0f1a33; }
+    .sidebar { position:fixed; top:0; left:0; bottom:0; width:220px; background:#0b1328; color:#fff; padding-top:10px; }
+    .brand { display:flex; align-items:center; gap:10px; padding:10px; font-weight:800; }
+    .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
+    .brand span { background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900; }
+    .side-nav { display:flex; flex-direction:column; padding:10px; gap:5px; }
+    .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; }
+    .side-nav a.active { background:#163067; }
+
+    .page { margin-left:220px; min-height:100vh; display:flex; flex-direction:column; }
+    .container { max-width:900px; margin:0 auto; padding:20px; }
+    .topbar { background:#fff; border-bottom:1px solid #e3e9f2; display:flex; justify-content:space-between; align-items:center; padding:10px; }
+    .burger { display:none; }
+
+    .card { background:#fff; border:1px solid #e3e9f2; border-radius:12px; padding:16px; margin:14px 0; box-shadow:0 4px 12px rgba(0,0,0,.04); }
+    .btn { background:#2a7fff; color:#fff; border:none; padding:8px 14px; border-radius:8px; font-weight:700; cursor:pointer; }
+
+    .watchlist-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-top:10px; }
+    .tile { background:#fff; border:1px solid #e3e9f2; border-radius:10px; padding:10px; text-align:center; font-weight:700; }
+    .tile .sym { font-size:14px; color:#0f1a33; }
+    .tile .px { font-size:20px; margin-top:6px; }
+    .tile .chg { font-size:12px; margin-top:6px; color:#777; }
+    .tile.up .chg { color:#1f9d5a; }
+    .tile.down .chg { color:#e74c3c; }
+
+    .muted { color:#7e89a6; font-size:12px; }
+    .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
+
+    @media(max-width:768px){
+      .sidebar { display:none; }
+      .page { margin-left:0; }
+      .burger { display:block; background:none; border:none; font-size:20px; }
+    }
+  </style>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
@@ -44,7 +79,77 @@
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+  <script>
+    // Burger toggle
+    document.addEventListener('DOMContentLoaded',()=>{
+      const burger=document.getElementById('burger');
+      const sidebar=document.getElementById('sidebar');
+      burger.addEventListener('click',()=> sidebar.style.display=(sidebar.style.display==='block'?'none':'block'));
+    });
+
+    // ===== Watchlist Logic =====
+    const API_KEY = "26ba5f44e4a94961aabe2882bbfd975e"; // your Twelve Data key
+
+    function mockQuote(symbol){
+      const px = (50 + Math.random()*450).toFixed(2);
+      const chg = (Math.random()*4 - 2).toFixed(2);
+      return { symbol, price:px, percent_change:chg };
+    }
+
+    async function tdQuote(symbol){
+      const url=`https://api.twelvedata.com/quote?symbol=${encodeURIComponent(symbol)}&apikey=${encodeURIComponent(API_KEY)}`;
+      try{
+        const r=await fetch(url);
+        const j=await r.json();
+        if(j.status==="error"||!j.symbol) throw new Error("API error");
+        return j;
+      }catch(e){
+        return mockQuote(symbol);
+      }
+    }
+
+    function watchTile(q){
+      const d=document.createElement('div'); d.className='tile';
+      const chg=parseFloat(q.percent_change??0);
+      if(!isNaN(chg)) d.classList.add(chg>=0?'up':'down');
+      d.innerHTML=`<div class="sym">${q.symbol}</div>
+                   <div class="px">$${Number(q.price).toFixed(2)}</div>
+                   <div class="chg">${chg>=0?'▲':'▼'} ${Math.abs(chg).toFixed(2)}%</div>`;
+      return d;
+    }
+
+    async function initWatchlist(){
+      const grid=document.getElementById('watchlist-grid');
+      const input=document.getElementById('watchlist-input');
+      const add=document.getElementById('watchlist-add');
+      const status=document.getElementById('watchlist-status');
+
+      let list; try{ list=JSON.parse(localStorage.getItem('otu_watchlist')||'[]'); }catch{ list=[]; }
+      if(list.length===0){ list=["AAPL","MSFT","TSLA","NVDA","SPY"]; localStorage.setItem('otu_watchlist',JSON.stringify(list)); }
+
+      async function refresh(){
+        grid.innerHTML=''; if(status) status.textContent='Loading...';
+        for(const sym of list){
+          const q=await tdQuote(sym);
+          grid.appendChild(watchTile(q));
+        }
+        if(status) status.textContent='Quotes refresh every 60s. Using live data when available.';
+      }
+
+      add.addEventListener('click', async()=>{
+        const sym=(input.value||'').trim().toUpperCase();
+        if(sym && !list.includes(sym)){
+          list.push(sym);
+          localStorage.setItem('otu_watchlist',JSON.stringify(list));
+          await refresh();
+        }
+        input.value='';
+      });
+
+      await refresh();
+      setInterval(refresh,60000);
+    }
+    document.addEventListener('DOMContentLoaded', initWatchlist);
+  </script>
 </body>
 </html>
