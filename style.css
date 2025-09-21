@@ -173,3 +173,29 @@ a { text-decoration:none; color:inherit }
 .sidebar.shake, .burger.shake {
   animation: shake 0.6s ease-in-out 2;
 }
+
+/* Slim live profits ticker */
+.ticker-bar {
+  position:relative;
+  overflow:hidden;
+  background:#0b1328;
+  border-radius:6px;
+  height:32px;
+  display:flex;
+  align-items:center;
+}
+.ticker {
+  display:flex;
+  white-space:nowrap;
+  animation: tickerScroll 12s linear infinite;
+}
+.ticker span {
+  color:#fff;
+  font-size:14px;
+  font-weight:600;
+  margin-right:40px;
+}
+@keyframes tickerScroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
