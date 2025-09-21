@@ -119,3 +119,57 @@ a { text-decoration:none; color:inherit }
   font-size:13px; 
   color:#7986a6; 
 }
+
+/* Colored Brand */
+.brand-inline, .brand span {
+  background: linear-gradient(90deg,#2a7fff,#ff4081);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+}
+
+/* Hero with stronger gradient */
+.hero { 
+  background:linear-gradient(135deg,#2a7fff,#1749d4,#ff4081);
+  color:#fff; 
+  text-align:center;
+  padding:40px 20px; 
+  border-radius:12px; 
+}
+
+/* Stats */
+.stats { 
+  display:grid; grid-template-columns:repeat(3,1fr); 
+  gap:12px; margin:20px 0;
+}
+.stat { 
+  background:#fff; border:1px solid #e3e9f2; border-radius:10px;
+  text-align:center; padding:16px; 
+  box-shadow:0 4px 12px rgba(0,0,0,.04);
+}
+.stat h2 { font-size:26px; margin:0; font-weight:800; color:#1749d4; }
+.stat div { font-size:13px; color:#7986a6; }
+
+/* Motivation block with blended image */
+.image-card {
+  background: url("Images/img1.jpeg") center/cover no-repeat;
+  color:#fff; position:relative; border-radius:12px;
+  padding:20px; margin-top:20px;
+}
+.image-card::before {
+  content:""; position:absolute; inset:0;
+  background:rgba(15,25,60,.75); border-radius:12px;
+}
+.image-card * { position:relative; z-index:1; }
+
+/* Sidebar shake */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+}
+.sidebar.shake, .burger.shake {
+  animation: shake 0.6s ease-in-out 2;
+}
