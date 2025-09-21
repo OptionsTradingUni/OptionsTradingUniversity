@@ -5,95 +5,58 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Options Trading University</title>
   <style>
-    body {
+    body.blue-theme {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f7ff;
+      background: #eaf1ff;
       color: #0f1a33;
     }
-
-    /* Remove underline globally */
     a, a:visited, a:hover, a:active {
       text-decoration: none !important;
       color: inherit !important;
       outline: none;
     }
-
-    /* Sidebar */
     .sidebar {
       position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
+      top: 0; left: 0; bottom: 0;
       width: 220px;
       background: #0b1328;
       color: #fff;
       padding-top: 10px;
     }
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px;
-      font-weight: 800;
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px; font-weight: 800;
     }
     .brand-logo {
-      width: 30px;
-      height: 30px;
-      border-radius: 6px;
-      object-fit: cover;
+      width: 30px; height: 30px;
+      border-radius: 6px; object-fit: cover;
     }
-    .brand span {
+    .brand-text, .brand-inline {
       background: linear-gradient(90deg,#2a7fff,#ff4081);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-weight: 900;
     }
     .side-nav {
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-      gap: 5px;
+      display: flex; flex-direction: column;
+      padding: 10px; gap: 5px;
     }
     .side-nav a {
-      color: #d8e2ff;
-      padding: 8px;
-      border-radius: 6px;
-      font-weight: 600;
-      display: block;
+      color: #d8e2ff; padding: 8px;
+      border-radius: 6px; font-weight: 600; display: block;
     }
-    .side-nav a.active {
-      background: #163067;
-    }
-
-    /* Page */
-    .page {
-      margin-left: 220px;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    /* Top bar */
+    .side-nav a.active { background: #163067; }
+    .page { margin-left: 220px; display: flex; flex-direction: column; min-height: 100vh; }
+    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
     .topbar {
-      background: #fff;
-      border-bottom: 1px solid #e3e9f2;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: #fff; border-bottom: 1px solid #e3e9f2;
+      display: flex; justify-content: space-between; align-items: center;
       padding: 10px;
     }
     .burger {
-      display: none;
-      font-size: 20px;
-      background: none;
-      border: none;
-      cursor: pointer;
+      display: none; font-size: 20px;
+      background: none; border: none; cursor: pointer;
       animation: shake 2s infinite;
     }
     @keyframes shake {
@@ -103,107 +66,57 @@
       60% { transform: translateX(-2px); }
       80% { transform: translateX(2px); }
     }
-    .brand-inline {
-      font-weight: 900;
-      background: linear-gradient(90deg,#2a7fff,#ff4081);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* Sections */
-    .hero {
+    .hero-blue {
+      background: linear-gradient(180deg,#2a7fff20,#eaf1ff);
       padding: 40px 20px;
+      border-radius: 12px;
       text-align: center;
     }
-    .hero h1 {
-      color: #2a7fff;
-      font-size: 28px;
-      margin: 0;
-    }
-    .hero p {
-      color: #444;
-      font-size: 16px;
-      margin: 10px 0 20px;
-    }
-    .cta-row {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-    }
+    .hero h1 { color: #2a7fff; font-size: 28px; margin: 0; }
+    .hero p { color: #444; font-size: 16px; margin: 10px 0 20px; }
+    .cta-row { display: flex; justify-content: center; gap: 12px; }
     .btn {
-      padding: 10px 16px;
-      border-radius: 6px;
-      background: #2a7fff;
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-block;
+      background: #2a7fff; color: #fff;
+      padding: 10px 16px; border-radius: 6px;
+      font-weight: 600; border: none; cursor: pointer;
     }
     .btn.ghost {
-      background: #fff;
-      color: #2a7fff;
-      border: 1px solid #2a7fff;
+      background: #fff; color: #2a7fff; border: 2px solid #2a7fff;
     }
-
     .stats {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 20px 0;
+      display: flex; justify-content: center; gap: 20px; margin: 20px 0;
     }
     .stat {
-      text-align: center;
-      background: #fff;
-      padding: 16px;
-      border-radius: 10px;
+      text-align: center; background: #fff;
+      padding: 16px; border-radius: 10px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
-    .stat h2 {
-      margin: 0;
-      font-size: 22px;
-      color: #1749d4;
-    }
-
+    .stat h2 { margin: 0; font-size: 22px; color: #1749d4; }
     .card {
-      background: #fff;
-      border: 1px solid #e3e9f2;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 20px 0;
+      background: #fff; border: 1px solid #e3e9f2;
+      border-radius: 12px; padding: 20px; margin: 20px 0;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
-    .image-card {
-      color: #fff;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-    }
-    .image-card h2 {
-      margin: 0 0 10px;
-    }
-    .image-card p {
-      margin: 6px 0;
-    }
-
+    .image-card { color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+    .image-card h2 { margin: 0 0 10px; }
+    .image-card p { margin: 6px 0; }
     .footer {
-      margin-top: auto;
-      background: #0b1328;
-      color: #9cb2ff;
-      text-align: center;
-      padding: 12px;
+      margin-top: auto; background: #0b1328;
+      color: #9cb2ff; text-align: center; padding: 12px;
     }
-
-    @media(max-width:768px) {
+    @media(max-width:768px){
       .sidebar { display: none; }
       .page { margin-left: 0; }
       .burger { display: block; }
     }
   </style>
 </head>
-<body>
+<body class="blue-theme">
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <img src="branding/logo.jpeg" class="brand-logo" alt="Logo">
-      <span>Options Trading University</span>
+      <span class="brand-text">Options Trading University</span>
     </div>
     <nav class="side-nav">
       <a href="index.html" class="active">Home</a>
@@ -232,7 +145,7 @@
 
     <main class="container">
       <!-- Hero -->
-      <section class="hero">
+      <section class="hero hero-blue">
         <h1>Learn Options with Mentorship</h1>
         <p>Modules, live tools, and real mentor access — built for traders like you.</p>
         <div class="cta-row">
@@ -248,7 +161,7 @@
         <div class="stat"><h2 data-count="250">0+</h2><div>Avg Income $</div></div>
       </section>
 
-      <!-- Motivation (inside main, not sidebar) -->
+      <!-- Motivation -->
       <section class="card image-card" style="background:url('Lifestyle/life1.jpeg') center/cover no-repeat;">
         <h2>Why Choose OTU?</h2>
         <p>Every trader starts small, but with the right knowledge and mentorship you can scale with confidence. 
@@ -261,25 +174,33 @@
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
-  <!-- TikTok Modal -->
-  <div class="modal-backdrop" id="tt-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);justify-content:center;align-items:center;">
-    <div class="modal" style="background:#fff;padding:20px;border-radius:10px;max-width:400px;width:90%;">
-      <button class="close" onclick="closeTikTokModal()" style="float:right;border:none;background:none;font-size:20px;cursor:pointer;">✕</button>
-      <h3>Message on TikTok</h3>
-      <div style="background:#f5f9ff;padding:12px;border-radius:8px;margin-top:8px;font-family:monospace">
-        Hi — I found your OTU page. I’d like a trade review and to join the waitlist. — <i>Your name</i>
-      </div>
-      <div style="margin-top:14px;text-align:right"><button class="btn ghost" onclick="closeTikTokModal()">Close</button></div>
-    </div>
-  </div>
-
   <script>
+    // Sidebar toggle
     const burger=document.getElementById('burger');
     const sidebar=document.getElementById('sidebar');
-    burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
-    function openTikTokModal(){document.getElementById("tt-modal").style.display="flex";}
-    function closeTikTokModal(){document.getElementById("tt-modal").style.display="none";}
+    burger.addEventListener('click',()=> {
+      sidebar.style.display = sidebar.style.display==='block'?'none':'block';
+    });
+
+    // Stats animation
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".stat h2").forEach(el => {
+        let target = +el.dataset.count;
+        let current = 0;
+        let increment = Math.ceil(target/100);
+        let interval = setInterval(()=>{
+          current += increment;
+          if(current >= target){
+            current = target;
+            clearInterval(interval);
+          }
+          el.textContent = el.dataset.count.includes("%") ? current+"%" : current+"+";
+        },30);
+      });
+    });
+
+    // TikTok modal placeholder (not shown by default)
+    function openTikTokModal(){alert("Open TikTok DM modal here");}
   </script>
 </body>
 </html>
-
