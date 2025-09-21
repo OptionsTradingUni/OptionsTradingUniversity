@@ -1,24 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Options Trading University</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <a href="index.html" class="brand-link">
-        <img src="branding/logo.png" class="brand-logo" alt="OTU" onerror="this.style.display='none'">
-        <span>Options Trading University</span>
-      </a>
+    <div class="brand"><a href="index.html" class="brand-link">
+      <img src="branding/logo.png" class="brand-logo" alt="OTU" onerror="this.style.display='none'"><span>Options Trading University</span></a>
     </div>
     <nav class="side-nav">
-      <a href="index.html" class="active">Home</a>
+      <a class="active" href="index.html">Home</a>
       <a href="modules.html">Modules</a>
       <a href="glossary.html">Glossary</a>
       <a href="testimonials.html">Testimonials</a>
@@ -34,21 +29,17 @@
     </nav>
   </aside>
 
-  <!-- Main -->
   <div class="page">
     <header class="topbar">
-      <button class="burger" id="burger" aria-label="Menu">☰</button>
-      <nav class="top-links"><a href="index.html" class="logo-link">OTU</a></nav>
-      <div class="top-cta"><button class="btn" onclick="openTikTokModal()">Message a mentor</button></div>
+      <button class="burger" id="burger" aria-label="Open menu">☰</button>
+      <nav class="top-links"><a href="index.html">OTU</a></nav>
+      <div><button class="btn" onclick="openTikTokModal()">Message a mentor</button></div>
     </header>
 
     <main class="container">
       <section class="card hero">
         <h1>Learn options with structure and mentorship</h1>
-        <p>
-          A focused curriculum, live tools, real chart reviews, and direct mentor access.
-          The site pulls content from your folders automatically, so updates are simple and fast.
-        </p>
+        <p>Curriculum, live tools, chart reviews, and direct mentor access — all in one place.</p>
         <div class="cta-row">
           <a class="btn" href="modules.html">Start learning</a>
           <button class="btn ghost" onclick="openTikTokModal()">Talk to a mentor</button>
@@ -82,23 +73,17 @@
 
     <footer class="footer">
       <div>© 2025 Options Trading University</div>
-      <div class="foot-links">
-        <a href="terms.html">Disclaimer</a>
-        <a href="faq.html">FAQ</a>
-        <a href="contact.html">Contact</a>
-      </div>
+      <div><a href="terms.html">Disclaimer</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></div>
     </footer>
   </div>
 
-  <!-- TikTok modal -->
+  <!-- DM Modal -->
   <div class="modal-backdrop" id="tt-modal" style="display:none">
     <div class="modal">
       <button class="close" onclick="closeTikTokModal()">✕</button>
       <h3>Message on TikTok</h3>
-      <div class="suggest">
-        Hi — I found your Options Trading University page. I’d like a mentor to review my plan and help me get started. — <i>Your name</i>
-      </div>
-      <div class="right"><button class="btn ghost" onclick="closeTikTokModal()">Close</button></div>
+      <div class="suggest">Hi — I found your OTU page. I’d like a mentor to review my plan and help me get started. — <i>Your name</i></div>
+      <div style="text-align:right;margin-top:10px"><button class="btn ghost" onclick="closeTikTokModal()">Close</button></div>
     </div>
   </div>
 
