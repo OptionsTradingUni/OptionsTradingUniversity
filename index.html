@@ -1,33 +1,29 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Options Trading University — Dashboard</title>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Options Trading University</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Sidebar (slides in on mobile) -->
   <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <img src="branding/logo.jpeg" class="brand-logo" alt="Logo">
-      <span>OTU</span>
-    </div>
+    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo" alt=""><span>OTU</span></div>
     <nav class="side-nav">
-      <a href="#hero" class="active">Home</a>
-      <a href="#profits">Profit Snapshots</a>
-      <a href="#lifestyle">Lifestyle</a>
-      <a href="#charts">Charts</a>
-      <a href="#videos">Chart Videos</a>
-      <a href="#watchlist">Watchlist</a>
-      <a href="#testimonials">Testimonials</a>
-      <a href="#glossary">Glossary</a>
-      <a href="#contact">Contact</a>
-      <a href="#terms">Disclaimer</a>
+      <a href="index.html" class="active">Home</a>
+      <a href="profits.html">Profits</a>
+      <a href="lifestyle.html">Lifestyle</a>
+      <a href="charts.html">Charts</a>
+      <a href="chartvideo.html">Videos</a>
+      <a href="watchlist.html">Watchlist</a>
+      <a href="modules.html">Modules</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="testimonials.html">Testimonials</a>
+      <a href="team.html">Team</a>
+      <a href="contact.html">Contact</a>
+      <a href="terms.html">Disclaimer</a>
     </nav>
   </aside>
 
-  <!-- Page -->
   <div class="page">
     <header class="topbar">
       <button class="burger" id="burger">☰</button>
@@ -36,109 +32,46 @@
     </header>
 
     <main class="container">
-      <!-- HERO -->
-      <section class="hero" id="hero">
+      <section class="hero">
         <h1>Learn Options with Mentorship</h1>
-        <p>Practical modules, live tools, and direct mentor access.</p>
+        <p>Practical modules, live tools, and real mentor access.</p>
         <div class="cta-row">
-          <a class="btn" href="#glossary">Start Learning</a>
+          <a class="btn" href="modules.html">Start Learning</a>
           <button class="btn ghost" onclick="openTikTokModal()">Talk to a Mentor</button>
         </div>
       </section>
 
-      <!-- STATS -->
       <section class="stats">
         <div class="stat"><div>Total Trades</div><h2 data-count="6500">0</h2></div>
         <div class="stat"><div>Win Rate</div><h2 data-count="86">0</h2>%</div>
         <div class="stat"><div>Avg Profit</div><h2 data-count="664">0</h2>$</div>
       </section>
 
-      <!-- LIVE PROFIT FEED (ticker) -->
+      <section class="card slim-ticker">
+        <h2>Live Profits</h2>
+        <div class="ticker-bar"><div id="live-ticker"></div></div>
+      </section>
+
       <section class="card">
-        <h2>Live Profit Feed</h2>
-        <div class="ticker-wrap"><div id="live-ticker"></div></div>
-      </section>
-
-      <!-- PROFITS (dynamic carousel) -->
-      <section class="card" id="profits">
-        <div class="section-head">
-          <h2>Profit Snapshots</h2>
-          <a class="btn ghost" href="#profits">Refresh</a>
+        <h2>Explore</h2>
+        <div class="quicknav">
+          <a href="profits.html"><span>💰</span>Profits</a>
+          <a href="lifestyle.html"><span>🏝️</span>Lifestyle</a>
+          <a href="charts.html"><span>📊</span>Charts</a>
+          <a href="chartvideo.html"><span>🎥</span>Videos</a>
+          <a href="watchlist.html"><span>📈</span>Watchlist</a>
+          <a href="modules.html"><span>📚</span>Modules</a>
+          <a href="glossary.html"><span>📖</span>Glossary</a>
+          <a href="testimonials.html"><span>⭐</span>Testimonials</a>
+          <a href="team.html"><span>🧑‍🏫</span>Team</a>
+          <a href="contact.html"><span>✉️</span>Contact</a>
         </div>
-        <div class="carousel">
-          <div id="profit-stage" class="carousel-stage"></div>
-          <div class="carousel-caption" id="profit-caption"></div>
-          <div class="carousel-controls">
-            <button class="btn ghost" id="profit-prev">Prev</button>
-            <button class="btn" id="profit-play">Pause</button>
-            <button class="btn ghost" id="profit-next">Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- LIFESTYLE (paginated grid) -->
-      <section class="card" id="lifestyle">
-        <div class="section-head">
-          <h2>Lifestyle</h2>
-          <div id="lifestyle-nav"></div>
-        </div>
-        <div id="lifestyle-grid" class="snap-grid"></div>
-      </section>
-
-      <!-- CHARTS (auto only existing) -->
-      <section class="card" id="charts">
-        <h2>Charts</h2>
-        <div id="charts-grid" class="snap-grid"></div>
-      </section>
-
-      <!-- CHART VIDEOS (auto only existing) -->
-      <section class="card" id="videos">
-        <h2>Chart Videos</h2>
-        <div id="video-grid" class="video-grid"></div>
-      </section>
-
-      <!-- WATCHLIST -->
-      <section class="card" id="watchlist">
-        <h2>Live Watchlist</h2>
-        <div class="watchlist-controls">
-          <input id="watchlist-input" placeholder="Add symbol (AAPL)">
-          <button id="watchlist-add" class="btn">Add</button>
-        </div>
-        <div id="watchlist-grid" class="watchlist-grid"></div>
-        <p class="muted">Quotes are cached for ~60 seconds to protect API quota.</p>
-      </section>
-
-      <!-- TESTIMONIALS (simple long-ready) -->
-      <section class="card" id="testimonials">
-        <h2>Testimonials</h2>
-        <div id="testi" class="testi-grid"></div>
-      </section>
-
-      <!-- GLOSSARY (mini + search) -->
-      <section class="card" id="glossary">
-        <h2>Glossary</h2>
-        <input id="gq" placeholder="Search term" class="input">
-        <div id="glossary-list" class="glossary-list"></div>
-      </section>
-
-      <!-- CONTACT -->
-      <section class="card" id="contact">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:support@optionstradinguni.com">support@optionstradinguni.com</a></p>
-        <button class="btn" onclick="openTikTokModal()">Message on TikTok</button>
-      </section>
-
-      <!-- TERMS -->
-      <section class="card" id="terms">
-        <h2>Disclaimer</h2>
-        <p>All content is educational. Options involve risk and may not be suitable for everyone. Past results do not guarantee future performance. You are responsible for your own decisions. Content cannot be resold or redistributed.</p>
       </section>
     </main>
 
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
-  <!-- TikTok Modal -->
   <div class="modal-backdrop" id="tt-modal">
     <div class="modal">
       <button class="close" onclick="closeTikTokModal()">✕</button>
