@@ -8,3 +8,5 @@ window.SITE_CONFIG = {
     team: "data/team.json"
   }
 };
+
+const CONFIG = { API_KEY: "26ba5f44e4a94961aabe2882bbfd975e" };
