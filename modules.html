@@ -7,26 +7,104 @@
   <style>
     body { margin:0; font-family:Arial,sans-serif; background:#eaf1ff; color:#0f1a33; }
     a { text-decoration:none; color:inherit; }
-    .sidebar { position:fixed;top:0;left:0;bottom:0;width:220px;background:#0b1328;color:#fff;padding-top:10px; }
-    .brand { display:flex; align-items:center; gap:10px; padding:10px; font-weight:800; }
-    .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
-    .brand span { background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900; }
-    .side-nav { display:flex; flex-direction:column; padding:10px; gap:5px; }
-    .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; display:block; }
-    .side-nav a.active { background:#163067; }
-    .page { margin-left:220px; display:flex; flex-direction:column; min-height:100vh; }
-    .container { padding:20px; }
-    .topbar { background:#fff; border-bottom:1px solid #e3e9f2; padding:10px; }
-    h1 { color:#2a7fff; margin:0; }
-    .module-card { background:#fff; border-radius:10px; margin:12px 0; padding:16px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-    .module-title { font-size:18px; font-weight:700; cursor:pointer; }
-    .module-content { margin-top:8px; display:none; font-size:14px; line-height:1.5; color:#333; }
-    .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 220px;
+      background: #0b1328;
+      color: #fff;
+      padding-top: 10px;
+      overflow-y: auto;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      font-weight: 800;
+    }
+    .brand-logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+    .brand span {
+      background: linear-gradient(90deg,#2a7fff,#ff4081);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 900;
+    }
+    .side-nav {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      gap: 5px;
+    }
+    .side-nav a {
+      color: #d8e2ff;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      display: block;
+    }
+    .side-nav a.active { background: #163067; }
+    .page {
+      margin-left: 220px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .container {
+      padding: 20px;
+    }
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid #e3e9f2;
+      padding: 10px;
+    }
+    h1 { color: #2a7fff; margin: 0; }
+    .module-card {
+      background: #fff;
+      border-radius: 10px;
+      margin: 12px 0;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .module-title {
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #1749d4;
+    }
+    .module-content {
+      margin-top: 8px;
+      display: none;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #333;
+    }
+    .footer {
+      margin-top: auto;
+      background: #0b1328;
+      color: #9cb2ff;
+      text-align: center;
+      padding: 12px;
+    }
+    @media(max-width:768px) {
+      .sidebar { display: none; }
+      .page { margin-left: 0; }
+    }
   </style>
 </head>
 <body>
   <aside class="sidebar">
-    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>Options Trading University</span></div>
+    <div class="brand">
+      <img src="branding/logo.jpeg" class="brand-logo" alt="Logo">
+      <span>Options Trading University</span>
+    </div>
     <nav class="side-nav">
       <a href="index.html">Home</a>
       <a href="modules.html" class="active">Modules</a>
@@ -34,19 +112,24 @@
       <a href="glossary.html">Glossary</a>
     </nav>
   </aside>
+
   <div class="page">
     <header class="topbar"><h1>Training Modules</h1></header>
     <main class="container">
-      <div id="modules-container"></div>
+      <div id="modules-container">Loading modules...</div>
     </main>
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
+
   <script>
-    // Load modules.json
     fetch('modules.json')
-      .then(res => res.json())
+      .then(res => {
+        if(!res.ok) throw new Error('modules.json not found');
+        return res.json();
+      })
       .then(data => {
         const container = document.getElementById('modules-container');
+        container.innerHTML = '';  // clear "Loading..."
         data.forEach((mod, idx) => {
           const card = document.createElement('div');
           card.className = 'module-card';
@@ -65,7 +148,8 @@
         });
       })
       .catch(err => {
-        console.error('Could not load modules.json', err);
+        document.getElementById('modules-container').textContent = 'Could not load modules.';
+        console.error(err);
       });
   </script>
 </body>
