@@ -1,34 +1,86 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Modules — OTU</title><link rel="stylesheet" href="style.css"></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Training Modules - OTU</title>
+  <style>
+    body { margin:0; font-family:sans-serif; background:#f4f7ff; color:#0f1a33; }
+    a { text-decoration:none; }
+
+    /* Sidebar */
+    .sidebar { position:fixed; top:0; left:0; bottom:0; width:220px; background:#0b1328; color:#fff; padding-top:10px; }
+    .brand { display:flex; align-items:center; gap:10px; padding:10px; font-weight:800; }
+    .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
+    .brand span { background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900; }
+    .side-nav { display:flex; flex-direction:column; padding:10px; gap:5px; }
+    .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; display:block; }
+    .side-nav a.active { background:#163067; }
+
+    /* Page */
+    .page { margin-left:220px; display:flex; flex-direction:column; min-height:100vh; }
+    .container { max-width:900px; margin:0 auto; padding:20px; }
+    .topbar { background:#fff; border-bottom:1px solid #e3e9f2; display:flex; justify-content:space-between; align-items:center; padding:10px; }
+    .burger { display:none; font-size:20px; background:none; border:none; cursor:pointer; animation:shake 2s infinite; }
+    @keyframes shake { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-2px);} 40%{transform:translateX(2px);} 60%{transform:translateX(-2px);} 80%{transform:translateX(2px);} }
+    .brand-inline { font-weight:900; background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+    /* Cards */
+    .card { background:#fff; border:1px solid #e3e9f2; border-radius:12px; padding:16px; margin:12px 0; cursor:pointer; transition:0.3s; }
+    .card h3 { margin:0; color:#1749d4; }
+    .card:hover { background:#f0f6ff; }
+    .content { display:none; margin-top:10px; color:#333; line-height:1.5; }
+
+    .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
+    @media(max-width:768px){ .sidebar{display:none;} .page{margin-left:0;} .burger{display:block;} }
+  </style>
+</head>
 <body>
   <aside class="sidebar" id="sidebar">
-    <div class="brand"><a href="index.html" class="brand-link"><img src="branding/logo.png" class="brand-logo" alt="" onerror="this.style.display='none'"><span>Options Trading University</span></a></div>
-    <nav class="side-nav"><a href="index.html">Home</a><a href="modules.html" class="active">Modules</a><a href="glossary.html">Glossary</a><a href="testimonials.html">Testimonials</a><a href="watchlist.html">Watchlist</a><a href="profits.html">Results</a><a href="lifestyle.html">Lifestyle</a><a href="charts.html">Charts</a><a href="chartvideo.html">Chart Videos</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="terms.html">Disclaimer & Terms</a><a href="faq.html">FAQ</a></nav>
+    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
+    <nav class="side-nav">
+      <a href="index.html">Home</a>
+      <a href="modules.html" class="active">Modules</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="testimonials.html">Testimonials</a>
+    </nav>
   </aside>
+
   <div class="page">
-    <header class="topbar"><button class="burger" id="burger">☰</button><nav class="top-links"><a href="index.html" class="logo-link">OTU</a></nav></header>
+    <header class="topbar">
+      <button class="burger" id="burger">☰</button>
+      <div class="brand-inline">Options Trading University</div>
+      <span></span>
+    </header>
+
     <main class="container">
-      <section class="card"><h1>Modules</h1><p>Open any lesson to go deeper. Long content lives on dedicated pages to keep this list fast.</p><div id="modules-list"></div></section>
+      <h1 style="color:#1749d4">📘 Training Modules</h1>
+      <div id="modules-list"></div>
     </main>
-    <footer class="footer">© 2025 OTU</footer>
+
+    <footer class="footer">© 2025 Options Trading University</footer>
   </div>
-  <script src="config.js"></script><script src="script.js"></script>
+
+  <script src="config.js"></script>
   <script>
-    (async function(){
-      const box=document.getElementById('modules-list');
-      try{
-        const res=await fetch(window.SITE_CONFIG.modulesJsonPath,{cache:'no-store'});
-        const data=await res.json();
-        box.innerHTML=data.map(m=>`
-          <article class="card">
-            <h2>${m.title}</h2>
-            <p>${m.summary}</p>
-            <a class="btn" href="lesson${m.id}.html">Open lesson</a>
-          </article>
-        `).join('');
-      }catch(e){ box.innerHTML='<p>Upload data/json/modules.json</p>'; }
-    })();
+    document.addEventListener("DOMContentLoaded",async()=>{
+      const data=await loadJSON("modules.json");
+      const list=document.getElementById("modules-list");
+      data.forEach(m=>{
+        const card=document.createElement("div");
+        card.className="card";
+        card.innerHTML=`<h3>${m.title}</h3><div class="content">${m.content}</div>`;
+        card.querySelector("h3").onclick=()=>{
+          const c=card.querySelector(".content");
+          c.style.display=c.style.display==="block"?"none":"block";
+        };
+        list.appendChild(card);
+      });
+    });
+
+    const burger=document.getElementById('burger'); 
+    const sidebar=document.getElementById('sidebar'); 
+    burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
   </script>
 </body>
 </html>
