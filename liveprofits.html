@@ -6,38 +6,64 @@
   <title>Live Profits - OTU</title>
   <style>
     body { margin:0; font-family:sans-serif; background:#f4f7ff; color:#0f1a33; }
+
+    /* Sidebar */
     .sidebar { position:fixed; top:0; left:0; bottom:0; width:220px; background:#0b1328; color:#fff; padding-top:10px; }
     .brand { display:flex; align-items:center; gap:10px; padding:10px; font-weight:800; }
     .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
     .brand span { background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900; }
+
+    /* Remove underline */
+    a { text-decoration:none; }
+
     .side-nav { display:flex; flex-direction:column; padding:10px; gap:5px; }
-    .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; }
+    .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; display:block; }
     .side-nav a.active { background:#163067; }
 
+    /* Page */
     .page { margin-left:220px; min-height:100vh; display:flex; flex-direction:column; }
     .container { max-width:900px; margin:0 auto; padding:20px; }
+
+    /* Topbar */
     .topbar { background:#fff; border-bottom:1px solid #e3e9f2; display:flex; justify-content:space-between; align-items:center; padding:10px; }
-    .burger { display:none; }
+    .burger { display:none; font-size:20px; background:none; border:none; cursor:pointer; animation:shake 2s infinite; }
+    @keyframes shake {
+      0%,100%{transform:translateX(0);}
+      20%{transform:translateX(-2px);}
+      40%{transform:translateX(2px);}
+      60%{transform:translateX(-2px);}
+      80%{transform:translateX(2px);}
+    }
+    .brand-inline {
+      font-weight:900;
+      background:linear-gradient(90deg,#2a7fff,#ff4081);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
 
-    .card { background:#fff; border:1px solid #e3e9f2; border-radius:12px; padding:16px; margin:14px 0; box-shadow:0 4px 12px rgba(0,0,0,.04); }
+    /* Hero */
+    .hero { background:linear-gradient(135deg,#ff4081,#2a7fff); color:#fff; text-align:center; padding:40px 20px; border-radius:12px; }
+    .hero h1 { margin:0; font-size:28px; }
 
-    /* Slim ticker */
+    /* Card */
+    .card { background:#fff; border:1px solid #e3e9f2; border-radius:12px; padding:16px; margin:20px 0; box-shadow:0 4px 12px rgba(0,0,0,.04); }
+
+    /* Ticker */
     .ticker-shell { background:#0b1328; border-radius:6px; height:32px; overflow:hidden; display:flex; align-items:center; padding:0 6px; }
     .ticker-track { display:flex; gap:40px; white-space:nowrap; animation:scrollTicker 14s linear infinite; }
     .ticker-item { color:#fff; font-size:14px; font-weight:700; }
     @keyframes scrollTicker { from{transform:translateX(100%)} to{transform:translateX(-100%)} }
 
-    .muted { color:#7e89a6; font-size:12px; }
+    /* Footer */
     .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
 
     @media(max-width:768px){
-      .sidebar { display:none; }
-      .page { margin-left:0; }
-      .burger { display:block; background:none; border:none; font-size:20px; }
+      .sidebar{display:none;} .page{margin-left:0;} .burger{display:block;}
     }
   </style>
 </head>
 <body>
+  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
     <nav class="side-nav">
@@ -57,17 +83,22 @@
     </nav>
   </aside>
 
+  <!-- Page -->
   <div class="page">
-    <header class="topbar"><button class="burger" id="burger">☰</button><h2>Live Profits</h2><span></span></header>
+    <header class="topbar">
+      <button class="burger" id="burger">☰</button>
+      <div class="brand-inline">Options Trading University</div>
+      <span></span>
+    </header>
+
     <main class="container">
+      <section class="hero"><h1>Real-time Member Wins</h1></section>
       <section class="card">
-        <h3 style="margin:0 0 8px 0">Real-time Member Wins</h3>
-        <div id="live-ticker" class="ticker-shell">
-          <div class="ticker-track" id="ticker-track"></div>
-        </div>
-        <p class="muted">Auto-refreshes with new wins every few seconds.</p>
+        <div id="live-ticker" class="ticker-shell"><div id="ticker-track" class="ticker-track"></div></div>
+        <p style="font-size:12px;color:#7e89a6">Auto-refreshes with new wins every few seconds.</p>
       </section>
     </main>
+
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
@@ -79,7 +110,7 @@
       burger.addEventListener('click',()=> sidebar.style.display=(sidebar.style.display==='block'?'none':'block'));
     });
 
-    // Live ticker
+    // Ticker logic
     function initTicker(){
       const track=document.getElementById('ticker-track');
       if(!track) return;
@@ -97,7 +128,7 @@
         }
       }
       refill();
-      setInterval(refill,10000); // refresh messages every 10s
+      setInterval(refill,10000);
     }
     document.addEventListener('DOMContentLoaded', initTicker);
   </script>
