@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <img src="branding/logo.jpeg" class="brand-logo" alt="Logo">
@@ -18,9 +19,9 @@
       <a href="lifestyle.html">Lifestyle</a>
       <a href="charts.html">Charts</a>
       <a href="chartvideo.html">Chart Videos</a>
+      <a href="watchlist.html">Watchlist</a>
       <a href="glossary.html">Glossary</a>
       <a href="testimonials.html">Testimonials</a>
-      <a href="watchlist.html">Watchlist</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
       <a href="faq.html">FAQ</a>
@@ -28,6 +29,7 @@
     </nav>
   </aside>
 
+  <!-- Page -->
   <div class="page">
     <header class="topbar">
       <button class="burger" id="burger">☰</button>
@@ -35,6 +37,7 @@
     </header>
 
     <main class="container">
+      <!-- Hero -->
       <section class="hero">
         <h1>Learn options with structure and mentorship</h1>
         <p>Clear modules, live tools, and direct mentor access.</p>
@@ -44,35 +47,40 @@
         </div>
       </section>
 
+      <!-- Stats -->
       <section class="stats">
         <div class="stat"><div>Total trades</div><h2 data-count="6500">0</h2></div>
-        <div class="stat"><div>Win rate</div><h2 data-count="86">0</h2></div>
-        <div class="stat"><div>Average profit</div><h2 data-count="664">0</h2></div>
+        <div class="stat"><div>Win rate</div><h2 data-count="86">0</h2>%</div>
+        <div class="stat"><div>Average profit</div><h2 data-count="664">0</h2>$</div>
       </section>
 
+      <!-- Live Profit Feed -->
       <section class="card">
-        <h2>Live profit feed</h2>
+        <h2>Live Profit Feed</h2>
         <div class="ticker-wrap"><div id="live-ticker"></div></div>
       </section>
 
+      <!-- Quick Navigation -->
       <section class="card">
-        <h2>Quick navigation</h2>
-        <ul>
-          <li><a href="profits.html">Profit snapshots</a></li>
-          <li><a href="lifestyle.html">Lifestyle gallery</a></li>
-          <li><a href="charts.html">Charts</a></li>
-          <li><a href="chartvideo.html">Chart videos</a></li>
-          <li><a href="watchlist.html">Watchlist</a></li>
-          <li><a href="testimonials.html">Testimonials</a></li>
-          <li><a href="glossary.html">Glossary</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
+        <h2>Quick Navigation</h2>
+        <div class="quicknav">
+          <a href="profits.html"><span>💰</span>Profit Snapshots</a>
+          <a href="lifestyle.html"><span>🏝️</span>Lifestyle</a>
+          <a href="charts.html"><span>📊</span>Charts</a>
+          <a href="chartvideo.html"><span>🎥</span>Chart Videos</a>
+          <a href="watchlist.html"><span>📈</span>Watchlist</a>
+          <a href="testimonials.html"><span>⭐</span>Testimonials</a>
+          <a href="modules.html"><span>📚</span>Modules</a>
+          <a href="glossary.html"><span>📖</span>Glossary</a>
+          <a href="contact.html"><span>✉️</span>Contact</a>
+        </div>
       </section>
     </main>
 
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
+  <!-- TikTok Modal -->
   <div class="modal-backdrop" id="tt-modal">
     <div class="modal">
       <button class="close" onclick="closeTikTokModal()">✕</button>
