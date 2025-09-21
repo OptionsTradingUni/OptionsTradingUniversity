@@ -1,9 +1,41 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Live Profits - OTU</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body { margin:0; font-family:sans-serif; background:#f4f7ff; color:#0f1a33; }
+    .sidebar { position:fixed; top:0; left:0; bottom:0; width:220px; background:#0b1328; color:#fff; padding-top:10px; }
+    .brand { display:flex; align-items:center; gap:10px; padding:10px; font-weight:800; }
+    .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
+    .brand span { background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900; }
+    .side-nav { display:flex; flex-direction:column; padding:10px; gap:5px; }
+    .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; }
+    .side-nav a.active { background:#163067; }
+
+    .page { margin-left:220px; min-height:100vh; display:flex; flex-direction:column; }
+    .container { max-width:900px; margin:0 auto; padding:20px; }
+    .topbar { background:#fff; border-bottom:1px solid #e3e9f2; display:flex; justify-content:space-between; align-items:center; padding:10px; }
+    .burger { display:none; }
+
+    .card { background:#fff; border:1px solid #e3e9f2; border-radius:12px; padding:16px; margin:14px 0; box-shadow:0 4px 12px rgba(0,0,0,.04); }
+
+    /* Slim ticker */
+    .ticker-shell { background:#0b1328; border-radius:6px; height:32px; overflow:hidden; display:flex; align-items:center; padding:0 6px; }
+    .ticker-track { display:flex; gap:40px; white-space:nowrap; animation:scrollTicker 14s linear infinite; }
+    .ticker-item { color:#fff; font-size:14px; font-weight:700; }
+    @keyframes scrollTicker { from{transform:translateX(100%)} to{transform:translateX(-100%)} }
+
+    .muted { color:#7e89a6; font-size:12px; }
+    .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
+
+    @media(max-width:768px){
+      .sidebar { display:none; }
+      .page { margin-left:0; }
+      .burger { display:block; background:none; border:none; font-size:20px; }
+    }
+  </style>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
@@ -39,7 +71,35 @@
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+  <script>
+    // Burger toggle
+    document.addEventListener('DOMContentLoaded',()=>{
+      const burger=document.getElementById('burger');
+      const sidebar=document.getElementById('sidebar');
+      burger.addEventListener('click',()=> sidebar.style.display=(sidebar.style.display==='block'?'none':'block'));
+    });
+
+    // Live ticker
+    function initTicker(){
+      const track=document.getElementById('ticker-track');
+      if(!track) return;
+      const names=["Ava","Noah","Liam","Mia","Ethan","Zoe","Lucas","Aria","Mason","Grace"];
+      const randAmt=()=> Math.floor(50 + Math.random()*950);
+      const makeItem=()=>`💰 ${names[Math.floor(Math.random()*names.length)]} +$${randAmt()} just now`;
+
+      function refill(){
+        track.innerHTML='';
+        for(let i=0;i<2;i++){
+          const span=document.createElement('span');
+          span.className='ticker-item';
+          span.textContent=makeItem();
+          track.appendChild(span);
+        }
+      }
+      refill();
+      setInterval(refill,10000); // refresh messages every 10s
+    }
+    document.addEventListener('DOMContentLoaded', initTicker);
+  </script>
 </body>
 </html>
