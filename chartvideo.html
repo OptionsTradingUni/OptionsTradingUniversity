@@ -1,22 +1,17 @@
-<!doctype html>
-<html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chart videos — OTU</title><link rel="stylesheet" href="style.css"></head>
-<body>
-  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
-    <nav class="side-nav"><a href="index.html">Home</a><a href="chartvideo.html" class="active">Chart videos</a></nav></aside>
-  <div class="page"><header class="topbar"><button class="burger" id="burger">☰</button></header>
-    <main class="container">
-      <section class="card"><h1>Chart videos</h1><p>Upload MP4 files to <code>/chartVideo</code> named video1.mp4, video2.mp4, …</p><div id="video-grid" class="snap-grid"></div></section>
-    </main>
-  </div>
-  <script src="config.js"></script><script src="script.js"></script>
-  <script>
-    const vg=document.getElementById('video-grid'); const max=60;
-    for(let i=1;i<=max;i++){
-      const wrap=document.createElement('div'); wrap.style.padding='8px'; wrap.style.border='1px solid #e7ecf7'; wrap.style.borderRadius='12px'; wrap.style.background='#fff';
-      wrap.innerHTML=`<video controls preload="metadata" style="width:100%;border-radius:10px"><source src="chartVideo/video${i}.mp4" type="video/mp4"></video>`;
-      const vid=wrap.querySelector('video'); vid.onerror=()=>wrap.remove(); vg.appendChild(wrap);
-    }
-  </script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chart videos — OTU</title><link rel="stylesheet" href="style.css"></head><body>
+<aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
+<nav class="side-nav"><a href="index.html">Home</a><a class="active" href="chartvideo.html">Chart videos</a></nav></aside>
+<div class="page"><header class="topbar"><button class="burger" id="burger">☰</button></header>
+<main class="container"><section class="card"><h1>Chart videos</h1>
+<p>Upload MP4s to <code>ChartVideo/</code> as <code>video1.mp4</code>, <code>video2.mp4</code>, …</p>
+<div id="video-grid" class="snap-grid"></div></section></main>
+<footer class="footer"><div>© 2025 OTU</div></footer></div>
+<script src="config.js"></script><script src="script.js"></script>
+<script>
+  const vg=document.getElementById('video-grid'); const max=60;
+  for(let i=1;i<=max;i++){
+    const wrap=document.createElement('div'); wrap.className='card'; wrap.style.margin='0';
+    wrap.innerHTML=`<video controls preload="metadata" style="width:100%;border-radius:10px"><source src="ChartVideo/video${i}.mp4" type="video/mp4"></video>`;
+    const vid=wrap.querySelector('video'); vid.onerror=()=>wrap.remove(); vg.appendChild(wrap);
+  }
+</script></body></html>
