@@ -10,8 +10,10 @@
       transform:translateX(-220px); transition:transform .3s ease; padding:20px; z-index:1000; }
     .sidebar.active { transform:translateX(0); }
     .sidebar .brand { font-weight:bold; font-size:18px; margin-bottom:20px; color:#ffd166; }
-    .sidebar nav a { display:block; padding:10px; color:#fff; text-decoration:none; transition:background .2s; }
+    .sidebar nav a { display:block; padding:10px; color:#fff; text-decoration:none; }
     .sidebar nav a:hover, .sidebar nav a.active { background:#1c2541; border-radius:4px; }
+    .close-btn { background:none; border:none; color:#fff; font-size:22px; cursor:pointer; margin-bottom:10px; display:block; text-align:right; width:100%; }
+    .close-btn:hover { color:#ffd166; }
     /* Page */
     .page { margin-left:0; transition:margin-left .3s ease; padding:20px; }
     .sidebar.active ~ .page { margin-left:220px; }
@@ -31,6 +33,7 @@
 <body>
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
+    <button class="close-btn" id="closeSidebar">✕</button>
     <div class="brand">Options Trading University</div>
     <nav>
       <a href="index.html">Home</a>
@@ -61,7 +64,7 @@
         </div>
         <div class="accordion-item">
           <div class="accordion-header">💬 Community Access</div>
-          <div class="accordion-content">After joining, you’ll also be invited to our private trading group where you can ask live questions.</div>
+          <div class="accordion-content">After joining, you’ll be invited to our private trading group where you can ask live questions.</div>
         </div>
       </div>
     </main>
@@ -71,7 +74,9 @@
   <script>
     const burger=document.getElementById("burger");
     const sidebar=document.getElementById("sidebar");
-    burger.addEventListener("click",()=>{ sidebar.classList.toggle("active"); });
+    const closeBtn=document.getElementById("closeSidebar");
+    burger.addEventListener("click",()=>{ sidebar.classList.add("active"); });
+    closeBtn.addEventListener("click",()=>{ sidebar.classList.remove("active"); });
     document.querySelectorAll(".accordion-header").forEach(header=>{
       header.addEventListener("click",()=>{
         const content=header.nextElementSibling;
