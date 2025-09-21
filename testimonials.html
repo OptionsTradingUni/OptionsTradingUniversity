@@ -3,43 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Testimonials - OTU</title>
+  <title>Member Testimonials</title>
   <style>
-    body{margin:0;font-family:sans-serif;background:#f4f7ff;color:#0f1a33;}
-
-    /* 🔧 Global anchor reset */
-    a, a:visited, a:hover, a:active {
-      text-decoration:none !important;
-      color:inherit !important;
-      outline:none;
-    }
-
-    .sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:#0b1328;color:#fff;padding-top:10px;}
-    .brand{display:flex;align-items:center;gap:10px;padding:10px;font-weight:800;}
-    .brand-logo{width:30px;height:30px;border-radius:6px;object-fit:cover;}
-    .brand span{background:linear-gradient(90deg,#2a7fff,#ff4081);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;}
-    .side-nav{display:flex;flex-direction:column;padding:10px;gap:5px;}
-    .side-nav a{color:#d8e2ff;padding:8px;border-radius:6px;font-weight:600;display:block;}
-    .side-nav a.active{background:#163067;}
-
-    .page{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
-    .container{max-width:900px;margin:0 auto;padding:20px;}
-    .topbar{background:#fff;border-bottom:1px solid #e3e9f2;display:flex;justify-content:space-between;align-items:center;padding:10px;}
-    .burger{display:none;font-size:20px;background:none;border:none;cursor:pointer;animation:shake 2s infinite;}
-    @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-2px);}40%{transform:translateX(2px);}60%{transform:translateX(-2px);}80%{transform:translateX(2px);}}
-    .brand-inline{font-weight:900;background:linear-gradient(90deg,#2a7fff,#ff4081);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-
-    .testimonial{background:#fff;border:1px solid #e3e9f2;border-radius:10px;padding:16px;margin:14px 0;line-height:1.6;box-shadow:0 2px 6px rgba(0,0,0,0.04);}
-    .testimonial h4{margin:0;color:#2a7fff;font-size:17px;}
-    .testimonial p{margin:10px 0 0;color:#333;}
-
-    .footer{margin-top:auto;background:#0b1328;color:#9cb2ff;text-align:center;padding:12px;}
-    @media(max-width:768px){.sidebar{display:none;}.page{margin-left:0;}.burger{display:block;}}
+    body { margin:0; font-family:Arial,sans-serif; background:#eaf1ff; color:#0f1a33; }
+    a { text-decoration:none; color:inherit; }
+    .sidebar { position:fixed;top:0;left:0;bottom:0;width:220px;background:#0b1328;color:#fff;padding-top:10px; }
+    .brand { display:flex; align-items:center; gap:10px; padding:10px; font-weight:800; }
+    .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
+    .brand span { background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900; }
+    .side-nav { display:flex; flex-direction:column; padding:10px; gap:5px; }
+    .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; display:block; }
+    .side-nav a.active { background:#163067; }
+    .page { margin-left:220px; display:flex; flex-direction:column; min-height:100vh; }
+    .container { padding:20px; }
+    .topbar { background:#fff; border-bottom:1px solid #e3e9f2; padding:10px; }
+    h1 { color:#2a7fff; margin:0; }
+    .testimonial-card { background:#fff; border-radius:10px; margin:12px 0; padding:16px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    .testimonial-name { font-size:16px; font-weight:700; margin-bottom:6px; color:#2a7fff; }
+    .testimonial-text { font-size:14px; line-height:1.5; color:#333; }
+    .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
   </style>
 </head>
 <body>
-  <aside class="sidebar" id="sidebar">
-    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
+  <aside class="sidebar">
+    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>Options Trading University</span></div>
     <nav class="side-nav">
       <a href="index.html">Home</a>
       <a href="testimonials.html" class="active">Testimonials</a>
@@ -47,37 +34,35 @@
       <a href="glossary.html">Glossary</a>
     </nav>
   </aside>
-
   <div class="page">
-    <header class="topbar">
-      <button class="burger" id="burger">☰</button>
-      <div class="brand-inline">Options Trading University</div>
-      <span></span>
-    </header>
-
+    <header class="topbar"><h1>Member Testimonials</h1></header>
     <main class="container">
-      <h1 style="color:#2a7fff">🌟 Member Testimonials</h1>
-      <p style="color:#555;margin-bottom:20px;">See what real members say about their journey. Each testimonial is styled for easy reading, no clutter.</p>
-      <div id="testimonials-list"></div>
+      <div id="testimonials-container"></div>
     </main>
-
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
-
-  <script src="config.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded",async()=>{
-      const data=await loadJSON("testimonials.json");
-      const list=document.getElementById("testimonials-list");
-      data.forEach(t=>{
-        const card=document.createElement("div");
-        card.className="testimonial";
-        card.innerHTML=`<h4>${t.name}</h4><p>${t.testimonial}</p>`;
-        list.appendChild(card);
+    fetch('testimonials.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('testimonials-container');
+        data.forEach(t => {
+          const card = document.createElement('div');
+          card.className = 'testimonial-card';
+          const name = document.createElement('div');
+          name.className = 'testimonial-name';
+          name.textContent = t.name;
+          const txt = document.createElement('div');
+          txt.className = 'testimonial-text';
+          txt.textContent = t.testimonial;
+          card.appendChild(name);
+          card.appendChild(txt);
+          container.appendChild(card);
+        });
+      })
+      .catch(err => {
+        console.error('Could not load testimonials.json', err);
       });
-    });
-    const burger=document.getElementById('burger');const sidebar=document.getElementById('sidebar');
-    burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
   </script>
 </body>
 </html>
