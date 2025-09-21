@@ -2,12 +2,15 @@
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Watchlist — OTU</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html">OTU</a></div></aside>
+  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
+    <nav class="side-nav"><a href="index.html">Home</a><a href="watchlist.html" class="active">Watchlist</a></nav></aside>
   <div class="page"><header class="topbar"><button class="burger" id="burger">☰</button></header>
     <main class="container">
-      <h1>Watchlist</h1>
-      <div class="watchlist-controls"><input id="watchlist-input" placeholder="Add symbol"><button class="btn sm" id="watchlist-add">Add</button></div>
-      <div class="watchlist-grid" id="watchlist-grid"></div>
+      <section class="card"><h1>Live Watchlist</h1>
+        <div class="watchlist-controls"><input id="watchlist-input" placeholder="Add symbol (AAPL)"><button class="btn" id="watchlist-add">Add</button></div>
+        <div class="watchlist-grid" id="watchlist-grid"></div>
+        <p class="fineprint" style="color:#66748e">Data via Twelve Data with short cache to protect quota.</p>
+      </section>
     </main>
   </div>
   <script src="config.js"></script><script src="script.js"></script>
