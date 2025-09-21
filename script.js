@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 function countUp(el,target){
   let val=0; const step=Math.ceil(target/60);
   function tick(){ val+=step; if(val>=target) val=target;
-    el.textContent=el.dataset.count.includes('%') ? val+'%' : val;
+    el.textContent=el.dataset.count.includes('%') ? val+'%' : val+'+';
     if(val<target) requestAnimationFrame(tick);
   }
   tick();
@@ -22,13 +22,10 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.stat h2').forEach(h=>{
     const t=parseInt(h.dataset.count||'0',10);
     if(t>0) countUp(h,t);
-    if(!h.textContent.includes('%') && !h.textContent.includes('+')){
-      h.textContent = h.textContent + '+';
-    }
   });
 });
 
-/* ===== Sidebar shake animation ===== */
+/* ===== Sidebar shake ===== */
 document.addEventListener('DOMContentLoaded',()=>{
   const sb=document.getElementById('sidebar');
   const burger=document.getElementById('burger');
@@ -112,29 +109,51 @@ async function loadVideos(){
 document.addEventListener('DOMContentLoaded', loadVideos);
 
 /* ===== Watchlist Loader ===== */
-async function loadWatchlist(){
-  const grid=document.getElementById('watchlist-grid'); if(!grid) return;
+async function tdQuote(symbol){
+  const key = CONFIG.API_KEY;
+  const url = `https://api.twelvedata.com/quote?symbol=${encodeURIComponent(symbol)}&apikey=${encodeURIComponent(key)}`;
+  const r = await fetch(url); const j = await r.json();
+  if(j.status==="error" || !j.symbol) throw new Error(j.message||"bad");
+  return j;
+}
+function watchTile(q){
+  const d=document.createElement('div'); d.className='tile';
+  const chg=parseFloat(q.percent_change || 0);
+  if(!isNaN(chg)) d.classList.add(chg>=0?'up':'down');
+  d.innerHTML=`<div class="sym">${q.symbol}</div>
+               <div class="px">$${Number(q.price).toFixed(2)}</div>
+               <div class="chg">${chg>=0?'▲':'▼'} ${Math.abs(chg).toFixed(2)}%</div>`;
+  return d;
+}
+async function initWatchlist(){
+  const grid=document.getElementById('watchlist-grid');
   const input=document.getElementById('watchlist-input');
   const add=document.getElementById('watchlist-add');
-  async function fetchSymbol(sym){
-    try{ const r=await fetch(`https://api.twelvedata.com/price?symbol=${sym}&apikey=${CONFIG.API_KEY}`);
-      const d=await r.json(); return d.price; }catch{ return null; }
+  if(!grid||!input||!add) return;
+  let list=JSON.parse(localStorage.getItem('otu_watchlist')||'[]');
+  if(list.length===0){ list=["AAPL","MSFT","TSLA","NVDA","SPY"];
+    localStorage.setItem('otu_watchlist',JSON.stringify(list)); }
+  async function refresh(){
+    grid.innerHTML='';
+    for(const sym of list){
+      try{ const q=await tdQuote(sym); grid.appendChild(watchTile(q)); }
+      catch(e){ const t=document.createElement('div'); t.className='tile'; t.textContent=sym+" — error"; grid.appendChild(t); }
+    }
   }
   add.addEventListener('click',async()=>{
-    const s=input.value.trim().toUpperCase(); if(!s) return;
-    const row=document.createElement('div'); row.textContent=`${s}: ...`; grid.appendChild(row);
-    const p=await fetchSymbol(s); if(p) row.textContent=`${s}: $${p}`;
+    const sym=input.value.trim().toUpperCase();
+    if(sym&&!list.includes(sym)){ list.push(sym); localStorage.setItem('otu_watchlist',JSON.stringify(list)); await refresh(); }
+    input.value='';
   });
+  refresh(); setInterval(refresh,60000);
 }
-document.addEventListener('DOMContentLoaded', loadWatchlist);
+document.addEventListener('DOMContentLoaded', initWatchlist);
 
 /* ===== JSON Loaders ===== */
 async function loadJSON(url){ try{ const r=await fetch(url); return await r.json(); }catch{ return []; } }
-
-/* Modules */
 async function loadModules(){
   const list=document.getElementById('modules-list'); if(!list) return;
-  const data=await loadJSON("data/modules.json");
+  const data=await loadJSON(CONFIG.MODULES);
   data.forEach(m=>{
     const item=document.createElement('div'); item.className='accordion';
     item.innerHTML=`<div class="acc-head">${m.title}</div><div class="acc-body">${m.content}</div>`;
@@ -144,10 +163,9 @@ async function loadModules(){
 }
 document.addEventListener('DOMContentLoaded', loadModules);
 
-/* Glossary */
 async function loadGlossary(){
   const acc=document.getElementById('glossary-acc'); if(!acc) return;
-  const data=await loadJSON("data/glossary.json");
+  const data=await loadJSON(CONFIG.GLOSSARY);
   data.forEach(g=>{
     const item=document.createElement('div'); item.className='accordion';
     item.innerHTML=`<div class="acc-head">${g.term}</div><div class="acc-body">${g.definition}</div>`;
@@ -157,10 +175,9 @@ async function loadGlossary(){
 }
 document.addEventListener('DOMContentLoaded', loadGlossary);
 
-/* Testimonials */
 async function loadTestimonials(){
   const box=document.getElementById('testi'); if(!box) return;
-  const data=await loadJSON("data/testimonials.json");
+  const data=await loadJSON(CONFIG.TESTIMONIALS);
   data.forEach(t=>{
     const card=document.createElement('div'); card.className='card';
     card.innerHTML=`<p>"${t.text}"</p><p><b>- ${t.name}</b></p>`;
@@ -169,10 +186,9 @@ async function loadTestimonials(){
 }
 document.addEventListener('DOMContentLoaded', loadTestimonials);
 
-/* Team */
 async function loadTeam(){
   const grid=document.getElementById('team-grid'); if(!grid) return;
-  const data=await loadJSON("data/team.json");
+  const data=await loadJSON(CONFIG.TEAM);
   data.forEach(p=>{
     const card=document.createElement('div'); card.className='card';
     card.innerHTML=`<img src="team/${p.photo}" alt=""><h3>${p.name}</h3><p>${p.role}</p>`;
