@@ -6,7 +6,13 @@
   <title>Training Modules - OTU</title>
   <style>
     body { margin:0; font-family:sans-serif; background:#f4f7ff; color:#0f1a33; }
-    a { text-decoration:none; }
+
+    /* 🔧 Global anchor reset: no underlines, no blue/purple */
+    a, a:visited, a:hover, a:active {
+      text-decoration: none !important;
+      color: inherit !important;
+      outline: none;
+    }
 
     /* Sidebar */
     .sidebar { position:fixed; top:0; left:0; bottom:0; width:220px; background:#0b1328; color:#fff; padding-top:10px; }
@@ -73,8 +79,8 @@
     <main class="container">
       <h1 style="color:#1749d4">📘 Training Modules</h1>
       <p style="color:#555;margin-bottom:20px;">
-        Explore our structured modules. Click each title to expand detailed notes. The content is 
-        spaced and easy to read like a study guide.
+        Explore our structured modules. Click each title to expand detailed notes. 
+        Everything is styled for easy reading — no clutter, no underlines.
       </p>
       <div id="modules-list"></div>
     </main>
@@ -92,7 +98,7 @@
         const card=document.createElement("div");
         card.className="card";
 
-        // Turn module content into paragraphs
+        // Split into paragraphs for readability
         const paragraphs = m.content.split("\n").map(p=>`<p>${p.trim()}</p>`).join("");
 
         card.innerHTML=`
