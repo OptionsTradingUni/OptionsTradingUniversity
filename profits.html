@@ -2,13 +2,11 @@
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Results — OTU</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html">OTU</a></div></aside>
-  <div class="page">
-    <header class="topbar"><button class="burger" id="burger">☰</button></header>
+  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
+    <nav class="side-nav"><a href="index.html">Home</a><a href="profits.html" class="active">Results</a></nav></aside>
+  <div class="page"><header class="topbar"><button class="burger" id="burger">☰</button></header>
     <main class="container">
-      <h1>Results</h1>
-      <p>Snapshots are automatically loaded from the <code>/profits</code> folder. Add any number of images, and they will appear here.</p>
-      <div class="snap-grid" id="profits-grid"></div>
+      <section class="card"><h1>Profit snapshots</h1><p>Upload images to <code>/profits</code> named profit01.jpg, profit02.jpg, … Any common extension works.</p><div class="snap-grid" id="profits-grid"></div></section>
     </main>
   </div>
   <script src="config.js"></script><script src="script.js"></script>
