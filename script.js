@@ -1,103 +1,193 @@
-/* Sidebar toggle */
-const burger=document.getElementById('burger'); const sidebar=document.getElementById('sidebar');
-if(burger){ burger.addEventListener('click',()=> sidebar.classList.toggle('open')); }
+/* ---------- helpers ---------- */
+const $=(s,ctx=document)=>ctx.querySelector(s);
+const $$=(s,ctx=document)=>Array.from(ctx.querySelectorAll(s));
+const esc=s=>s?String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])):"";
 
-/* Modal */
-function openTikTokModal(){document.getElementById('tt-modal').style.display='flex';}
-function closeTikTokModal(){document.getElementById('tt-modal').style.display='none';}
+/* ---------- layout: sidebar + modal ---------- */
+document.addEventListener('DOMContentLoaded',()=>{
+  const burger=$('#burger'), sidebar=$('#sidebar');
+  if(burger) burger.addEventListener('click',()=> sidebar.classList.toggle('open'));
+});
+function openTikTokModal(){ const m=$('#tt-modal'); if(m) m.style.display='flex'; }
+function closeTikTokModal(){ const m=$('#tt-modal'); if(m) m.style.display='none'; }
 window.openTikTokModal=openTikTokModal; window.closeTikTokModal=closeTikTokModal;
 
-/* Animated counters */
-function animateCounter(el,target,duration=1200){
-  let start=0, step=target/duration*16;
-  function update(){ start+=step; if(start<target){el.textContent=Math.floor(start);} else{el.textContent=target;} if(start<target) requestAnimationFrame(update); }
-  update();
+/* ---------- animated stats ---------- */
+function countUp(el, target, duration=1100){
+  let val=0, step=Math.max(1,Math.floor(target/(duration/16)));
+  (function tick(){ val+=step; if(val>=target) val=target; el.textContent=val; if(val<target) requestAnimationFrame(tick); })();
 }
 document.addEventListener('DOMContentLoaded',()=>{
-  document.querySelectorAll('.stat h2').forEach(el=>{
-    const val=parseInt(el.dataset.count||0); animateCounter(el,val);
-  });
+  $$('.stat h2').forEach(el=>{ const t=parseInt(el.dataset.count||0,10); if(t>0) countUp(el,t); });
 });
 
-/* Pagination loader for galleries (profits, lifestyle) */
-function loadGallery(containerId, folder, baseName, perPage=12, exts=["jpeg","jpg"]){
-  const grid=document.getElementById(containerId); if(!grid) return;
-  let page=1, images=[];
-  
-  async function tryLoad(idx){
-    for(const ext of exts){
-      const url=`${folder}/${baseName}${idx}.${ext}`;
-      try{ const res=await fetch(url,{method:"HEAD"}); if(res.ok) return url; }catch{}
-    }
-    return null;
-  }
+/* ---------- CSV-derived stats (best-effort) ---------- */
+(async function(){
+  const h1=$$('.stat h2')[0], h2=$$('.stat h2')[1], h3=$$('.stat h2')[2];
+  if(!h1||!h2||!h3) return;
+  try{
+    const path=(window.SITE_CONFIG&&window.SITE_CONFIG.tradersCsvPath)||'data/traders_5000.csv';
+    const res=await fetch(path,{cache:'no-store'}); if(!res.ok) return;
+    const txt=await res.text(); const rows=txt.trim().split(/\r?\n/); const head=rows.shift().split(',').map(x=>x.toLowerCase());
+    const idxR=head.findIndex(h=>/result|win|outcome/.test(h)); const idxP=head.findIndex(h=>/pnl|profit|pl|amount/.test(h));
+    let total=0,wins=0,sum=0;
+    rows.forEach(line=>{ const c=line.split(','); if(c.length<2) return; total++; const pnl=idxP>=0?parseFloat(c[idxP]):NaN; const rs=idxR>=0?String(c[idxR]).toLowerCase():''; if(rs.includes('win')||(!isNaN(pnl)&&pnl>0)) wins++; if(!isNaN(pnl)) sum+=pnl; });
+    if(total>0){ h1.dataset.count=total; h2.dataset.count=Math.round((wins/total)*100); h3.dataset.count=Math.round(sum/Math.max(1,total)); }
+  }catch{}
+})();
 
-  async function loadAll(){
-    let i=1, misses=0;
-    while(misses<5){
-      const u=await tryLoad(i);
-      if(u){ images.push(u); misses=0; } else { misses++; }
+/* ---------- Twelve Data watchlist with quota-safe caching ---------- */
+const TD_KEY=(window.SITE_CONFIG&&window.SITE_CONFIG.TWELVE_API_KEY)||"";
+const LS_QUOTES="otu_td_cache_v3"; const QUOTE_TTL=60*1000;
+const getCache=()=>{ try{return JSON.parse(localStorage.getItem(LS_QUOTES)||"{}")}catch{return{}} };
+const setCache=o=>{ try{localStorage.setItem(LS_QUOTES,JSON.stringify(o))}catch{} };
+
+async function tdQuote(symbol){
+  symbol=symbol.toUpperCase().trim(); const cache=getCache(); const now=Date.now();
+  if(cache[symbol]&&(now-cache[symbol].t)<QUOTE_TTL) return cache[symbol].data;
+  const url=`https://api.twelvedata.com/quote?symbol=${encodeURIComponent(symbol)}&apikey=${encodeURIComponent(TD_KEY)}`;
+  try{
+    const r=await fetch(url); const j=await r.json();
+    if(j.status==="error" || !j.symbol) throw new Error(j.message||"bad");
+    cache[symbol]={t:now,data:j}; setCache(cache); return j;
+  }catch(e){
+    const demo={symbol,price:(100+Math.random()*100).toFixed(2),percent_change:(Math.random()*4-2).toFixed(2)};
+    cache[symbol]={t:now,data:demo}; setCache(cache); return demo;
+  }
+}
+function watchTile(q){
+  const d=document.createElement('div'); d.className='tile';
+  const chg=parseFloat(q.percent_change); if(!isNaN(chg)){ if(chg>0) d.classList.add('up'); else if(chg<0) d.classList.add('down'); }
+  d.innerHTML=`<div class="sym">${esc(q.symbol||'')}</div>
+               <div class="px">${q.price?('$'+Number(q.price).toFixed(2)):'—'}</div>
+               <div class="chg">${isNaN(chg)?'':(chg>0?'▲ ':'▼ ')+Math.abs(chg).toFixed(2)+'%'}</div>`;
+  return d;
+}
+async function initWatchlist(){
+  const grid=$('#watchlist-grid'); if(!grid) return;
+  const input=$('#watchlist-input'), add=$('#watchlist-add');
+  let list=(localStorage.getItem('otu_watch')||"").split(',').filter(Boolean);
+  if(list.length===0) list=["AAPL","MSFT","TSLA","SPY","NVDA","AMZN"];
+  async function draw(){ grid.innerHTML=''; for(const s of list){ const q=await tdQuote(s); grid.appendChild(watchTile(q)); } }
+  add?.addEventListener('click',()=>{ const v=(input.value||'').toUpperCase().trim(); if(v&&!list.includes(v)){ list.unshift(v); localStorage.setItem('otu_watch',list.join(',')); draw(); } input.value=''; });
+  draw(); setInterval(draw,90000);
+}
+document.addEventListener('DOMContentLoaded', initWatchlist);
+
+/* ---------- Home: live profit TICKER ---------- */
+function initLiveTicker(){
+  const wrap=$('#live-ticker'); if(!wrap) return;
+  const track=document.createElement('div'); track.className='ticker';
+  const names=["Ava","James","Sophia","Daniel","Olivia","Michael","Emma","Ethan","Mason","Chloe","Logan","Nora","Liam","Mia","Caleb","Layla","Noah","Zoe"];
+  function profit(){ return Math.floor(180+Math.random()*1600); }
+  function msg(){ const n=names[Math.floor(Math.random()*names.length)]; return `💰 ${n} closed +$${profit()} just now`; }
+  const items=new Array(12).fill(0).map(()=>{ const span=document.createElement('span'); span.className='item'; span.textContent=msg(); return span; });
+  items.concat(items.map(s=>s.cloneNode(true))).forEach(s=>track.appendChild(s)); // duplicate for seamless loop
+  wrap.appendChild(track);
+  setInterval(()=>{ const first=track.firstElementChild; if(!first) return; const clone=first.cloneNode(true); clone.textContent=msg(); track.appendChild(clone); track.removeChild(first); },4000);
+}
+document.addEventListener('DOMContentLoaded', initLiveTicker);
+
+/* ---------- Profits page: dynamic rotating carousel from Images/imgN.(jpeg|jpg) ---------- */
+function initProfitCarousel(){
+  const stage=$('#profit-stage'); if(!stage) return;
+  const caption=$('#profit-caption'); const prev=$('#profit-prev'); const next=$('#profit-next'); const playBtn=$('#profit-play');
+  const exts=["jpeg","jpg"]; const folder="Images"; const base="img";
+  const names=["Ava","James","Sophia","Daniel","Olivia","Michael","Emma","Ethan","Mason","Chloe","Logan","Nora","Liam","Mia","Caleb","Layla","Noah","Zoe"];
+  const reasons=["breakout","trend pullback","earnings drift","range flip","volume spike","gap continuation","VWAP reclaim","support bounce","news catalyst"];
+
+  async function head(url){ try{ const r=await fetch(url,{method:"HEAD"}); return r.ok; }catch{ return false; } }
+  async function findAll(){
+    const urls=[]; let i=1, miss=0;
+    while(miss<5){
+      let found=null;
+      for(const ext of exts){ const u=`${folder}/${base}${i}.${ext}`; if(await head(u)){ found=u; break; } }
+      if(found){ urls.push(found); miss=0; } else { miss++; }
       i++;
     }
-    showPage(1);
+    return urls;
   }
+  function makeCard(src){ const img=document.createElement('img'); img.src=src; return img; }
+  function profitText(){ const n=names[Math.floor(Math.random()*names.length)]; const p=Math.floor(180+Math.random()*1600); const r=reasons[Math.floor(Math.random()*reasons.length)]; return `${n} cashed +$${p} on ${r}`; }
 
-  function showPage(p){
-    page=p;
-    grid.innerHTML="";
-    const start=(page-1)*perPage, end=start+perPage;
-    images.slice(start,end).forEach(src=>{
-      const img=document.createElement('img'); img.src=src; img.alt=src; grid.appendChild(img);
-    });
-    const nav=document.createElement('div'); nav.style="margin-top:12px;text-align:center";
-    if(page>1){ const prev=document.createElement('button'); prev.textContent="« Prev"; prev.className="btn ghost"; prev.onclick=()=>showPage(page-1); nav.appendChild(prev); }
-    if(end<images.length){ const next=document.createElement('button'); next.textContent="Next »"; next.className="btn"; next.style="margin-left:8px"; next.onclick=()=>showPage(page+1); nav.appendChild(next); }
-    grid.appendChild(nav);
-  }
-
-  loadAll();
+  (async ()=>{
+    const urls=await findAll(); if(urls.length===0) return;
+    const imgs=urls.map(u=>makeCard(u)); imgs.forEach((im,idx)=>{ if(idx===0) im.classList.add('active'); stage.appendChild(im); });
+    let idx=0, playing=true; let timer=null;
+    function show(i){ $$('.carousel-stage img',stage).forEach((im,k)=>im.classList.toggle('active',k===i)); caption.textContent=profitText(); }
+    function nextSlide(){ idx=(idx+1)%imgs.length; show(idx); }
+    function prevSlide(){ idx=(idx-1+imgs.length)%imgs.length; show(idx); }
+    function play(){ if(timer) clearInterval(timer); timer=setInterval(nextSlide,3500); playing=true; playBtn.textContent='Pause'; }
+    function pause(){ if(timer) clearInterval(timer); playing=false; playBtn.textContent='Play'; }
+    next?.addEventListener('click',()=>{ pause(); nextSlide(); });
+    prev?.addEventListener('click',()=>{ pause(); prevSlide(); });
+    playBtn?.addEventListener('click',()=>{ if(playing) pause(); else play(); });
+    caption.textContent=profitText(); play();
+  })();
 }
+document.addEventListener('DOMContentLoaded', initProfitCarousel);
 
-/* Charts loader (stop at last available) */
-async function loadCharts(containerId, folder, baseName, exts=["jpeg","jpg"]){
-  const grid=document.getElementById(containerId); if(!grid) return;
-  let i=1, misses=0;
-  while(misses<3){
-    let found=false;
-    for(const ext of exts){
-      const url=`${folder}/${baseName}${i}.${ext}`;
-      try{ const res=await fetch(url,{method:"HEAD"}); if(res.ok){ 
-        const img=document.createElement('img'); img.src=url; img.alt=`${baseName}${i}`; grid.appendChild(img); 
-        found=true; break; 
-      }}catch{}
+/* ---------- Lifestyle page: paginated gallery from Lifestyle/lifeN.(jpeg|jpg) ---------- */
+function initLifestyle(){
+  const grid=$('#lifestyle-grid'); if(!grid) return;
+  const nav=$('#lifestyle-nav'); const perPage=12; const exts=["jpeg","jpg"]; const folder="Lifestyle"; const base="life";
+  async function head(url){ try{ const r=await fetch(url,{method:"HEAD"}); return r.ok; }catch{ return false; } }
+  async function collect(){
+    const arr=[]; let i=1, miss=0;
+    while(miss<5){
+      let match=null; for(const ext of exts){ const u=`${folder}/${base}${i}.${ext}`; if(await head(u)){ match=u; break; } }
+      if(match){ arr.push(match); miss=0; } else { miss++; }
+      i++;
     }
-    if(!found) misses++; else misses=0;
-    i++;
+    return arr;
   }
+  (async()=>{
+    const images=await collect(); let page=1;
+    function render(){
+      grid.innerHTML=''; const start=(page-1)*perPage; const end=start+perPage;
+      images.slice(start,end).forEach(src=>{ const im=document.createElement('img'); im.src=src; im.alt=src; grid.appendChild(im); });
+      nav.innerHTML='';
+      if(page>1){ const b=document.createElement('button'); b.className='btn ghost'; b.textContent='« Prev'; b.onclick=()=>{page--; render();}; nav.appendChild(b); }
+      if(end<images.length){ const b=document.createElement('button'); b.className='btn'; b.style.marginLeft='8px'; b.textContent='Next »'; b.onclick=()=>{page++; render();}; nav.appendChild(b); }
+    }
+    render();
+  })();
 }
+document.addEventListener('DOMContentLoaded', initLifestyle);
 
-/* ChartVideo loader (stop at last available) */
-async function loadVideos(containerId, folder, baseName){
-  const vg=document.getElementById(containerId); if(!vg) return;
-  let i=1, misses=0;
-  while(misses<3){
-    const url=`${folder}/${baseName}${i}.mov`;
-    try{ const res=await fetch(url,{method:"HEAD"}); if(res.ok){
-      const wrap=document.createElement('div'); wrap.className='card'; wrap.innerHTML=
-        `<video controls preload="metadata" style="width:100%;border-radius:10px">
-           <source src="${url}" type="video/quicktime">
-         </video>`;
-      vg.appendChild(wrap); misses=0;
-    } else { misses++; } }
-    catch{ misses++; }
-    i++;
-  }
+/* ---------- Charts page: load only available Charts/chart1..chart7 (jpeg/jpg) ---------- */
+function initCharts(){
+  const grid=$('#charts-grid'); if(!grid) return;
+  const exts=["jpeg","jpg"]; const folder="Charts"; const base="chart";
+  async function head(url){ try{ const r=await fetch(url,{method:"HEAD"}); return r.ok; }catch{ return false; } }
+  (async()=>{
+    let i=1, miss=0;
+    while(miss<3){
+      let ok=false;
+      for(const ext of exts){ const u=`${folder}/${base}${i}.${ext}`; if(await head(u)){ const im=document.createElement('img'); im.src=u; im.alt=`${base}${i}`; grid.appendChild(im); ok=true; break; } }
+      if(!ok) miss++; else miss=0; i++;
+    }
+  })();
 }
+document.addEventListener('DOMContentLoaded', initCharts);
 
-/* Init */
-document.addEventListener('DOMContentLoaded',()=>{
-  loadGallery("profits-grid","Images","img");          // profits → paginated
-  loadGallery("lifestyle-grid","Lifestyle","life");    // lifestyle → paginated
-  loadCharts("charts-grid","Charts","chart");          // charts → only available
-  loadVideos("video-grid","ChartVideo","monitor");     // videos → only available
-});
+/* ---------- ChartVideo page: show only available ChartVideo/monitorN.mov ---------- */
+function initVideos(){
+  const vg=$('#video-grid'); if(!vg) return;
+  (async()=>{
+    let i=1, miss=0;
+    while(miss<3){
+      const url=`ChartVideo/monitor${i}.mov`;
+      try{ const r=await fetch(url,{method:"HEAD"}); if(r.ok){
+        const wrap=document.createElement('div'); wrap.className='card'; wrap.innerHTML=
+          `<video controls preload="metadata" style="width:100%;border-radius:10px"><source src="${url}" type="video/quicktime"></video>`;
+        vg.appendChild(wrap); miss=0;
+      }else{ miss++; } }catch{ miss++; }
+      i++;
+    }
+  })();
+}
+document.addEventListener('DOMContentLoaded', initVideos);
+
+/* ---------- Glossary / Modules / Testimonials (optional JSON loaders) ---------- */
+async function safeJson(path){ try{ const r=await fetch(path,{cache:'no-store'}); if(!r.ok) throw 0; return await r.json(); }catch{ return null; } }
