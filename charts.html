@@ -1,44 +1,25 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Charts - OTU</title>
-  <link rel="stylesheet" href="style.css">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Charts - OTU</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#f4f7ff;color:#0f1a33;}
+a,a:visited,a:hover,a:active{text-decoration:none!important;color:inherit!important;outline:none;}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:#0b1328;color:#fff;padding-top:10px;}
+.page{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
+.container{max-width:900px;margin:0 auto;padding:20px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.grid img{width:100%;height:180px;object-fit:cover;border-radius:10px;cursor:pointer;}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);display:none;justify-content:center;align-items:center;}
+.modal img{max-width:90%;max-height:90%;border-radius:10px;}
+</style>
 </head>
 <body>
-  <aside class="sidebar" id="sidebar">
-    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
-    <nav class="side-nav">
-      <a href="index.html">Home</a>
-      <a href="liveprofits.html">Live Profits</a>
-      <a href="watchlist.html">Watchlist</a>
-      <a href="profits.html">Profit Snapshots</a>
-      <a href="lifestyle.html">Lifestyle</a>
-      <a href="charts.html" class="active">Charts</a>
-      <a href="chartvideo.html">Videos</a>
-      <a href="modules.html">Modules</a>
-      <a href="glossary.html">Glossary</a>
-      <a href="testimonials.html">Testimonials</a>
-      <a href="team.html">Team</a>
-      <a href="contact.html">Contact</a>
-      <a href="terms.html">Disclaimer</a>
-    </nav>
-  </aside>
-
-  <div class="page">
-    <header class="topbar"><button class="burger" id="burger">☰</button><h2>Charts</h2><span></span></header>
-    <main class="container">
-      <section class="card">
-        <h3>Chart Gallery</h3>
-        <div id="charts-carousel" class="carousel">
-          <div class="dots" id="charts-dots"></div>
-        </div>
-      </section>
-    </main>
-    <footer class="footer">© 2025 Options Trading University</footer>
-  </div>
-
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+  <aside class="sidebar"><div class="brand"><span>OTU</span></div></aside>
+  <div class="page"><main class="container"><h1 style="color:#1749d4">📈 Trading Charts</h1><div id="charts" class="grid"></div></main></div>
+  <div id="modal" class="modal" onclick="this.style.display='none'"><img></div>
+  <script>
+    function loadCharts(){const c=document.getElementById("charts");for(let i=1;i<=20;i++){let img=new Image();img.src=`Charts/chart${i}.jpeg`;img.onerror=()=>{};img.onload=()=>{img.onclick=()=>{document.querySelector('#modal img').src=img.src;document.getElementById('modal').style.display='flex';};c.appendChild(img);};}}
+    document.addEventListener("DOMContentLoaded",loadCharts);
+  </script>
 </body>
 </html>
