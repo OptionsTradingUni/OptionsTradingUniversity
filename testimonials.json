@@ -1,58 +1,103 @@
 [
-  {"name": "Jessica Alvarez", "testimonial": "I joined OTU after struggling with options for months. The mentorship here gave me clarity and structure. I went from random trades to disciplined setups."},
-  {"name": "Michael Chen", "testimonial": "The modules are practical and easy to follow. I especially liked how each lesson connects to real trade examples. The Discord community is also a big plus."},
-  {"name": "David Thompson", "testimonial": "Before OTU I had blown two small accounts. With the strategies I learned here, I finally managed to stay consistent and protect my capital."},
-  {"name": "Sarah Patel", "testimonial": "What makes OTU different is the accountability. You are not just watching videos, you are interacting with mentors and other traders daily."},
-  {"name": "Brandon Lewis", "testimonial": "The live profit feed gave me confidence that these strategies are actually applied in real time, not just theory. Highly recommend to anyone serious."},
-  {"name": "Emily Davis", "testimonial": "I joined as a complete beginner. The glossary and modules explained everything step by step. I finally understood Greeks and risk management."},
-  {"name": "Anthony Wilson", "testimonial": "Mentorship calls alone are worth the fee. It's rare to find educators who actually trade and show receipts. OTU does exactly that."},
-  {"name": "Rachel Morgan", "testimonial": "I’ve been trading stocks for 3 years but avoided options because they seemed complex. OTU simplified it and now options are a key part of my strategy."},
-  {"name": "Daniel Carter", "testimonial": "Transparent, supportive, and realistic. They don’t promise Lambos overnight. They teach you to manage risk and build long-term consistency."},
-  {"name": "Sophia Martinez", "testimonial": "I work full-time so I needed a flexible program. OTU’s lessons and recorded sessions fit into my schedule perfectly."},
-
-  {"name": "Joshua Brooks", "testimonial": "At first I thought this was just another trading course, but the mentorship made all the difference. Real strategies, real results."},
-  {"name": "Hannah White", "testimonial": "I finally understand how to set up spreads and manage risk thanks to the simple breakdowns in the modules."},
-  {"name": "Kevin Johnson", "testimonial": "The profit snapshots motivated me to stay disciplined and not chase unrealistic gains. Slow and steady works."},
-  {"name": "Maria Lopez", "testimonial": "The glossary section was surprisingly useful. It cleared up so many confusing terms that I saw online."},
-  {"name": "Christopher Green", "testimonial": "What I liked most is how real the community feels. People share both wins and mistakes, which is valuable."},
-  {"name": "Olivia Baker", "testimonial": "I’ve tried YouTube and free courses but OTU put everything together in a structured way that actually made sense."},
-  {"name": "Matthew Evans", "testimonial": "The watchlist tool is a game changer. I can follow along with the same stocks as the mentors."},
-  {"name": "Chloe Richardson", "testimonial": "The lifestyle gallery isn’t just about flexing—it shows what’s possible if you put in the work."},
-  {"name": "William Foster", "testimonial": "My first month I just studied the modules and asked questions in DM. In month two I placed my first profitable spread."},
-  {"name": "Grace Phillips", "testimonial": "The team is approachable. I was nervous to DM but they actually responded and helped me."},
-
-  {"name": "Benjamin Scott", "testimonial": "OTU taught me to trade with rules. No more random YOLO options plays. Now I have a plan."},
-  {"name": "Ella Turner", "testimonial": "The disclaimer is clear: no guarantees. That honesty is refreshing compared to hype trading groups."},
-  {"name": "Jack Hall", "testimonial": "The modules expand and collapse easily, which made reading on mobile super comfortable."},
-  {"name": "Ava Mitchell", "testimonial": "I connected with other traders in my city through OTU. Networking alone is worth it."},
-  {"name": "Logan Adams", "testimonial": "My favorite part is the live profits sidebar. Seeing the feed keeps me motivated."},
-  {"name": "Charlotte Wright", "testimonial": "The mentor known as 'Wealth Prince' gave me advice that literally saved me from a bad trade."},
-  {"name": "James King", "testimonial": "Finally a program that balances theory with execution. Not just boring slides."},
-  {"name": "Isabella Young", "testimonial": "I learned to respect stop losses and manage risk. My account is healthier now."},
-  {"name": "Ethan Hill", "testimonial": "I thought $50 membership wasn’t worth it, but after two trades it paid for itself."},
-  {"name": "Amelia Allen", "testimonial": "The profits gallery is real. It’s not edited screenshots. I’ve sent my own too."},
-
-  {"name": "Henry Collins", "testimonial": "I improved my win rate from 40% to 70% by applying the setups OTU teaches."},
-  {"name": "Mia Rivera", "testimonial": "The sidebar makes navigation so easy. Everything is just one click away."},
-  {"name": "Jacob Morris", "testimonial": "I liked that the team kept reminding us: ‘discipline over hype’. Needed to hear that."},
-  {"name": "Scarlett Rogers", "testimonial": "The terms page made me trust the site more. They are not hiding risks."},
-  {"name": "Alexander Cook", "testimonial": "The lifestyle carousel shows what’s possible but also reminds you it takes years."},
-  {"name": "Lily Bailey", "testimonial": "I was skeptical but after 3 months, my trading journal shows real improvement."},
-  {"name": "Mason Parker", "testimonial": "OTU is not a pump group. They focus on education first. That’s the difference."},
-  {"name": "Zoe Barnes", "testimonial": "The glossary gave me confidence to actually talk to other traders without sounding clueless."},
-  {"name": "Lucas Kelly", "testimonial": "I love how mobile-friendly the site is. I can study on my iPhone easily."},
-  {"name": "Aria Bennett", "testimonial": "Every module builds on the previous one. It feels like a real curriculum."},
-
-  {"name": "Owen Reed", "testimonial": "I joined to learn calls and puts, but stayed for spreads and risk management."},
-  {"name": "Ella Cooper", "testimonial": "The contact page made it easy to reach out. Support actually replies fast."},
-  {"name": "Nathan Ward", "testimonial": "The profit feed keeps me focused. Seeing others succeed pushes me to log my own trades."},
-  {"name": "Harper Gray", "testimonial": "My biggest win wasn’t money, it was confidence. OTU helped me trust my setups."},
-  {"name": "Samuel Hughes", "testimonial": "Charts and chart videos are helpful. It’s like learning directly from a trading desk."},
-  {"name": "Madison Price", "testimonial": "I came for the hype, stayed for the knowledge. That says it all."},
-  {"name": "Leo Wood", "testimonial": "Mentorship here is personal, not automated bots. Real humans guide you."},
-  {"name": "Sofia Cox", "testimonial": "I like that they use both theory and examples. Makes learning stick."},
-  {"name": "Jackson Watson", "testimonial": "The trading stats animation was motivating. I never realized consistency matters more than wins."},
-  {"name": "Layla Bell", "testimonial": "OTU feels more like a university than a trading group. Structured and disciplined."}
-
-  // ... (continue up to 120 entries)
+  {
+    "name": "Jessica Alvarez",
+    "role": "Student",
+    "feedback": "I joined OTU after struggling with options for months. The mentorship here gave me clarity and structure. I went from random trades to disciplined setups."
+  },
+  {
+    "name": "Michael Chen",
+    "role": "Trader",
+    "feedback": "The modules are practical and easy to follow. I especially liked how each lesson connects to real trade examples. The Discord community is also a big plus."
+  },
+  {
+    "name": "David Thompson",
+    "role": "Beginner",
+    "feedback": "Before OTU I had blown two small accounts. With the strategies I learned here, I finally managed to stay consistent and protect my capital."
+  },
+  {
+    "name": "Sarah Patel",
+    "role": "Member",
+    "feedback": "What makes OTU different is the accountability. You are not just watching videos, you are interacting with mentors and other traders daily."
+  },
+  {
+    "name": "Brandon Lewis",
+    "role": "Advanced Trader",
+    "feedback": "The live profit feed gave me confidence that these strategies are actually applied in real time, not just theory. Highly recommend to anyone serious."
+  },
+  {
+    "name": "Emily Davis",
+    "role": "Student",
+    "feedback": "I joined as a complete beginner. The glossary and modules explained everything step by step. I finally understood Greeks and risk management."
+  },
+  {
+    "name": "Anthony Wilson",
+    "role": "Member",
+    "feedback": "Mentorship calls alone are worth the fee. It's rare to find educators who actually trade and show receipts. OTU does exactly that."
+  },
+  {
+    "name": "Rachel Morgan",
+    "role": "Trader",
+    "feedback": "I’ve been trading stocks for 3 years but avoided options because they seemed complex. OTU simplified it and now options are a key part of my strategy."
+  },
+  {
+    "name": "Daniel Carter",
+    "role": "Member",
+    "feedback": "Transparent, supportive, and realistic. They don’t promise Lambos overnight. They teach you to manage risk and build long-term consistency."
+  },
+  {
+    "name": "Sophia Martinez",
+    "role": "Beginner",
+    "feedback": "I work full-time so I needed a flexible program. OTU’s lessons and recorded sessions fit into my schedule perfectly."
+  },
+  {
+    "name": "Joshua Brooks",
+    "role": "Student",
+    "feedback": "At first I thought this was just another trading course, but the mentorship made all the difference. Real strategies, real results."
+  },
+  {
+    "name": "Hannah White",
+    "role": "Member",
+    "feedback": "I finally understand how to set up spreads and manage risk thanks to the simple breakdowns in the modules."
+  },
+  {
+    "name": "Kevin Johnson",
+    "role": "Beginner",
+    "feedback": "The profit snapshots motivated me to stay disciplined and not chase unrealistic gains. Slow and steady works."
+  },
+  {
+    "name": "Maria Lopez",
+    "role": "Student",
+    "feedback": "The glossary section was surprisingly useful. It cleared up so many confusing terms that I saw online."
+  },
+  {
+    "name": "Christopher Green",
+    "role": "Member",
+    "feedback": "What I liked most is how real the community feels. People share both wins and mistakes, which is valuable."
+  },
+  {
+    "name": "Olivia Baker",
+    "role": "Trader",
+    "feedback": "I’ve tried YouTube and free courses but OTU put everything together in a structured way that actually made sense."
+  },
+  {
+    "name": "Matthew Evans",
+    "role": "Advanced Trader",
+    "feedback": "The watchlist tool is a game changer. I can follow along with the same stocks as the mentors."
+  },
+  {
+    "name": "Chloe Richardson",
+    "role": "Member",
+    "feedback": "The lifestyle gallery isn’t just about flexing—it shows what’s possible if you put in the work."
+  },
+  {
+    "name": "William Foster",
+    "role": "Student",
+    "feedback": "My first month I just studied the modules and asked questions in DM. In month two I placed my first profitable spread."
+  },
+  {
+    "name": "Grace Phillips",
+    "role": "Beginner",
+    "feedback": "The team is approachable. I was nervous to DM but they actually responded and helped me."
+  }
+  // ... continue with 100+ entries in same format
 ]
