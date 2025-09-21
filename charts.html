@@ -36,17 +36,25 @@
   <div class="page">
     <header class="topbar"><h1>Trading Charts</h1></header>
     <main class="container">
-      <p>Uploaded technical analysis and trade reviews.</p>
+      <p>Technical analysis charts uploaded from your repo.</p>
       <div class="gallery" id="charts-gallery"></div>
     </main>
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
   <script>
     const charts=document.getElementById("charts-gallery");
-    for(let i=1;i<=12;i++){ // load chart1.jpeg ... chart12.jpeg
+    const folders=["Charts","charts"];
+    for(let i=1;i<=50;i++){ 
       let img=document.createElement("img");
-      img.src=`charts/chart${i}.jpeg`;
       img.alt=`Chart ${i}`;
+      let tried=0;
+      function tryNext(){
+        if(tried>=folders.length){ img.remove(); return; }
+        img.src=`${folders[tried]}/chart${i}.jpeg`;
+        tried++;
+      }
+      img.onerror=tryNext;
+      tryNext();
       charts.appendChild(img);
     }
   </script>
