@@ -3,65 +3,58 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Member Testimonials</title>
+  <title>Testimonials</title>
   <style>
-    body { margin:0; font-family:Arial,sans-serif; background:#eaf1ff; color:#0f1a33; }
+    body { margin:0; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; background:#f7f9ff; color:#0f1a33; }
     a { text-decoration:none; color:inherit; }
     .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 220px;
-      background: #0b1328;
-      color: #fff;
-      padding-top: 10px;
-      overflow-y: auto;
+      position:fixed; top:0; left:0; bottom:0; width:220px;
+      background:#0b1328; color:#fff; padding-top:20px; overflow-y:auto;
     }
     .brand { display:flex; align-items:center; gap:10px; padding:10px; font-weight:800; }
     .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
-    .brand span { background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight:900; }
-    .side-nav { display:flex; flex-direction:column; padding:10px; gap:5px; }
-    .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; display:block; }
-    .side-nav a.active { background:#163067; }
+    .brand span {
+      background:linear-gradient(90deg,#2a7fff,#ff4081);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      font-size:1.2em; font-weight:900;
+    }
+    .side-nav { display:flex; flex-direction:column; padding:10px; gap:8px; }
+    .side-nav a { color:#d8e2ff; padding:10px; border-radius:8px; font-weight:600; transition:background 0.2s; }
+    .side-nav a:hover { background:#163067; }
+    .side-nav a.active { background:#1a2b68; }
     .page { margin-left:220px; display:flex; flex-direction:column; min-height:100vh; }
-    .container { padding:20px; }
-    .topbar { background:#fff; border-bottom:1px solid #e3e9f2; padding:10px; }
-    h1 { color:#2a7fff; margin:0; }
+    .container { padding:30px; max-width:900px; margin:0 auto; }
+    .topbar { background:#fff; border-bottom:1px solid #e3e9f2; padding:15px; }
+    h1 { color:#2a7fff; font-size:2em; margin:0; }
     .testimonial-card {
-      background:#fff;
-      border-radius:10px;
-      margin:12px 0;
-      padding:16px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+      background:#ffffff; border-radius:10px; margin:20px 0; padding:20px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.05); transition:all 0.3s;
     }
-    .testimonial-name {
-      font-size:16px;
-      font-weight:700;
-      margin-bottom:6px;
-      color:#1749d4;
-    }
-    .testimonial-text { font-size:14px; line-height:1.5; color:#333; }
-    .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
+    .testimonial-author { font-weight:700; color:#1749d4; font-size:1.1em; margin-bottom:6px; }
+    .testimonial-content { font-size:1em; line-height:1.6; color:#333; }
+    .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:20px; }
     @media(max-width:768px) {
-      .sidebar { display: none; }
-      .page { margin-left: 0; }
+      .sidebar { display:none; }
+      .page { margin-left:0; }
     }
   </style>
 </head>
 <body>
   <aside class="sidebar">
-    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo" alt="Logo"><span>Options Trading University</span></div>
+    <div class="brand">
+      <img src="branding/logo.jpeg" class="brand-logo" alt="Logo">
+      <span>Options Trading University</span>
+    </div>
     <nav class="side-nav">
       <a href="index.html">Home</a>
-      <a href="testimonials.html" class="active">Testimonials</a>
       <a href="modules.html">Modules</a>
+      <a href="testimonials.html" class="active">Testimonials</a>
       <a href="glossary.html">Glossary</a>
     </nav>
   </aside>
 
   <div class="page">
-    <header class="topbar"><h1>Member Testimonials</h1></header>
+    <header class="topbar"><h1>Student Testimonials</h1></header>
     <main class="container">
       <div id="testimonials-container">Loading testimonials...</div>
     </main>
@@ -76,24 +69,27 @@
       })
       .then(data => {
         const container = document.getElementById('testimonials-container');
-        container.innerHTML = '';  // clear loading text
-        data.forEach(t => {
+        container.innerHTML = '';
+        data.forEach((t, idx) => {
           const card = document.createElement('div');
           card.className = 'testimonial-card';
-          const name = document.createElement('div');
-          name.className = 'testimonial-name';
-          name.textContent = t.name;
-          const txt = document.createElement('div');
-          txt.className = 'testimonial-text';
-          txt.textContent = t.testimonial;
-          card.appendChild(name);
-          card.appendChild(txt);
+
+          const author = document.createElement('div');
+          author.className = 'testimonial-author';
+          author.textContent = t.name + " — " + t.role;
+
+          const content = document.createElement('div');
+          content.className = 'testimonial-content';
+          content.textContent = t.feedback;
+
+          card.appendChild(author);
+          card.appendChild(content);
           container.appendChild(card);
         });
       })
       .catch(err => {
         document.getElementById('testimonials-container').textContent = 'Could not load testimonials.';
-        console.error(err);
+        console.error('Error loading testimonials.json:', err);
       });
   </script>
 </body>
