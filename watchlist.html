@@ -1,13 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Watchlist - OTU</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
     <nav class="side-nav">
@@ -27,7 +25,6 @@
     </nav>
   </aside>
 
-  <!-- Page -->
   <div class="page">
     <header class="topbar">
       <button class="burger" id="burger">☰</button>
@@ -36,25 +33,25 @@
     </header>
 
     <main class="container">
-      <!-- Add symbol -->
       <section class="card">
         <h3>Add a stock symbol</h3>
-        <input id="watchlist-input" placeholder="Enter symbol e.g. AAPL"
-               style="padding:10px; border:1px solid #e3e9f2; border-radius:6px; width:200px; margin-right:8px;">
+        <!-- ✅ Input box is here -->
+        <input id="watchlist-input" placeholder="Enter symbol (e.g. AAPL)" 
+               style="padding:10px;border:1px solid #e3e9f2;border-radius:6px;width:200px;margin-right:8px;">
         <button id="watchlist-add" class="btn">Add</button>
       </section>
 
-      <!-- Live prices -->
       <section class="card">
         <h3>Live Prices</h3>
         <div id="watchlist-grid" class="watchlist-grid"></div>
-        <p class="muted" id="watchlist-status"></p>
+        <p id="watchlist-status" class="muted"></p>
       </section>
     </main>
 
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
+  <!-- Make sure config.js loads BEFORE script.js -->
   <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
