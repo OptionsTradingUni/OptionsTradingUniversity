@@ -1,82 +1,65 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>OTU - Testimonials</title>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testimonials - Options Trading University</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; background:#f5f9ff; color:#222; }
+    .sidebar { width:220px; background:#0b1328; position:fixed; top:0; bottom:0; left:0; padding:20px; color:#fff; }
+    .sidebar a { color:#fff; display:block; padding:10px 0; text-decoration:none; }
+    .sidebar a:hover { color:#ffd166; }
+    .page { margin-left:240px; padding:20px; }
+    h1 { color:#2a7fff; margin-bottom:20px; }
+    .testimonial-card {
+      background:#fff;
+      border:1px solid #ddd;
+      border-radius:8px;
+      padding:15px;
+      margin-bottom:15px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
+    }
+    .testimonial-author { font-weight:700; margin-bottom:5px; color:#2a7fff; }
+    .testimonial-content { font-style:italic; color:#444; }
+    .role { font-weight:400; font-size:0.9em; color:#777; margin-left:8px; }
+  </style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <img src="branding/logo.jpeg" alt="Logo" class="brand-logo">
-      <span>Options Trading University</span>
-    </div>
-    <nav class="side-nav">
-      <a href="index.html">Home</a>
-      <a href="modules.html">Modules</a>
-      <a href="glossary.html">Glossary</a>
-      <a href="testimonials.html" class="active">Testimonials</a>
-      <a href="team.html">Team</a>
-      <a href="contact.html">Contact</a>
-      <a href="terms.html">Disclaimer</a>
-    </nav>
+  <aside class="sidebar">
+    <h2>OTU</h2>
+    <a href="index.html">Home</a>
+    <a href="modules.html">Modules</a>
+    <a href="testimonials.html" class="active">Testimonials</a>
+    <a href="contact.html">Contact</a>
   </aside>
 
   <div class="page">
-    <header class="topbar">
-      <button class="burger" id="burger">☰</button>
-      <div class="brand-inline">Testimonials</div>
-    </header>
-
-    <main class="container">
-      <h1>What Our Members Say</h1>
-      <div id="testimonials-container"></div>
-      <div class="nav-buttons">
-        <button class="btn ghost" onclick="prevTestimonial()">Previous</button>
-        <button class="btn" onclick="nextTestimonial()">Next</button>
-      </div>
-    </main>
-
-    <footer class="footer">© 2025 Options Trading University</footer>
+    <h1>What Our Members Say</h1>
+    <div id="testimonials-container">Loading testimonials...</div>
   </div>
 
   <script>
-    let testimonials = [];
-    let index = 0;
-
-    async function loadTestimonials() {
-      try {
-        const res = await fetch("testimonials.json");
-        testimonials = await res.json();
-        showTestimonial();
-      } catch (e) {
-        document.getElementById("testimonials-container").innerHTML = "<p>Could not load testimonials.</p>";
-      }
-    }
-
-    function showTestimonial() {
-      if (testimonials.length === 0) return;
-      const t = testimonials[index];
-      document.getElementById("testimonials-container").innerHTML = `
-        <div class="testimonial-card">
-          <div class="testimonial-author"><strong>${t.name}</strong> — ${t.role}</div>
-          <div class="testimonial-content">"${t.feedback}"</div>
-        </div>
-      `;
-    }
-
-    function nextTestimonial() {
-      index = (index + 1) % testimonials.length;
-      showTestimonial();
-    }
-
-    function prevTestimonial() {
-      index = (index - 1 + testimonials.length) % testimonials.length;
-      showTestimonial();
-    }
-
-    loadTestimonials();
+    fetch('testimonials.json')
+      .then(res => {
+        if (!res.ok) throw new Error("File not found");
+        return res.json();
+      })
+      .then(data => {
+        const container = document.getElementById("testimonials-container");
+        container.innerHTML = "";
+        data.forEach(t => {
+          container.innerHTML += `
+            <div class="testimonial-card">
+              <div class="testimonial-author">${t.name} <span class="role">${t.role}</span></div>
+              <div class="testimonial-content">"${t.feedback}"</div>
+            </div>
+          `;
+        });
+      })
+      .catch(err => {
+        document.getElementById("testimonials-container").innerText = "Could not load testimonials.";
+        console.error(err);
+      });
   </script>
 </body>
 </html>
