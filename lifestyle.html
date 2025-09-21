@@ -1,45 +1,58 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Lifestyle - OTU</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body{margin:0;font-family:sans-serif;background:#f4f7ff;color:#0f1a33;}
+    a,a:visited,a:hover,a:active{text-decoration:none!important;color:inherit!important;outline:none;}
+    .sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:#0b1328;color:#fff;padding-top:10px;}
+    .brand{display:flex;align-items:center;gap:10px;padding:10px;font-weight:800;}
+    .brand-logo{width:30px;height:30px;border-radius:6px;object-fit:cover;}
+    .brand span{background:linear-gradient(90deg,#2a7fff,#ff4081);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;}
+    .side-nav{display:flex;flex-direction:column;padding:10px;gap:5px;}
+    .side-nav a{color:#d8e2ff;padding:8px;border-radius:6px;font-weight:600;display:block;}
+    .side-nav a.active{background:#163067;}
+    .page{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
+    .container{max-width:900px;margin:0 auto;padding:20px;}
+    .topbar{background:#fff;border-bottom:1px solid #e3e9f2;display:flex;justify-content:space-between;align-items:center;padding:10px;}
+    .burger{display:none;font-size:20px;background:none;border:none;cursor:pointer;animation:shake 2s infinite;}
+    @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-2px);}40%{transform:translateX(2px);}60%{transform:translateX(-2px);}80%{transform:translateX(2px);}}
+    .brand-inline{font-weight:900;background:linear-gradient(90deg,#2a7fff,#ff4081);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .carousel{display:flex;overflow-x:auto;gap:12px;padding:10px;scroll-behavior:smooth;}
+    .carousel img{flex:0 0 auto;width:280px;height:200px;object-fit:cover;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+    .footer{margin-top:auto;background:#0b1328;color:#9cb2ff;text-align:center;padding:12px;}
+    @media(max-width:768px){.sidebar{display:none;}.page{margin-left:0;}.burger{display:block;}}
+  </style>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
     <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
     <nav class="side-nav">
       <a href="index.html">Home</a>
-      <a href="liveprofits.html">Live Profits</a>
-      <a href="watchlist.html">Watchlist</a>
-      <a href="profits.html">Profit Snapshots</a>
       <a href="lifestyle.html" class="active">Lifestyle</a>
+      <a href="profits.html">Profit Snapshots</a>
       <a href="charts.html">Charts</a>
-      <a href="chartvideo.html">Videos</a>
-      <a href="modules.html">Modules</a>
-      <a href="glossary.html">Glossary</a>
-      <a href="testimonials.html">Testimonials</a>
-      <a href="team.html">Team</a>
-      <a href="contact.html">Contact</a>
-      <a href="terms.html">Disclaimer</a>
     </nav>
   </aside>
-
   <div class="page">
-    <header class="topbar"><button class="burger" id="burger">☰</button><h2>Lifestyle</h2><span></span></header>
+    <header class="topbar">
+      <button class="burger" id="burger">☰</button>
+      <div class="brand-inline">Options Trading University</div>
+    </header>
     <main class="container">
-      <section class="card">
-        <h3>Moments</h3>
-        <div id="lifestyle-carousel" class="carousel">
-          <!-- JS will inject <img> and dots -->
-          <div class="dots" id="lifestyle-dots"></div>
-        </div>
-      </section>
+      <h1 style="color:#ff4081">🏝 Lifestyle Gallery</h1>
+      <p style="color:#555">A peek into the rewards of consistent trading discipline.</p>
+      <div id="lifestyle" class="carousel"></div>
     </main>
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
-
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+  <script>
+    const burger=document.getElementById('burger'),sidebar=document.getElementById('sidebar');
+    burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
+    function loadImages(prefix,count,container){for(let i=1;i<=count;i++){let img=new Image();img.src=`Lifestyle/${prefix}${i}.jpeg`;img.onerror=()=>{};img.onload=()=>container.appendChild(img);}}
+    document.addEventListener("DOMContentLoaded",()=>{const c=document.getElementById("lifestyle");loadImages("life",50,c);});
+  </script>
 </body>
 </html>
