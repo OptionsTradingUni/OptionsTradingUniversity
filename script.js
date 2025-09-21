@@ -1,70 +1,68 @@
-/* ---------- helpers ---------- */
+/* helpers */
 const $=(s,ctx=document)=>ctx.querySelector(s);
 const $$=(s,ctx=document)=>Array.from(ctx.querySelectorAll(s));
 const esc=s=>s?String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])):"";
 
-/* ---------- layout: sidebar + modal ---------- */
+/* sidebar toggle (mobile) */
 document.addEventListener('DOMContentLoaded',()=>{
   const burger=$('#burger'), sidebar=$('#sidebar');
-  if(burger) burger.addEventListener('click',()=> sidebar.classList.toggle('open'));
+  if(burger) burger.addEventListener('click',()=> sidebar.style.display=(sidebar.style.display==='block'?'none':'block'));
 });
+
+/* modal */
 function openTikTokModal(){ const m=$('#tt-modal'); if(m) m.style.display='flex'; }
 function closeTikTokModal(){ const m=$('#tt-modal'); if(m) m.style.display='none'; }
 window.openTikTokModal=openTikTokModal; window.closeTikTokModal=closeTikTokModal;
 
-/* ---------- animated stats ---------- */
-function countUp(el, target, duration=1100){
+/* animated stats */
+function countUp(el, target, duration=1000){
   let val=0, step=Math.max(1,Math.floor(target/(duration/16)));
   (function tick(){ val+=step; if(val>=target) val=target; el.textContent=val; if(val<target) requestAnimationFrame(tick); })();
 }
-document.addEventListener('DOMContentLoaded',()=>{
-  $$('.stat h2').forEach(el=>{ const t=parseInt(el.dataset.count||0,10); if(t>0) countUp(el,t); });
-});
+document.addEventListener('DOMContentLoaded',()=> $$('.stat h2').forEach(el=>{ const t=parseInt(el.dataset.count||0,10); if(t>0) countUp(el,t); }));
 
-/* ---------- Home: live profit TICKER ---------- */
+/* slim live ticker (home) */
 function initLiveTicker(){
   const wrap=$('#live-ticker'); if(!wrap) return;
   const track=document.createElement('div'); track.className='ticker';
   const names=["Ava","James","Sophia","Daniel","Olivia","Michael","Emma","Ethan","Mason","Chloe","Logan","Nora","Liam","Mia","Caleb","Layla","Noah","Zoe"];
-  function profit(){ return Math.floor(180+Math.random()*1600); }
+  function profit(){ return Math.floor(200+Math.random()*900); }
   function msg(){ const n=names[Math.floor(Math.random()*names.length)]; return `💰 ${n} closed +$${profit()} just now`; }
-  const items=new Array(12).fill(0).map(()=>{ const span=document.createElement('span'); span.className='item'; span.textContent=msg(); return span; });
+  const items=new Array(10).fill(0).map(()=>{ const span=document.createElement('span'); span.className='item'; span.textContent=msg(); return span; });
   items.concat(items.map(s=>s.cloneNode(true))).forEach(s=>track.appendChild(s));
   wrap.appendChild(track);
-  setInterval(()=>{ const first=track.firstElementChild; if(!first) return; const clone=first.cloneNode(true); clone.textContent=msg(); track.appendChild(clone); track.removeChild(first); },4000);
+  setInterval(()=>{ const first=track.firstElementChild; if(!first) return; const clone=first.cloneNode(true); clone.textContent=msg(); track.appendChild(clone); track.removeChild(first); },7000);
 }
 document.addEventListener('DOMContentLoaded', initLiveTicker);
 
-/* ---------- Profit Snapshots: dynamic rotating carousel ---------- */
+/* profits: dynamic carousel from Images/imgN.(jpeg|jpg|png|webp) */
 function initProfitCarousel(){
   const stage=$('#profit-stage'); if(!stage) return;
   const caption=$('#profit-caption'); const prev=$('#profit-prev'); const next=$('#profit-next'); const playBtn=$('#profit-play');
   const exts=["jpeg","jpg","png","webp"]; const folder="Images"; const base="img";
   const names=["Ava","James","Sophia","Daniel","Olivia","Michael","Emma","Ethan","Mason","Chloe","Logan","Nora","Liam","Mia","Caleb","Layla","Noah","Zoe"];
   const reasons=["breakout","trend pullback","earnings drift","range flip","volume spike","gap continuation","VWAP reclaim","support bounce","news catalyst"];
-
-  async function head(url){ try{ const r=await fetch(url,{method:"HEAD"}); return r.ok; }catch{ return false; } }
-  async function findAll(){
+  async function head(u){try{const r=await fetch(u,{method:"HEAD"});return r.ok;}catch{return false;}}
+  async function all(){
     const urls=[]; let i=1, miss=0;
     while(miss<5){
-      let found=null;
-      for(const ext of exts){ const u=`${folder}/${base}${i}.${ext}`; if(await head(u)){ found=u; break; } }
+      let found=null; for(const ext of exts){ const u=`${folder}/${base}${i}.${ext}`; if(await head(u)){ found=u; break; } }
       if(found){ urls.push(found); miss=0; } else { miss++; }
       i++;
     }
     return urls;
   }
-  function makeCard(src){ const img=document.createElement('img'); img.src=src; return img; }
-  function profitText(){ const n=names[Math.floor(Math.random()*names.length)]; const p=Math.floor(180+Math.random()*1600); const r=reasons[Math.floor(Math.random()*reasons.length)]; return `${n} cashed +$${p} on ${r}`; }
+  function make(src){ const img=document.createElement('img'); img.src=src; return img; }
+  function profitText(){ const n=names[Math.floor(Math.random()*names.length)]; const p=Math.floor(200+Math.random()*1500); const r=reasons[Math.floor(Math.random()*reasons.length)]; return `${n} cashed +$${p} on ${r}`; }
 
-  (async ()=>{
-    const urls=await findAll(); if(urls.length===0) return;
-    const imgs=urls.map(u=>makeCard(u)); imgs.forEach((im,idx)=>{ if(idx===0) im.classList.add('active'); stage.appendChild(im); });
-    let idx=0, playing=true; let timer=null;
+  (async()=>{
+    const urls=await all(); if(urls.length===0) return;
+    const imgs=urls.map(make); imgs.forEach((im,i)=>{ if(i===0) im.classList.add('active'); stage.appendChild(im); });
+    let idx=0, playing=true, timer=null;
     function show(i){ $$('.carousel-stage img',stage).forEach((im,k)=>im.classList.toggle('active',k===i)); caption.textContent=profitText(); }
     function nextSlide(){ idx=(idx+1)%imgs.length; show(idx); }
     function prevSlide(){ idx=(idx-1+imgs.length)%imgs.length; show(idx); }
-    function play(){ if(timer) clearInterval(timer); timer=setInterval(nextSlide,3500); playing=true; playBtn.textContent='Pause'; }
+    function play(){ if(timer) clearInterval(timer); timer=setInterval(nextSlide,3800); playing=true; playBtn.textContent='Pause'; }
     function pause(){ if(timer) clearInterval(timer); playing=false; playBtn.textContent='Play'; }
     next?.addEventListener('click',()=>{ pause(); nextSlide(); });
     prev?.addEventListener('click',()=>{ pause(); prevSlide(); });
@@ -74,16 +72,16 @@ function initProfitCarousel(){
 }
 document.addEventListener('DOMContentLoaded', initProfitCarousel);
 
-/* ---------- Lifestyle: paginated grid ---------- */
+/* lifestyle: paginated grid from Lifestyle/lifeN */
 function initLifestyle(){
   const grid=$('#lifestyle-grid'); if(!grid) return;
   const nav=$('#lifestyle-nav'); const perPage=12; const exts=["jpeg","jpg","png","webp"]; const folder="Lifestyle"; const base="life";
-  async function head(url){ try{ const r=await fetch(url,{method:"HEAD"}); return r.ok; }catch{ return false; } }
+  async function head(u){try{const r=await fetch(u,{method:"HEAD"});return r.ok;}catch{return false;}}
   async function collect(){
     const arr=[]; let i=1, miss=0;
     while(miss<5){
-      let match=null; for(const ext of exts){ const u=`${folder}/${base}${i}.${ext}`; if(await head(u)){ match=u; break; } }
-      if(match){ arr.push(match); miss=0; } else { miss++; }
+      let m=null; for(const e of exts){ const u=`${folder}/${base}${i}.${e}`; if(await head(u)){ m=u; break; } }
+      if(m){ arr.push(m); miss=0; } else miss++;
       i++;
     }
     return arr;
@@ -94,53 +92,48 @@ function initLifestyle(){
       grid.innerHTML=''; const start=(page-1)*perPage; const end=start+perPage;
       images.slice(start,end).forEach(src=>{ const im=document.createElement('img'); im.src=src; im.alt=src; grid.appendChild(im); });
       nav.innerHTML='';
-      if(page>1){ const b=document.createElement('button'); b.className='btn ghost'; b.textContent='« Prev'; b.onclick=()=>{page--; render();}; nav.appendChild(b); }
-      if(end<images.length){ const b=document.createElement('button'); b.className='btn'; b.style.marginLeft='8px'; b.textContent='Next »'; b.onclick=()=>{page++; render();}; nav.appendChild(b); }
+      if(page>1){ const b=document.createElement('button'); b.className='btn ghost'; b.textContent='« Prev'; b.onclick=()=>{page--;render();}; nav.appendChild(b); }
+      if(end<images.length){ const b=document.createElement('button'); b.className='btn'; b.style.marginLeft='8px'; b.textContent='Next »'; b.onclick=()=>{page++;render();}; nav.appendChild(b); }
     }
     render();
   })();
 }
 document.addEventListener('DOMContentLoaded', initLifestyle);
 
-/* ---------- Charts: load available images ---------- */
+/* charts: Charts/chartN */
 function initCharts(){
   const grid=$('#charts-grid'); if(!grid) return;
   const exts=["jpeg","jpg","png","webp"]; const folder="Charts"; const base="chart";
-  async function head(url){ try{ const r=await fetch(url,{method:"HEAD"}); return r.ok; }catch{ return false; } }
-  (async()=>{
-    let i=1, miss=0;
+  async function head(u){try{const r=await fetch(u,{method:"HEAD"});return r.ok;}catch{return false;}}
+  (async()=>{ let i=1, miss=0;
     while(miss<3){
-      let ok=false;
-      for(const ext of exts){ const u=`${folder}/${base}${i}.${ext}`; if(await head(u)){ const im=document.createElement('img'); im.src=u; im.alt=`${base}${i}`; grid.appendChild(im); ok=true; break; } }
+      let ok=false; for(const e of exts){ const u=`${folder}/${base}${i}.${e}`; if(await head(u)){ const im=document.createElement('img'); im.src=u; im.alt=`${base}${i}`; grid.appendChild(im); ok=true; break; } }
       if(!ok) miss++; else miss=0; i++;
     }
   })();
 }
 document.addEventListener('DOMContentLoaded', initCharts);
 
-/* ---------- Chart Videos: load available .mov ---------- */
+/* chart videos: ChartVideo/monitorN.mov */
 function initVideos(){
   const vg=$('#video-grid'); if(!vg) return;
-  (async()=>{
-    let i=1, miss=0;
+  (async()=>{ let i=1, miss=0;
     while(miss<3){
       const url=`ChartVideo/monitor${i}.mov`;
       try{ const r=await fetch(url,{method:"HEAD"}); if(r.ok){
         const wrap=document.createElement('div'); wrap.className='card'; wrap.style.margin='0';
-        wrap.innerHTML=`<video controls preload="metadata" style="width:100%;border-radius:10px">
-                          <source src="${url}" type="video/quicktime">
-                        </video>`;
+        wrap.innerHTML=`<video controls preload="metadata" style="width:100%;border-radius:10px"><source src="${url}" type="video/quicktime"></video>`;
         vg.appendChild(wrap); miss=0;
-      }else{ miss++; } }catch{ miss++; }
+      }else miss++; }catch{ miss++; }
       i++;
     }
   })();
 }
 document.addEventListener('DOMContentLoaded', initVideos);
 
-/* ---------- Watchlist (Twelve Data) ---------- */
+/* watchlist (Twelve Data) */
 const TD_KEY=(window.SITE_CONFIG&&window.SITE_CONFIG.TWELVE_API_KEY)||"";
-const LS_QUOTES="otu_td_cache_v4"; const QUOTE_TTL=60*1000;
+const LS_QUOTES="otu_td_cache_v5"; const QUOTE_TTL=60*1000;
 const getCache=()=>{ try{return JSON.parse(localStorage.getItem(LS_QUOTES)||"{}")}catch{return{}} };
 const setCache=o=>{ try{localStorage.setItem(LS_QUOTES,JSON.stringify(o))}catch{} };
 
@@ -159,13 +152,14 @@ async function tdQuote(symbol){
 }
 function watchTile(q){
   const d=document.createElement('div'); d.className='tile';
-  const chg=parseFloat(q.percent_change); if(!isNaN(chg)){ if(chg>0) d.classList.add('up'); else if(chg<0) d.classList.add('down'); }
-  d.innerHTML=`<div class="sym">${esc(q.symbol||'')}</div>
-               <div class="px">${q.price?('$'+Number(q.price).toFixed(2)):'—'}</div>
-               <div class="chg">${isNaN(chg)?'':(chg>0?'▲ ':'▼ ')+Math.abs(chg).toFixed(2)+'%'}</div>`;
+  const chg=parseFloat(q.percent_change); if(!isNaN(chg)){ d.classList.add(chg>=0?'up':'down'); }
+  d.innerHTML=
+    `<div class="sym">${esc(q.symbol||'')}</div>
+     <div class="px">${q.price?('$'+Number(q.price).toFixed(2)):'—'}</div>
+     <div class="chg">${isNaN(chg)?'':(chg>=0?'▲ ':'▼ ')+Math.abs(chg).toFixed(2)+'%'}</div>`;
   return d;
 }
-async function initWatchlist(){
+function initWatchlist(){
   const grid=$('#watchlist-grid'); if(!grid) return;
   const input=$('#watchlist-input'), add=$('#watchlist-add');
   let list=(localStorage.getItem('otu_watch')||"").split(',').filter(Boolean);
@@ -176,27 +170,59 @@ async function initWatchlist(){
 }
 document.addEventListener('DOMContentLoaded', initWatchlist);
 
-/* ---------- Testimonials (fallback realistic names) ---------- */
-function initTestimonials(){
+/* JSON loaders: modules, glossary (accordion), testimonials, team */
+async function loadJSON(path){ try{ const r=await fetch(path,{cache:'no-store'}); if(!r.ok) throw 0; return await r.json(); }catch{ return null; } }
+
+/* Modules */
+async function initModules(){
+  const box=$('#modules-list'); if(!box) return;
+  const path=window.SITE_CONFIG?.jsonPaths?.modules;
+  const data=await loadJSON(path) || [];
+  box.innerHTML = data.map(m=>`<article class="card"><h3>${esc(m.title||'Lesson')}</h3><p>${esc(m.content||'')}</p></article>`).join('');
+}
+document.addEventListener('DOMContentLoaded', initModules);
+
+/* Glossary (accordion) */
+function toggleAcc(el){ const body=el.nextElementSibling; body.style.display=(body.style.display==='block'?'none':'block'); }
+async function initGlossary(){
+  const wrap=$('#glossary-acc'); if(!wrap) return;
+  const q=$('#gq'); const path=window.SITE_CONFIG?.jsonPaths?.glossary;
+  const data=await loadJSON(path) || [];
+  function render(list){
+    wrap.innerHTML = `<div class="accordion">` + list.map(g=>`
+      <div class="acc-item">
+        <div class="acc-head" onclick="toggleAcc(this)">${esc(g.term||'Term')} <span>＋</span></div>
+        <div class="acc-body"><p>${esc(g.definition||'')}</p></div>
+      </div>`).join('') + `</div>`;
+  }
+  render(data);
+  if(q){ q.addEventListener('input',()=>{ const v=q.value.toLowerCase(); render(data.filter(x=>String(x.term).toLowerCase().includes(v))); }); }
+}
+document.addEventListener('DOMContentLoaded', initGlossary);
+window.toggleAcc=toggleAcc;
+
+/* Testimonials */
+async function initTestimonials(){
   const box=$('#testi'); if(!box) return;
-  const names=["Ava Thompson","Noah Carter","Mia Hernandez","Ethan Brooks","Chloe Robinson","Liam Parker","Isabella Murphy","Jackson Reed","Amelia Bailey","Benjamin Hayes","Scarlett Cooper","Lucas Ward","Harper Powell","Elijah Foster","Emily Jordan"];
-  const data = names.map(n=>({name:n,text:"I joined to get structure and accountability. The walkthroughs made options click and the mentor feedback kept me focused."}));
-  box.innerHTML=data.map(t=>`<article class="card"><h3>${t.name}</h3><p>${t.text}</p></article>`).join('');
+  const path=window.SITE_CONFIG?.jsonPaths?.testimonials;
+  const data=await loadJSON(path) || [];
+  box.innerHTML = data.map(t=>`<article class="card"><h3>${esc(t.name||'Member')}</h3><p class="quote">“${esc(t.text||'') }”</p></article>`).join('');
 }
 document.addEventListener('DOMContentLoaded', initTestimonials);
 
-/* ---------- Glossary (mini, with search; fallback) ---------- */
-function initGlossary(){
-  const q=$('#gq'), box=$('#glossary-list'); if(!q||!box) return;
-  const base=[
-    {term:"Call option",definition:"Right to buy an asset at a set price before a date."},
-    {term:"Put option",definition:"Right to sell an asset at a set price before a date."},
-    {term:"Strike",definition:"Price at which the option can be exercised."},
-    {term:"Theta",definition:"Time decay — how much an option is expected to drop per day."},
-    {term:"Delta",definition:"Sensitivity of an option price to a $1 move in the underlying."}
-  ];
-  function render(list){ box.innerHTML=list.map(g=>`<article class="card"><h3>${g.term}</h3><p>${g.definition}</p></article>`).join(''); }
-  render(base);
-  q.addEventListener('input',()=>{ const v=q.value.toLowerCase(); render(base.filter(x=>x.term.toLowerCase().includes(v))); });
+/* Team */
+async function initTeam(){
+  const grid=$('#team-grid'); if(!grid) return;
+  const path=window.SITE_CONFIG?.jsonPaths?.team;
+  const data=await loadJSON(path) || [];
+  grid.innerHTML = data.map(m=>`
+    <article class="card" style="display:flex;gap:12px;align-items:flex-start">
+      <img src="${esc(m.image||'team/placeholder.jpeg')}" alt="${esc(m.name||'Mentor')}" style="width:72px;height:72px;border-radius:12px;object-fit:cover;border:1px solid var(--line)">
+      <div>
+        <h3 style="margin:0">${esc(m.name||'')}</h3>
+        <div style="color:var(--muted);font-weight:700;margin:4px 0">${esc(m.role||'')}</div>
+        <p style="margin:0">${esc(m.bio||'')}</p>
+      </div>
+    </article>`).join('');
 }
-document.addEventListener('DOMContentLoaded', initGlossary);
+document.addEventListener('DOMContentLoaded', initTeam);
