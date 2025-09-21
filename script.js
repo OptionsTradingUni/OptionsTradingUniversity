@@ -297,3 +297,28 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   });
 });
+
+/* Sidebar shake animation on load */
+document.addEventListener('DOMContentLoaded', ()=>{
+  const sb=document.getElementById('sidebar');
+  const burger=document.getElementById('burger');
+  setTimeout(()=>{
+    sb?.classList.add('shake');
+    burger?.classList.add('shake');
+    setTimeout(()=>{
+      sb?.classList.remove('shake');
+      burger?.classList.remove('shake');
+    },1500);
+  },1200);
+});
+
+/* Homepage stats counter */
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.stat h2').forEach(h=>{
+    const t=parseInt(h.dataset.count||'0',10);
+    if(t>0) countUp(h,t);
+    if(!h.textContent.includes('%') && !h.textContent.includes('+')){
+      h.textContent = h.textContent + '+';
+    }
+  });
+});
