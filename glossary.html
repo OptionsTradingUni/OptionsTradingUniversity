@@ -1,25 +1,75 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Glossary — OTU</title><link rel="stylesheet" href="style.css"></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Glossary - OTU</title>
+  <style>
+    body{margin:0;font-family:sans-serif;background:#f4f7ff;color:#0f1a33;}
+    a{text-decoration:none;}
+    .sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:#0b1328;color:#fff;padding-top:10px;}
+    .brand{display:flex;align-items:center;gap:10px;padding:10px;font-weight:800;}
+    .brand-logo{width:30px;height:30px;border-radius:6px;object-fit:cover;}
+    .brand span{background:linear-gradient(90deg,#2a7fff,#ff4081);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;}
+    .side-nav{display:flex;flex-direction:column;padding:10px;gap:5px;}
+    .side-nav a{color:#d8e2ff;padding:8px;border-radius:6px;font-weight:600;display:block;}
+    .side-nav a.active{background:#163067;}
+    .page{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
+    .container{max-width:900px;margin:0 auto;padding:20px;}
+    .topbar{background:#fff;border-bottom:1px solid #e3e9f2;display:flex;justify-content:space-between;align-items:center;padding:10px;}
+    .burger{display:none;font-size:20px;background:none;border:none;cursor:pointer;animation:shake 2s infinite;}
+    @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-2px);}40%{transform:translateX(2px);}60%{transform:translateX(-2px);}80%{transform:translateX(2px);}}
+    .brand-inline{font-weight:900;background:linear-gradient(90deg,#2a7fff,#ff4081);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .term-card{background:#fff;border:1px solid #e3e9f2;border-radius:10px;padding:12px;margin:10px 0;cursor:pointer;}
+    .term-card h3{margin:0;color:#ff4081;}
+    .definition{display:none;margin-top:6px;line-height:1.5;}
+    .footer{margin-top:auto;background:#0b1328;color:#9cb2ff;text-align:center;padding:12px;}
+    @media(max-width:768px){.sidebar{display:none;}.page{margin-left:0;}.burger{display:block;}}
+  </style>
+</head>
 <body>
-  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
-    <nav class="side-nav"><a href="index.html">Home</a><a href="glossary.html" class="active">Glossary</a></nav></aside>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
+    <nav class="side-nav">
+      <a href="index.html">Home</a>
+      <a href="glossary.html" class="active">Glossary</a>
+      <a href="modules.html">Modules</a>
+      <a href="testimonials.html">Testimonials</a>
+    </nav>
+  </aside>
+
   <div class="page">
-    <header class="topbar"><button class="burger" id="burger">☰</button><nav class="top-links"><a href="index.html">OTU</a></nav></header>
+    <header class="topbar">
+      <button class="burger" id="burger">☰</button>
+      <div class="brand-inline">Options Trading University</div>
+      <span></span>
+    </header>
+
     <main class="container">
-      <section class="card"><h1>Glossary</h1><input id="gq" placeholder="Search term" style="padding:8px;width:100%;max-width:360px;border:1px solid #e7ecf7;border-radius:8px"><div id="glossary-list" style="margin-top:12px"></div></section>
+      <h1 style="color:#ff4081">📖 Glossary of Terms</h1>
+      <div id="glossary-list"></div>
     </main>
+
+    <footer class="footer">© 2025 Options Trading University</footer>
   </div>
-  <script src="config.js"></script><script src="script.js"></script>
+
+  <script src="config.js"></script>
   <script>
-    (async function(){
-      const box=document.getElementById('glossary-list'); const q=document.getElementById('gq');
-      let data=[];
-      async function load(){ const r=await fetch(window.SITE_CONFIG.glossaryJsonPath,{cache:'no-store'}); data=await r.json(); render(data); }
-      function render(list){ box.innerHTML=list.map(g=>`<article class="card"><h2>${g.term}</h2><p>${g.definition}</p></article>`).join(''); }
-      q.addEventListener('input',()=>{ const v=q.value.toLowerCase(); render(data.filter(x=>x.term.toLowerCase().includes(v))); });
-      try{ await load(); }catch{ box.innerHTML='<p>Upload data/json/glossary.json</p>'; }
-    })();
+    document.addEventListener("DOMContentLoaded",async()=>{
+      const data=await loadJSON("glossary.json");
+      const list=document.getElementById("glossary-list");
+      data.forEach(t=>{
+        const card=document.createElement("div");
+        card.className="term-card";
+        card.innerHTML=`<h3>${t.term}</h3><div class="definition">${t.definition}</div>`;
+        card.querySelector("h3").onclick=()=>{
+          const d=card.querySelector(".definition");
+          d.style.display=d.style.display==="block"?"none":"block";
+        };
+        list.appendChild(card);
+      });
+    });
+    const burger=document.getElementById('burger');const sidebar=document.getElementById('sidebar');burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
   </script>
 </body>
 </html>
