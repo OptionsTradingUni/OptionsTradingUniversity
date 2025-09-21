@@ -17,9 +17,23 @@
     .page { margin-left:220px; min-height:100vh; display:flex; flex-direction:column; }
     .container { max-width:900px; margin:0 auto; padding:20px; }
     .topbar { background:#fff; border-bottom:1px solid #e3e9f2; display:flex; justify-content:space-between; align-items:center; padding:10px; }
-    .burger { display:none; }
+    .burger { display:none; font-size:20px; background:none; border:none; cursor:pointer; animation:shake 2s infinite; }
+    @keyframes shake {
+      0%,100%{transform:translateX(0);}
+      20%{transform:translateX(-2px);}
+      40%{transform:translateX(2px);}
+      60%{transform:translateX(-2px);}
+      80%{transform:translateX(2px);}
+    }
     .btn { background:#2a7fff; color:#fff; border:none; padding:8px 14px; border-radius:8px; font-weight:700; cursor:pointer; }
     .btn.ghost { background:#edf3ff; color:#1749d4; }
+
+    .brand-inline {
+      font-weight:900;
+      background:linear-gradient(90deg,#2a7fff,#ff4081);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
 
     /* Hero */
     .hero { background:linear-gradient(135deg,#2a7fff,#1749d4,#ff4081); color:#fff; text-align:center; padding:40px 20px; border-radius:12px; }
@@ -43,7 +57,7 @@
     @media(max-width:768px){
       .sidebar { display:none; }
       .page { margin-left:0; }
-      .burger { display:block; background:none; border:none; font-size:20px; }
+      .burger { display:block; }
     }
   </style>
 </head>
@@ -89,9 +103,9 @@
 
       <!-- Stats -->
       <section class="stats">
-        <div class="stat"><h2 data-count="6500">0</h2><div>Total Trades</div></div>
-        <div class="stat"><h2 data-count="86">0</h2><div>Win Rate %</div></div>
-        <div class="stat"><h2 data-count="1200">0</h2><div>Avg Income +</div></div>
+        <div class="stat"><h2 data-count="2478+">0</h2><div>Total Trades</div></div>
+        <div class="stat"><h2 data-count="82">0</h2><div>Win Rate %</div></div>
+        <div class="stat"><h2 data-count="1094+">0</h2><div>Avg Income +</div></div>
       </section>
 
       <!-- Motivation -->
