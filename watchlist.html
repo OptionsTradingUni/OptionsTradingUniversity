@@ -1,28 +1,43 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Watchlist — OTU</title><link rel="stylesheet" href="style.css">
-</head><body>
-<aside class="sidebar" id="sidebar">
-  <div class="brand"><img src="branding/logo.jpeg" class="brand-logo" alt=""><span>Options Trading University</span></div>
-  <nav class="side-nav">
-    <a href="index.html">Home</a><a class="active" href="watchlist.html">Watchlist</a>
-    <a href="modules.html">Modules</a><a href="profits.html">Results</a>
-  </nav>
-</aside>
-<div class="page">
-  <header class="topbar"><button class="burger" id="burger">☰</button></header>
-  <main class="container">
-    <section class="card">
-      <h1>Live watchlist</h1>
-      <div class="watchlist-controls">
-        <input id="watchlist-input" placeholder="Add symbol (AAPL)">
-        <button id="watchlist-add" class="btn">Add</button>
-      </div>
-      <div id="watchlist-grid" class="watchlist-grid"></div>
-      <p style="color:#8793b0">Quotes are cached for ~60 seconds to protect API quota.</p>
-    </section>
-  </main>
-  <footer class="footer"><div>© 2025 OTU</div></footer>
-</div>
-<script src="config.js"></script><script src="script.js"></script>
-</body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Watchlist - OTU</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <img src="branding/logo.jpeg" class="brand-logo" alt="Logo"><span>OTU</span>
+    </div>
+    <nav class="side-nav">
+      <a href="index.html">Home</a>
+      <a href="watchlist.html" class="active">Watchlist</a>
+      <a href="profits.html">Profit Snapshots</a>
+      <a href="lifestyle.html">Lifestyle</a>
+    </nav>
+  </aside>
+
+  <div class="page">
+    <header class="topbar">
+      <button class="burger" id="burger">☰</button>
+      <h2>Live Watchlist</h2>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <div class="watchlist-controls">
+          <input id="watchlist-input" placeholder="Add symbol (AAPL)">
+          <button id="watchlist-add" class="btn">Add</button>
+        </div>
+        <div id="watchlist-grid" class="watchlist-grid"></div>
+      </section>
+    </main>
+
+    <footer class="footer">© 2025 Options Trading University</footer>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
