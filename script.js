@@ -21,21 +21,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   $$('.stat h2').forEach(el=>{ const t=parseInt(el.dataset.count||0,10); if(t>0) countUp(el,t); });
 });
 
-/* ---------- CSV-derived stats (best-effort) ---------- */
-(async function(){
-  const h1=$$('.stat h2')[0], h2=$$('.stat h2')[1], h3=$$('.stat h2')[2];
-  if(!h1||!h2||!h3) return;
-  try{
-    const path=(window.SITE_CONFIG&&window.SITE_CONFIG.tradersCsvPath)||'data/traders_5000.csv';
-    const res=await fetch(path,{cache:'no-store'}); if(!res.ok) return;
-    const txt=await res.text(); const rows=txt.trim().split(/\r?\n/); const head=rows.shift().split(',').map(x=>x.toLowerCase());
-    const idxR=head.findIndex(h=>/result|win|outcome/.test(h)); const idxP=head.findIndex(h=>/pnl|profit|pl|amount/.test(h));
-    let total=0,wins=0,sum=0;
-    rows.forEach(line=>{ const c=line.split(','); if(c.length<2) return; total++; const pnl=idxP>=0?parseFloat(c[idxP]):NaN; const rs=idxR>=0?String(c[idxR]).toLowerCase():''; if(rs.includes('win')||(!isNaN(pnl)&&pnl>0)) wins++; if(!isNaN(pnl)) sum+=pnl; });
-    if(total>0){ h1.dataset.count=total; h2.dataset.count=Math.round((wins/total)*100); h3.dataset.count=Math.round(sum/Math.max(1,total)); }
-  }catch{}
-})();
-
 /* ---------- Twelve Data watchlist with quota-safe caching ---------- */
 const TD_KEY=(window.SITE_CONFIG&&window.SITE_CONFIG.TWELVE_API_KEY)||"";
 const LS_QUOTES="otu_td_cache_v3"; const QUOTE_TTL=60*1000;
@@ -82,17 +67,17 @@ function initLiveTicker(){
   function profit(){ return Math.floor(180+Math.random()*1600); }
   function msg(){ const n=names[Math.floor(Math.random()*names.length)]; return `💰 ${n} closed +$${profit()} just now`; }
   const items=new Array(12).fill(0).map(()=>{ const span=document.createElement('span'); span.className='item'; span.textContent=msg(); return span; });
-  items.concat(items.map(s=>s.cloneNode(true))).forEach(s=>track.appendChild(s)); // duplicate for seamless loop
+  items.concat(items.map(s=>s.cloneNode(true))).forEach(s=>track.appendChild(s));
   wrap.appendChild(track);
   setInterval(()=>{ const first=track.firstElementChild; if(!first) return; const clone=first.cloneNode(true); clone.textContent=msg(); track.appendChild(clone); track.removeChild(first); },4000);
 }
 document.addEventListener('DOMContentLoaded', initLiveTicker);
 
-/* ---------- Profits page: dynamic rotating carousel from Images/imgN.(jpeg|jpg) ---------- */
+/* ---------- Profits page: dynamic rotating carousel ---------- */
 function initProfitCarousel(){
   const stage=$('#profit-stage'); if(!stage) return;
   const caption=$('#profit-caption'); const prev=$('#profit-prev'); const next=$('#profit-next'); const playBtn=$('#profit-play');
-  const exts=["jpeg","jpg"]; const folder="Images"; const base="img";
+  const exts=["jpeg","jpg","png","webp"]; const folder="Images"; const base="img";
   const names=["Ava","James","Sophia","Daniel","Olivia","Michael","Emma","Ethan","Mason","Chloe","Logan","Nora","Liam","Mia","Caleb","Layla","Noah","Zoe"];
   const reasons=["breakout","trend pullback","earnings drift","range flip","volume spike","gap continuation","VWAP reclaim","support bounce","news catalyst"];
 
@@ -127,10 +112,10 @@ function initProfitCarousel(){
 }
 document.addEventListener('DOMContentLoaded', initProfitCarousel);
 
-/* ---------- Lifestyle page: paginated gallery from Lifestyle/lifeN.(jpeg|jpg) ---------- */
+/* ---------- Lifestyle page: paginated gallery ---------- */
 function initLifestyle(){
   const grid=$('#lifestyle-grid'); if(!grid) return;
-  const nav=$('#lifestyle-nav'); const perPage=12; const exts=["jpeg","jpg"]; const folder="Lifestyle"; const base="life";
+  const nav=$('#lifestyle-nav'); const perPage=12; const exts=["jpeg","jpg","png","webp"]; const folder="Lifestyle"; const base="life";
   async function head(url){ try{ const r=await fetch(url,{method:"HEAD"}); return r.ok; }catch{ return false; } }
   async function collect(){
     const arr=[]; let i=1, miss=0;
@@ -155,10 +140,10 @@ function initLifestyle(){
 }
 document.addEventListener('DOMContentLoaded', initLifestyle);
 
-/* ---------- Charts page: load only available Charts/chart1..chart7 (jpeg/jpg) ---------- */
+/* ---------- Charts page: load available chart images ---------- */
 function initCharts(){
   const grid=$('#charts-grid'); if(!grid) return;
-  const exts=["jpeg","jpg"]; const folder="Charts"; const base="chart";
+  const exts=["jpeg","jpg","png","webp"]; const folder="Charts"; const base="chart";
   async function head(url){ try{ const r=await fetch(url,{method:"HEAD"}); return r.ok; }catch{ return false; } }
   (async()=>{
     let i=1, miss=0;
@@ -171,7 +156,7 @@ function initCharts(){
 }
 document.addEventListener('DOMContentLoaded', initCharts);
 
-/* ---------- ChartVideo page: show only available ChartVideo/monitorN.mov ---------- */
+/* ---------- ChartVideo page: load available .mov ---------- */
 function initVideos(){
   const vg=$('#video-grid'); if(!vg) return;
   (async()=>{
@@ -188,6 +173,3 @@ function initVideos(){
   })();
 }
 document.addEventListener('DOMContentLoaded', initVideos);
-
-/* ---------- Glossary / Modules / Testimonials (optional JSON loaders) ---------- */
-async function safeJson(path){ try{ const r=await fetch(path,{cache:'no-store'}); if(!r.ok) throw 0; return await r.json(); }catch{ return null; } }
