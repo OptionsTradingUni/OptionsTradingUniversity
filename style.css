@@ -93,3 +93,29 @@ a { text-decoration:none; color:inherit }
   .burger { display:block }
   .carousel-stage { height:44vh }
 }
+
+/* Stats section */
+.stats { 
+  display:grid; 
+  grid-template-columns:repeat(3,1fr); 
+  gap:12px; 
+  margin:20px 0;
+}
+.stat { 
+  background:#fff; 
+  border:1px solid #e3e9f2; 
+  border-radius:10px; 
+  text-align:center; 
+  padding:16px; 
+  box-shadow:0 4px 12px rgba(0,0,0,.04);
+}
+.stat h2 { 
+  font-size:26px; 
+  margin:0; 
+  font-weight:800; 
+  color:#1749d4; 
+}
+.stat div { 
+  font-size:13px; 
+  color:#7986a6; 
+}
