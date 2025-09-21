@@ -1,23 +1,9 @@
-<!doctype html>
-<html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Charts — OTU</title><link rel="stylesheet" href="style.css"></head>
-<body>
-  <aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
-    <nav class="side-nav"><a href="index.html">Home</a><a href="charts.html" class="active">Charts</a></nav></aside>
-  <div class="page"><header class="topbar"><button class="burger" id="burger">☰</button></header>
-    <main class="container">
-      <section class="card"><h1>Charts</h1><p>Place images in <code>/charts</code> as chart01.jpg, chart02.jpg, …</p><div class="snap-grid" id="charts-grid"></div></section>
-    </main>
-  </div>
-  <script src="config.js"></script><script src="script.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', ()=>{
-      // separate call so you can use different prefixes in the same loader
-      (function loadCharts(){
-        function loadSeqImages(opts){ window.loadSeqImages ? window.loadSeqImages(opts) : setTimeout(loadCharts,100); }
-        loadSeqImages({containerId:'charts-grid', folder:'charts', base:'chart', pad:2});
-      })();
-    });
-  </script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Charts — OTU</title><link rel="stylesheet" href="style.css"></head><body>
+<aside class="sidebar" id="sidebar"><div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
+<nav class="side-nav"><a href="index.html">Home</a><a class="active" href="charts.html">Charts</a></nav></aside>
+<div class="page"><header class="topbar"><button class="burger" id="burger">☰</button></header>
+<main class="container"><section class="card"><h1>Charts</h1>
+<p>Upload to <code>Charts/</code> named <code>chart01.jpg</code>, <code>chart02.jpg</code>, …</p>
+<div id="charts-grid" class="snap-grid"></div></section></main>
+<footer class="footer"><div>© 2025 OTU</div></footer></div>
+<script src="config.js"></script><script src="script.js"></script></body></html>
