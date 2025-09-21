@@ -5,97 +5,54 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Training Modules</title>
   <style>
-    body { margin:0; font-family:Arial,sans-serif; background:#eaf1ff; color:#0f1a33; }
+    body { margin:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f0f4ff; color:#0f1a33; }
     a { text-decoration:none; color:inherit; }
     .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 220px;
-      background: #0b1328;
-      color: #fff;
-      padding-top: 10px;
-      overflow-y: auto;
+      position: fixed; top:0; left:0; bottom:0; width:220px;
+      background:#0b1328; color:#fff; padding-top:20px; overflow-y:auto;
     }
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px;
-      font-weight: 800;
+      display:flex; align-items:center; gap:10px; padding:10px; font-weight:800;
     }
-    .brand-logo {
-      width: 30px;
-      height: 30px;
-      border-radius: 6px;
-      object-fit: cover;
-    }
+    .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
     .brand span {
       background: linear-gradient(90deg,#2a7fff,#ff4081);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-weight: 900;
+      font-size:1.2em;
+      font-weight:900;
     }
-    .side-nav {
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-      gap: 5px;
-    }
+    .side-nav { display:flex; flex-direction:column; padding:10px; gap:8px; }
     .side-nav a {
-      color: #d8e2ff;
-      padding: 8px;
-      border-radius: 6px;
-      font-weight: 600;
-      display: block;
+      color:#d8e2ff; padding:10px; border-radius:8px; font-weight:600; transition: background 0.2s;
     }
-    .side-nav a.active { background: #163067; }
-    .page {
-      margin-left: 220px;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    .container {
-      padding: 20px;
-    }
-    .topbar {
-      background: #fff;
-      border-bottom: 1px solid #e3e9f2;
-      padding: 10px;
-    }
-    h1 { color: #2a7fff; margin: 0; }
+    .side-nav a:hover { background:#163067; }
+    .side-nav a.active { background:#1a2b68; }
+    .page { margin-left:220px; display:flex; flex-direction:column; min-height:100vh; }
+    .container { padding:30px; max-width:900px; margin:0 auto; }
+    .topbar { background:#fff; border-bottom:1px solid #e3e9f2; padding:15px; display:flex; align-items:center; }
+    h1 { color:#2a7fff; font-size:2em; margin:0; }
     .module-card {
-      background: #fff;
-      border-radius: 10px;
-      margin: 12px 0;
-      padding: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      background:#ffffff; border-radius:10px; margin:20px 0; padding:20px; 
+      box-shadow:0 4px 12px rgba(0,0,0,0.05); transition: all 0.3s;
     }
     .module-title {
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-      color: #1749d4;
+      font-size:1.4em; font-weight:700; cursor:pointer; color:#1749d4; display:flex; align-items:center; justify-content: space-between;
     }
+    .module-title:hover { color:#2a7fff; }
     .module-content {
-      margin-top: 8px;
-      display: none;
-      font-size: 14px;
-      line-height: 1.5;
-      color: #333;
+      margin-top:10px; display:none; font-size:1em; line-height:1.6; color:#333;
+      border-top:1px solid #e3e9f2; padding-top:10px;
     }
-    .footer {
-      margin-top: auto;
-      background: #0b1328;
-      color: #9cb2ff;
-      text-align: center;
-      padding: 12px;
+    .chevron {
+      width:20px; height:20px; transition: transform 0.3s;
     }
+    .chevron.down { transform: rotate(0deg); }
+    .chevron.up { transform: rotate(180deg); }
+    .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:20px; }
     @media(max-width:768px) {
-      .sidebar { display: none; }
-      .page { margin-left: 0; }
+      .sidebar { display:none; }
+      .page { margin-left:0; }
     }
   </style>
 </head>
@@ -124,32 +81,44 @@
   <script>
     fetch('modules.json')
       .then(res => {
-        if(!res.ok) throw new Error('modules.json not found');
+        if(!res.ok) throw new Error('modules.json not found or path wrong');
         return res.json();
       })
       .then(data => {
         const container = document.getElementById('modules-container');
-        container.innerHTML = '';  // clear "Loading..."
+        container.innerHTML = '';
         data.forEach((mod, idx) => {
           const card = document.createElement('div');
           card.className = 'module-card';
-          const title = document.createElement('div');
-          title.className = 'module-title';
-          title.textContent = mod.title;
-          const content = document.createElement('div');
-          content.className = 'module-content';
-          content.textContent = mod.content;
-          title.addEventListener('click', () => {
-            content.style.display = content.style.display === 'none' ? 'block' : 'none';
+
+          const titleEl = document.createElement('div');
+          titleEl.className = 'module-title';
+          titleEl.textContent = mod.title;
+
+          const chevron = document.createElement('span');
+          chevron.innerHTML = '&#9660;'; // down arrow
+          chevron.className = 'chevron down';
+          titleEl.appendChild(chevron);
+
+          const contentEl = document.createElement('div');
+          contentEl.className = 'module-content';
+          contentEl.textContent = mod.content;
+
+          titleEl.addEventListener('click', () => {
+            const isVisible = contentEl.style.display === 'block';
+            contentEl.style.display = isVisible ? 'none' : 'block';
+            chevron.className = isVisible ? 'chevron down' : 'chevron up';
           });
-          card.appendChild(title);
-          card.appendChild(content);
+
+          card.appendChild(titleEl);
+          card.appendChild(contentEl);
           container.appendChild(card);
         });
       })
       .catch(err => {
-        document.getElementById('modules-container').textContent = 'Could not load modules.';
-        console.error(err);
+        const container = document.getElementById('modules-container');
+        container.textContent = 'Could not load modules.';
+        console.error('Error:', err);
       });
   </script>
 </body>
