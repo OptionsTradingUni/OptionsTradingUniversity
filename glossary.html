@@ -1,59 +1,36 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Glossary — Options Trading University</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="header container">
-    <div class="brand"><img src="branding/logo.jpeg" alt="OTU"><div><div class="title">Options Trading University</div><div class="small">Glossary</div></div></div>
-    <nav class="nav"><a href="index.html">Home</a><a href="modules.html">Modules</a><a href="glossary.html">Glossary</a><a href="faq.html">FAQ</a></nav>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><a href="index.html" class="brand-link"><span>OTU</span></a></div>
+    <nav class="side-nav"><a href="index.html">Home</a><a href="glossary.html" class="active">Glossary</a></nav>
+  </aside>
+  <div class="page">
+    <header class="topbar"><button class="burger" id="burger">☰</button><nav class="top-links"><a href="index.html">OTU</a></nav></header>
+    <main class="container">
+      <h1>Glossary</h1>
+      <div id="glossary-list"></div>
+    </main>
   </div>
-
-  <main class="container">
-    <section class="card">
-      <h2 class="section-title">Comprehensive Trading Glossary (A → Z)</h2>
-      <p class="small">Quick definitions for traders. Copy these into tooltips or learning cards.</p>
-
-      <div class="glossary">
-        <div class="term"><b>ASK</b><div class="small">The price sellers are asking for the asset or contract.</div></div>
-        <div class="term"><b>BID</b><div class="small">The price buyers are willing to pay.</div></div>
-        <div class="term"><b>BLOCK</b><div class="small">Large institutional order executed off-exchange or specially handled.</div></div>
-        <div class="term"><b>CALL</b><div class="small">Option giving the right to buy the underlying at a strike.</div></div>
-        <div class="term"><b>PUT</b><div class="small">Option giving the right to sell the underlying at a strike.</div></div>
-        <div class="term"><b>DELTA</b><div class="small">Sensitivity of option price to a $1 move in the underlying (directional exposure).</div></div>
-        <div class="term"><b>GAMMA</b><div class="small">Rate of change of delta as the underlying moves.</div></div>
-        <div class="term"><b>THETA</b><div class="small">Time decay — how much value an option loses each day.</div></div>
-        <div class="term"><b>VEGA</b><div class="small">Sensitivity of option price to implied volatility changes.</div></div>
-        <div class="term"><b>IMPLIED VOLATILITY (IV)</b><div class="small">Market's expected future volatility priced into options.</div></div>
-        <div class="term"><b>IV RANK</b><div class="small">Measure of where current IV sits relative to its historical range.</div></div>
-        <div class="term"><b>OPEN INTEREST</b><div class="small">Number of outstanding contracts for a strike/expiration.</div></div>
-        <div class="term"><b>LIQUIDITY</b><div class="small">Availability of buyers/sellers; high liquidity means tighter spreads and better fills.</div></div>
-        <div class="term"><b>SLIPPAGE</b><div class="small">Difference between expected and executed price due to market moves or low liquidity.</div></div>
-        <div class="term"><b>STOP-LOSS</b><div class="small">Order type or rule to exit a losing trade to prevent further loss.</div></div>
-        <div class="term"><b>TA (Technical Analysis)</b><div class="small">Trading based on price patterns, indicators, and chart structure.</div></div>
-        <div class="term"><b>FA (Fundamental Analysis)</b><div class="small">Trading based on company financials, macroeconomic indicators, and news.</div></div>
-        <div class="term"><b>RISK/REWARD</b><div class="small">Ratio of potential loss to potential gain (example 1:2).</div></div>
-        <div class="term"><b>ROLL</b><div class="small">Move an option position to a different strike or expiration (out or up/down).</div></div>
-        <div class="term"><b>LOTTO</b><div class="small">Cheap, short-dated option with low probability but high payoff potential.</div></div>
-        <div class="term"><b>SWEEP</b><div class="small">Aggressive multi-exchange option buy that sweeps the book — often signals institutional flow.</div></div>
-        <div class="term"><b>VIX</b><div class="small">Volatility index — market’s expectation of S&P 500 volatility over 30 days.</div></div>
-        <div class="term"><b>WICK</b><div class="small">The tail of a candle showing rejection at a price.</div></div>
-        <div class="term"><b>VWAP</b><div class="small">Volume Weighted Average Price — intraday benchmark for buyers/sellers.</div></div>
-        <div class="term"><b>SHARPE RATIO</b><div class="small">Risk-adjusted return measure; higher is generally better.</div></div>
-        <div class="term"><b>REMIT</b><div class="small">(Context) Fill and execution shorthand used in chat / groups.</div></div>
-        <!-- add more terms as needed -->
-      </div>
-    </section>
-
-    <div style="height:24px"></div>
-  </main>
-
-  <div class="sticky-cta" onclick="openTikTokModal()"><div class="dot"></div> DM on TikTok</div>
-  <div class="ticker-bar"><div class="ticker-inner"></div></div>
-  <div id="popup-container"></div>
-
+  <script src="config.js"></script>
   <script src="script.js"></script>
+  <script>
+    (async function(){
+      const box = document.getElementById('glossary-list');
+      try{
+        const res = await fetch(window.SITE_CONFIG.glossaryJsonPath);
+        const data = await res.json();
+        box.innerHTML = data.map(g=>`
+          <article class="card"><h2>${g.term}</h2><p>${g.definition}</p></article>
+        `).join('');
+      }catch(e){ box.textContent='Upload glossary.json'; }
+    })();
+  </script>
 </body>
 </html>
