@@ -108,17 +108,30 @@ async function loadVideos(){
 }
 document.addEventListener('DOMContentLoaded', loadVideos);
 
-/* ===== Watchlist Loader ===== */
+/* ===== Watchlist Loader (with debug) ===== */
 async function tdQuote(symbol){
   const key = CONFIG.API_KEY;
+  if(!key){
+    document.getElementById('watchlist-status').textContent = "⚠️ API key missing.";
+    throw new Error("API key missing");
+  }
   const url = `https://api.twelvedata.com/quote?symbol=${encodeURIComponent(symbol)}&apikey=${encodeURIComponent(key)}`;
-  const r = await fetch(url); const j = await r.json();
-  if(j.status==="error" || !j.symbol) throw new Error(j.message||"bad");
-  return j;
+  try {
+    const r = await fetch(url);
+    const j = await r.json();
+    if(j.status === "error" || !j.symbol){
+      document.getElementById('watchlist-status').textContent = `⚠️ API error for ${symbol}`;
+      throw new Error(j.message || "API error");
+    }
+    return j;
+  } catch(e){
+    document.getElementById('watchlist-status').textContent = `⚠️ Fetch failed for ${symbol}`;
+    throw e;
+  }
 }
 function watchTile(q){
   const d=document.createElement('div'); d.className='tile';
-  const chg=parseFloat(q.percent_change || 0);
+  const chg=parseFloat(q.percent_change ?? 0);
   if(!isNaN(chg)) d.classList.add(chg>=0?'up':'down');
   d.innerHTML=`<div class="sym">${q.symbol}</div>
                <div class="px">$${Number(q.price).toFixed(2)}</div>
@@ -129,22 +142,33 @@ async function initWatchlist(){
   const grid=document.getElementById('watchlist-grid');
   const input=document.getElementById('watchlist-input');
   const add=document.getElementById('watchlist-add');
+  const status=document.getElementById('watchlist-status');
   if(!grid||!input||!add) return;
-  let list=JSON.parse(localStorage.getItem('otu_watchlist')||'[]');
+
+  let list;
+  try { list=JSON.parse(localStorage.getItem('otu_watchlist')||'[]'); }
+  catch{ list=[]; }
   if(list.length===0){ list=["AAPL","MSFT","TSLA","NVDA","SPY"];
     localStorage.setItem('otu_watchlist',JSON.stringify(list)); }
+
   async function refresh(){
-    grid.innerHTML='';
+    grid.innerHTML=''; status.textContent='Loading...';
     for(const sym of list){
       try{ const q=await tdQuote(sym); grid.appendChild(watchTile(q)); }
-      catch(e){ const t=document.createElement('div'); t.className='tile'; t.textContent=sym+" — error"; grid.appendChild(t); }
+      catch(e){ const t=document.createElement('div'); t.className='tile'; t.textContent=sym+" — failed"; grid.appendChild(t); }
     }
+    status.textContent='';
   }
-  add.addEventListener('click',async()=>{
+
+  add.addEventListener('click', async ()=>{
     const sym=input.value.trim().toUpperCase();
-    if(sym&&!list.includes(sym)){ list.push(sym); localStorage.setItem('otu_watchlist',JSON.stringify(list)); await refresh(); }
+    if(sym && !list.includes(sym)){
+      list.push(sym); localStorage.setItem('otu_watchlist',JSON.stringify(list));
+      await refresh();
+    }
     input.value='';
   });
+
   refresh(); setInterval(refresh,60000);
 }
 document.addEventListener('DOMContentLoaded', initWatchlist);
