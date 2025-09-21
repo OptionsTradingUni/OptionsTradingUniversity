@@ -1,1 +1,18 @@
-
+[
+  {
+    "term": "Call Option",
+    "definition": "A call option gives the buyer the right, but not the obligation, to buy an underlying asset at a specified strike price before the option expires."
+  },
+  {
+    "term": "Put Option",
+    "definition": "A put option gives the buyer the right, but not the obligation, to sell an underlying asset at a specified strike price before expiration."
+  },
+  {
+    "term": "Implied Volatility (IV)",
+    "definition": "A metric that reflects the market's forecast of a likely movement in a security's price. Higher IV means higher expected movement and usually higher option premiums."
+  },
+  {
+    "term": "Open Interest",
+    "definition": "The total number of outstanding option contracts that are open and not yet settled. It helps gauge liquidity and activity in an option."
+  }
+]
