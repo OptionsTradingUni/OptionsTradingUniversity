@@ -4,13 +4,13 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Options Trading University</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="brand"><a href="index.html" class="brand-link">
-      <img src="branding/logo.png" class="brand-logo" alt="OTU" onerror="this.style.display='none'"><span>Options Trading University</span></a>
+    <div class="brand">
+      <img src="branding/logo.jpeg" class="brand-logo" alt="OTU">
+      <span>Options Trading University</span>
     </div>
     <nav class="side-nav">
       <a class="active" href="index.html">Home</a>
@@ -24,22 +24,22 @@
       <a href="chartvideo.html">Chart Videos</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
-      <a href="terms.html">Disclaimer & Terms</a>
       <a href="faq.html">FAQ</a>
+      <a href="terms.html">Disclaimer</a>
     </nav>
   </aside>
 
+  <!-- Page -->
   <div class="page">
     <header class="topbar">
-      <button class="burger" id="burger" aria-label="Open menu">☰</button>
-      <nav class="top-links"><a href="index.html">OTU</a></nav>
+      <button class="burger" id="burger">☰</button>
       <div><button class="btn" onclick="openTikTokModal()">Message a mentor</button></div>
     </header>
 
     <main class="container">
       <section class="card hero">
-        <h1>Learn options with structure and mentorship</h1>
-        <p>Curriculum, live tools, chart reviews, and direct mentor access — all in one place.</p>
+        <h1>Learn options with structure and real mentorship</h1>
+        <p>Modules, live watchlist, verified chart reviews, and lifestyle snapshots from our community.</p>
         <div class="cta-row">
           <a class="btn" href="modules.html">Start learning</a>
           <button class="btn ghost" onclick="openTikTokModal()">Talk to a mentor</button>
@@ -47,42 +47,39 @@
       </section>
 
       <section class="stats">
-        <div class="stat"><div class="label">Total trades</div><h2 data-count="4280">0</h2></div>
-        <div class="stat"><div class="label">Win rate</div><h2 data-count="72">0</h2><span class="suffix">%</span></div>
-        <div class="stat"><div class="label">Average profit</div><h2 data-count="146">0</h2><span class="prefix">$</span></div>
+        <div class="stat"><div class="label">Total trades</div><h2 data-count="6500">0</h2></div>
+        <div class="stat"><div class="label">Win rate</div><h2 data-count="86">0</h2></div>
+        <div class="stat"><div class="label">Average profit</div><h2 data-count="664">0</h2></div>
       </section>
 
-      <section class="card simple-links">
-        <h2>Explore</h2>
-        <div class="grid-links">
-          <a class="link-card" href="modules.html">Modules</a>
-          <a class="link-card" href="glossary.html">Glossary</a>
-          <a class="link-card" href="watchlist.html">Watchlist</a>
-          <a class="link-card" href="profits.html">Results</a>
-          <a class="link-card" href="lifestyle.html">Lifestyle</a>
-          <a class="link-card" href="charts.html">Charts</a>
-          <a class="link-card" href="chartvideo.html">Chart videos</a>
-          <a class="link-card" href="testimonials.html">Testimonials</a>
-          <a class="link-card" href="about.html">About</a>
-          <a class="link-card" href="contact.html">Contact</a>
-          <a class="link-card" href="faq.html">FAQ</a>
-          <a class="link-card" href="terms.html">Disclaimer</a>
-        </div>
+      <section class="card">
+        <h2>Recent profits</h2>
+        <div id="profits-grid" class="snap-grid"></div>
+      </section>
+
+      <section class="card">
+        <h2>Lifestyle</h2>
+        <div id="lifestyle-grid" class="snap-grid"></div>
+      </section>
+
+      <section class="card">
+        <h2>Charts</h2>
+        <div id="charts-grid" class="snap-grid"></div>
       </section>
     </main>
 
     <footer class="footer">
       <div>© 2025 Options Trading University</div>
-      <div><a href="terms.html">Disclaimer</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></div>
+      <div><a href="terms.html">Disclaimer</a> <a href="faq.html">FAQ</a> <a href="contact.html">Contact</a></div>
     </footer>
   </div>
 
-  <!-- DM Modal -->
-  <div class="modal-backdrop" id="tt-modal" style="display:none">
+  <!-- TikTok Modal -->
+  <div class="modal-backdrop" id="tt-modal">
     <div class="modal">
       <button class="close" onclick="closeTikTokModal()">✕</button>
       <h3>Message on TikTok</h3>
-      <div class="suggest">Hi — I found your OTU page. I’d like a mentor to review my plan and help me get started. — <i>Your name</i></div>
+      <div class="suggest">Hi — I found OTU. I’d like to join and get a plan review. — <i>Your name</i></div>
       <div style="text-align:right;margin-top:10px"><button class="btn ghost" onclick="closeTikTokModal()">Close</button></div>
     </div>
   </div>
