@@ -25,17 +25,33 @@
     @keyframes shake { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-2px);} 40%{transform:translateX(2px);} 60%{transform:translateX(-2px);} 80%{transform:translateX(2px);} }
     .brand-inline { font-weight:900; background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 
-    /* Cards */
-    .card { background:#fff; border:1px solid #e3e9f2; border-radius:12px; padding:16px; margin:12px 0; cursor:pointer; transition:0.3s; }
-    .card h3 { margin:0; color:#1749d4; }
+    /* Module Cards */
+    .card { background:#fff; border:1px solid #e3e9f2; border-radius:12px; padding:16px; margin:14px 0; cursor:pointer; transition:0.3s; }
+    .card h3 { margin:0; color:#1749d4; font-size:18px; }
     .card:hover { background:#f0f6ff; }
-    .content { display:none; margin-top:10px; color:#333; line-height:1.5; }
 
+    /* Expanded Content */
+    .content { 
+      display:none; 
+      margin-top:12px; 
+      line-height:1.7; 
+      background:#f9fbff; 
+      padding:16px; 
+      border-radius:8px; 
+      color:#222; 
+      font-size:15px; 
+      box-shadow:inset 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .content p { margin:12px 0; }
+
+    /* Footer */
     .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
+
     @media(max-width:768px){ .sidebar{display:none;} .page{margin-left:0;} .burger{display:block;} }
   </style>
 </head>
 <body>
+  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
     <nav class="side-nav">
@@ -46,6 +62,7 @@
     </nav>
   </aside>
 
+  <!-- Page -->
   <div class="page">
     <header class="topbar">
       <button class="burger" id="burger">☰</button>
@@ -55,6 +72,10 @@
 
     <main class="container">
       <h1 style="color:#1749d4">📘 Training Modules</h1>
+      <p style="color:#555;margin-bottom:20px;">
+        Explore our structured modules. Click each title to expand detailed notes. The content is 
+        spaced and easy to read like a study guide.
+      </p>
       <div id="modules-list"></div>
     </main>
 
@@ -66,18 +87,29 @@
     document.addEventListener("DOMContentLoaded",async()=>{
       const data=await loadJSON("modules.json");
       const list=document.getElementById("modules-list");
+
       data.forEach(m=>{
         const card=document.createElement("div");
         card.className="card";
-        card.innerHTML=`<h3>${m.title}</h3><div class="content">${m.content}</div>`;
+
+        // Turn module content into paragraphs
+        const paragraphs = m.content.split("\n").map(p=>`<p>${p.trim()}</p>`).join("");
+
+        card.innerHTML=`
+          <h3>${m.title}</h3>
+          <div class="content">${paragraphs}</div>
+        `;
+
         card.querySelector("h3").onclick=()=>{
           const c=card.querySelector(".content");
           c.style.display=c.style.display==="block"?"none":"block";
         };
+
         list.appendChild(card);
       });
     });
 
+    // Sidebar toggle
     const burger=document.getElementById('burger'); 
     const sidebar=document.getElementById('sidebar'); 
     burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
