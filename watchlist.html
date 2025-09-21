@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Watchlist </title>
+  <title>Watchlist</title>
   <style>
     body{margin:0;font-family:sans-serif;background:#f4f7ff;color:#0f1a33;}
 
@@ -38,12 +38,36 @@
     .symbol{font-size:18px;font-weight:700;color:#2a7fff;}
     .price{font-size:20px;font-weight:800;margin:6px 0;}
     .change{font-size:14px;padding:4px 8px;border-radius:6px;display:inline-block;}
-
     .change.up{background:#d4f5e9;color:#0a8a4a;}
     .change.down{background:#ffdada;color:#c62828;}
 
     .footer{margin-top:auto;background:#0b1328;color:#9cb2ff;text-align:center;padding:12px;}
     @media(max-width:768px){.sidebar{display:none;}.page{margin-left:0;}.burger{display:block;}}
+
+    /* Button */
+    .btn { background:#2a7fff;color:#fff;border:none;border-radius:6px;padding:8px 14px;cursor:pointer;font-weight:600; }
+    .btn:hover { background:#1e5fd9; }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed; top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.6);
+      display: none; align-items:center; justify-content:center;
+      z-index:2000;
+    }
+    .modal {
+      background:#fff; padding:20px; border-radius:10px; max-width:400px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.3); text-align:left;
+    }
+    .modal h3 { margin-top:0; color:#2a7fff; }
+    .modal .close {
+      float:right; background:none; border:none; font-size:20px;
+      cursor:pointer; color:#444;
+    }
+    .suggest {
+      background:#f5f9ff; padding:12px; border-radius:6px;
+      font-family:monospace; margin-top:10px;
+    }
   </style>
 </head>
 <body>
@@ -68,7 +92,7 @@
     <header class="topbar">
       <button class="burger" id="burger">☰</button>
       <div class="brand-inline">Options Trading University</div>
-      <span></span>
+      <button class="btn" onclick="openTikTokModal()">Message a Mentor</button>
     </header>
 
     <main class="container">
@@ -79,6 +103,21 @@
     </main>
 
     <footer class="footer">© 2025 Options Trading University</footer>
+  </div>
+
+  <!-- TikTok Modal -->
+  <div class="modal-backdrop" id="tt-modal">
+    <div class="modal">
+      <button class="close" onclick="closeTikTokModal()">✕</button>
+      <h3>Message on TikTok</h3>
+      <p>Send us a DM directly on TikTok. Suggested message:</p>
+      <div class="suggest">
+        Hi — I found OTU. I'd like to connect with a mentor and get started. — <i>Your name</i>
+      </div>
+      <div style="text-align:right;margin-top:12px">
+        <button class="btn" onclick="closeTikTokModal()">Close</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -116,6 +155,14 @@
       }
     }
     loadWatchlist();
+
+    // Modal
+    function openTikTokModal(){
+      document.getElementById("tt-modal").style.display="flex";
+    }
+    function closeTikTokModal(){
+      document.getElementById("tt-modal").style.display="none";
+    }
   </script>
 </body>
 </html>
