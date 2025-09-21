@@ -1,74 +1,33 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Modules — Options Trading University</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Modules — OTU</title><link rel="stylesheet" href="style.css"></head>
 <body>
   <aside class="sidebar" id="sidebar">
-    <div class="brand"><a href="index.html" class="brand-link"><img src="branding/logo.png" class="brand-logo" alt="OTU" onerror="this.style.display='none'"><span>Options Trading University</span></a></div>
-    <nav class="side-nav">
-      <a href="index.html">Home</a>
-      <a href="modules.html" class="active">Modules</a>
-      <a href="glossary.html">Glossary</a>
-      <a href="testimonials.html">Testimonials</a>
-      <a href="watchlist.html">Watchlist</a>
-      <a href="profits.html">Results</a>
-      <a href="calculators.html">Calculators</a>
-      <a href="lifestyle.html">Lifestyle</a>
-      <a href="charts.html">Charts</a>
-      <a href="chartvideo.html">Chart Videos</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="terms.html">Disclaimer & Terms</a>
-      <a href="faq.html">FAQ</a>
-    </nav>
+    <div class="brand"><a href="index.html" class="brand-link"><img src="branding/logo.png" class="brand-logo" alt="" onerror="this.style.display='none'"><span>Options Trading University</span></a></div>
+    <nav class="side-nav"><a href="index.html">Home</a><a href="modules.html" class="active">Modules</a><a href="glossary.html">Glossary</a><a href="testimonials.html">Testimonials</a><a href="watchlist.html">Watchlist</a><a href="profits.html">Results</a><a href="lifestyle.html">Lifestyle</a><a href="charts.html">Charts</a><a href="chartvideo.html">Chart Videos</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="terms.html">Disclaimer & Terms</a><a href="faq.html">FAQ</a></nav>
   </aside>
-
   <div class="page">
-    <header class="topbar">
-      <button class="burger" id="burger">☰</button>
-      <nav class="top-links">
-        <a href="index.html" class="logo-link">OTU</a>
-        <a href="glossary.html">Glossary</a>
-        <a href="testimonials.html">Testimonials</a>
-      </nav>
-      <div class="top-cta"><button class="btn" onclick="openTikTokModal()">Message a Mentor</button></div>
-    </header>
-
+    <header class="topbar"><button class="burger" id="burger">☰</button><nav class="top-links"><a href="index.html" class="logo-link">OTU</a></nav></header>
     <main class="container">
-      <section class="card">
-        <h1>Modules</h1>
-        <p>Structured lessons with clear outcomes. Click a lesson to expand, or go deeper into the dedicated lesson pages.</p>
-        <div id="modules-list"></div>
-      </section>
+      <section class="card"><h1>Modules</h1><p>Open any lesson to go deeper. Long content lives on dedicated pages to keep this list fast.</p><div id="modules-list"></div></section>
     </main>
-
-    <footer class="footer"><div class="foot-row"><div>© 2025 Options Trading University</div></div></footer>
+    <footer class="footer">© 2025 OTU</footer>
   </div>
-
-  <div class="modal-backdrop" id="tt-modal" style="display:none"><div class="modal"><button class="close" onclick="closeTikTokModal()">✕</button><h3>Message a Mentor</h3><p>Copy/paste:</p><div class="suggest">Hi — I’m going through the modules and would like a mentor review. — <i>Your name</i></div></div></div>
-
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+  <script src="config.js"></script><script src="script.js"></script>
   <script>
     (async function(){
-      const box = document.getElementById('modules-list');
+      const box=document.getElementById('modules-list');
       try{
-        const res = await fetch(window.SITE_CONFIG.modulesJsonPath);
-        const data = await res.json();
-        box.innerHTML = data.map(m=>`
+        const res=await fetch(window.SITE_CONFIG.modulesJsonPath,{cache:'no-store'});
+        const data=await res.json();
+        box.innerHTML=data.map(m=>`
           <article class="card">
             <h2>${m.title}</h2>
             <p>${m.summary}</p>
-            <a class="btn ghost" href="lesson${m.id}.html">Open Lesson</a>
+            <a class="btn" href="lesson${m.id}.html">Open lesson</a>
           </article>
         `).join('');
-      }catch(e){
-        box.innerHTML = '<p>Upload data/json/modules.json to render modules.</p>';
-      }
+      }catch(e){ box.innerHTML='<p>Upload data/json/modules.json</p>'; }
     })();
   </script>
 </body>
