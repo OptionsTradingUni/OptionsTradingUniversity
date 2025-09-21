@@ -9,19 +9,19 @@
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <img src="branding/logo.jpeg" class="brand-logo" alt="OTU">
-      <span>Options Trading University</span>
+      <img src="branding/logo.jpeg" class="brand-logo" alt="Logo">
+      <span>OTU</span>
     </div>
     <nav class="side-nav">
-      <a class="active" href="index.html">Home</a>
+      <a href="index.html" class="active">Home</a>
       <a href="modules.html">Modules</a>
-      <a href="glossary.html">Glossary</a>
-      <a href="testimonials.html">Testimonials</a>
-      <a href="watchlist.html">Watchlist</a>
-      <a href="profits.html">Results</a>
+      <a href="profits.html">Profit Snapshots</a>
       <a href="lifestyle.html">Lifestyle</a>
       <a href="charts.html">Charts</a>
       <a href="chartvideo.html">Chart Videos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="testimonials.html">Testimonials</a>
+      <a href="watchlist.html">Watchlist</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
       <a href="faq.html">FAQ</a>
@@ -37,41 +37,44 @@
     </header>
 
     <main class="container">
-      <section class="card hero">
-        <h1>Learn options with structure and real mentorship</h1>
-        <p>Modules, live watchlist, verified chart reviews, and lifestyle snapshots from our community.</p>
+      <!-- Hero -->
+      <section class="hero">
+        <h1>Learn Options Trading the Right Way</h1>
+        <p>Guided by real mentors, verified results, and step-by-step modules.</p>
         <div class="cta-row">
-          <a class="btn" href="modules.html">Start learning</a>
-          <button class="btn ghost" onclick="openTikTokModal()">Talk to a mentor</button>
+          <a class="btn" href="modules.html">Explore Modules</a>
+          <button class="btn ghost" onclick="openTikTokModal()">Talk to a Mentor</button>
         </div>
       </section>
 
+      <!-- Stats -->
       <section class="stats">
-        <div class="stat"><div class="label">Total trades</div><h2 data-count="6500">0</h2></div>
-        <div class="stat"><div class="label">Win rate</div><h2 data-count="86">0</h2></div>
-        <div class="stat"><div class="label">Average profit</div><h2 data-count="664">0</h2></div>
+        <div class="stat"><div>Total Trades</div><h2 data-count="1700">0</h2></div>
+        <div class="stat"><div>Win Rate</div><h2 data-count="86">0</h2>%</div>
+        <div class="stat"><div>Avg Profit</div><h2 data-count="664">0</h2>$</div>
       </section>
 
+      <!-- Live Profit Snapshot -->
       <section class="card">
-        <h2>Recent profits</h2>
-        <div id="profits-grid" class="snap-grid"></div>
+        <h2>Live Profit Snapshot</h2>
+        <div id="live-profit-box" style="font-size:18px;font-weight:600;color:#16a34a;"></div>
       </section>
 
+      <!-- Navigation preview -->
       <section class="card">
-        <h2>Lifestyle</h2>
-        <div id="lifestyle-grid" class="snap-grid"></div>
-      </section>
-
-      <section class="card">
-        <h2>Charts</h2>
-        <div id="charts-grid" class="snap-grid"></div>
+        <h2>Quick Navigation</h2>
+        <ul>
+          <li><a href="profits.html">View All Profit Snapshots</a></li>
+          <li><a href="lifestyle.html">See Lifestyle Gallery</a></li>
+          <li><a href="charts.html">Charts & Market Views</a></li>
+          <li><a href="chartvideo.html">Chart Video Walkthroughs</a></li>
+          <li><a href="modules.html">Learning Modules</a></li>
+          <li><a href="testimonials.html">Read Testimonials</a></li>
+        </ul>
       </section>
     </main>
 
-    <footer class="footer">
-      <div>© 2025 Options Trading University</div>
-      <div><a href="terms.html">Disclaimer</a> <a href="faq.html">FAQ</a> <a href="contact.html">Contact</a></div>
-    </footer>
+    <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
   <!-- TikTok Modal -->
@@ -79,8 +82,8 @@
     <div class="modal">
       <button class="close" onclick="closeTikTokModal()">✕</button>
       <h3>Message on TikTok</h3>
-      <div class="suggest">Hi — I found OTU. I’d like to join and get a plan review. — <i>Your name</i></div>
-      <div style="text-align:right;margin-top:10px"><button class="btn ghost" onclick="closeTikTokModal()">Close</button></div>
+      <div class="suggest">Hi, I found Options Trading University. I’d like to join and get a trade review. — <i>Your name</i></div>
+      <div style="text-align:right;margin-top:12px"><button class="btn ghost" onclick="closeTikTokModal()">Close</button></div>
     </div>
   </div>
 
