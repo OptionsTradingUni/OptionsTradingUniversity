@@ -11,6 +11,7 @@
     <nav class="side-nav">
       <a href="index.html">Home</a>
       <a href="liveprofits.html" class="active">Live Profits</a>
+      <a href="watchlist.html">Watchlist</a>
       <a href="profits.html">Profit Snapshots</a>
       <a href="lifestyle.html">Lifestyle</a>
       <a href="charts.html">Charts</a>
@@ -29,7 +30,10 @@
     <main class="container">
       <section class="card">
         <h3 style="margin:0 0 8px 0">Real-time Member Wins</h3>
-        <div class="ticker-bar"><div id="live-ticker"></div></div>
+        <div id="live-ticker" class="ticker-shell">
+          <div class="ticker-track" id="ticker-track"></div>
+        </div>
+        <p class="muted">Auto-refreshes with new wins every few seconds.</p>
       </section>
     </main>
     <footer class="footer">© 2025 Options Trading University</footer>
