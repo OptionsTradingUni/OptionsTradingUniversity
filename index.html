@@ -6,16 +6,25 @@
   <title>Options Trading University - Home</title>
   <style>
     body { margin:0; font-family:sans-serif; background:#f4f7ff; color:#0f1a33; }
+
+    /* Sidebar */
     .sidebar { position:fixed; top:0; left:0; bottom:0; width:220px; background:#0b1328; color:#fff; padding-top:10px; }
     .brand { display:flex; align-items:center; gap:10px; padding:10px; font-weight:800; }
     .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
     .brand span { background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900; }
+
+    /* Remove underline from all links */
+    a { text-decoration:none; }
+
     .side-nav { display:flex; flex-direction:column; padding:10px; gap:5px; }
-    .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; }
+    .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; display:block; }
     .side-nav a.active { background:#163067; }
 
+    /* Page layout */
     .page { margin-left:220px; min-height:100vh; display:flex; flex-direction:column; }
     .container { max-width:900px; margin:0 auto; padding:20px; }
+
+    /* Topbar */
     .topbar { background:#fff; border-bottom:1px solid #e3e9f2; display:flex; justify-content:space-between; align-items:center; padding:10px; }
     .burger { display:none; font-size:20px; background:none; border:none; cursor:pointer; animation:shake 2s infinite; }
     @keyframes shake {
@@ -25,9 +34,9 @@
       60%{transform:translateX(-2px);}
       80%{transform:translateX(2px);}
     }
+
     .btn { background:#2a7fff; color:#fff; border:none; padding:8px 14px; border-radius:8px; font-weight:700; cursor:pointer; }
     .btn.ghost { background:#edf3ff; color:#1749d4; }
-
     .brand-inline {
       font-weight:900;
       background:linear-gradient(90deg,#2a7fff,#ff4081);
@@ -40,6 +49,7 @@
     .hero h1 { margin:0; font-size:28px; }
     .hero p { margin:10px auto; max-width:600px; }
     .cta-row { display:flex; justify-content:center; gap:10px; margin-top:15px; }
+    .cta-row a { display:inline-block; }
 
     /* Stats */
     .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:20px 0; }
@@ -52,6 +62,7 @@
     .image-card::before { content:""; position:absolute; inset:0; background:rgba(15,25,60,.75); border-radius:12px; }
     .image-card * { position:relative; z-index:1; }
 
+    /* Footer */
     .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
 
     @media(max-width:768px){
@@ -103,9 +114,9 @@
 
       <!-- Stats -->
       <section class="stats">
-        <div class="stat"><h2 data-count="2478+">0</h2><div>Total Trades</div></div>
+        <div class="stat"><h2 data-count="2793+">0</h2><div>Total Trades</div></div>
         <div class="stat"><h2 data-count="82">0</h2><div>Win Rate %</div></div>
-        <div class="stat"><h2 data-count="1094+">0</h2><div>Avg Income +</div></div>
+        <div class="stat"><h2 data-count="1093+">0</h2><div>Avg Income +</div></div>
       </section>
 
       <!-- Motivation -->
