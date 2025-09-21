@@ -5,12 +5,18 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Testimonials</title>
   <style>
-    body { margin:0; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; background:#f7f9ff; color:#0f1a33; }
+    body { margin:0; font-family:'Segoe UI',Tahoma,sans-serif; background:#f7f9ff; color:#0f1a33; }
     a { text-decoration:none; color:inherit; }
+
+    /* Sidebar */
     .sidebar {
-      position:fixed; top:0; left:0; bottom:0; width:220px;
+      position: fixed; top:0; left:0; bottom:0; width:220px;
       background:#0b1328; color:#fff; padding-top:20px; overflow-y:auto;
+      transform: translateX(-220px);
+      transition: transform 0.3s ease;
+      z-index:1000;
     }
+    .sidebar.active { transform: translateX(0); }
     .brand { display:flex; align-items:center; gap:10px; padding:10px; font-weight:800; }
     .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
     .brand span {
@@ -22,25 +28,42 @@
     .side-nav a { color:#d8e2ff; padding:10px; border-radius:8px; font-weight:600; transition:background 0.2s; }
     .side-nav a:hover { background:#163067; }
     .side-nav a.active { background:#1a2b68; }
-    .page { margin-left:220px; display:flex; flex-direction:column; min-height:100vh; }
+
+    /* Page */
+    .page { margin-left:0; display:flex; flex-direction:column; min-height:100vh; }
     .container { padding:30px; max-width:900px; margin:0 auto; }
-    .topbar { background:#fff; border-bottom:1px solid #e3e9f2; padding:15px; }
-    h1 { color:#2a7fff; font-size:2em; margin:0; }
+    .topbar {
+      background:linear-gradient(90deg,#2a7fff,#ff4081);
+      color:#fff; padding:20px; text-align:center;
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .topbar h1 { margin:0; font-size:2em; font-weight:800; }
+    .burger { font-size:1.5em; background:none; border:none; color:#fff; cursor:pointer; }
+
+    /* Testimonial */
     .testimonial-card {
       background:#ffffff; border-radius:10px; margin:20px 0; padding:20px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.05); transition:all 0.3s;
+      box-shadow:0 4px 12px rgba(0,0,0,0.05);
     }
     .testimonial-author { font-weight:700; color:#1749d4; font-size:1.1em; margin-bottom:6px; }
+    .testimonial-role { font-size:0.9em; color:#555; margin-bottom:12px; }
     .testimonial-content { font-size:1em; line-height:1.6; color:#333; }
+    .controls { display:flex; justify-content:space-between; margin-top:20px; }
+    .btn { background:#2a7fff; color:#fff; padding:10px 18px; border:none; border-radius:6px; cursor:pointer; font-weight:600; }
+    .btn:disabled { background:#ccc; cursor:not-allowed; }
+
     .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:20px; }
-    @media(max-width:768px) {
-      .sidebar { display:none; }
-      .page { margin-left:0; }
+
+    @media(min-width:769px){
+      .sidebar { transform:translateX(0); }
+      .page { margin-left:220px; }
+      .burger { display:none; }
     }
   </style>
 </head>
 <body>
-  <aside class="sidebar">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
     <div class="brand">
       <img src="branding/logo.jpeg" class="brand-logo" alt="Logo">
       <span>Options Trading University</span>
@@ -53,44 +76,62 @@
     </nav>
   </aside>
 
+  <!-- Page -->
   <div class="page">
-    <header class="topbar"><h1>Student Testimonials</h1></header>
+    <header class="topbar">
+      <button class="burger" id="burger">☰</button>
+      <h1>Student Testimonials</h1>
+    </header>
     <main class="container">
-      <div id="testimonials-container">Loading testimonials...</div>
+      <div id="testimonials-container">Loading testimonial...</div>
+      <div class="controls">
+        <button class="btn" id="prevBtn">Previous</button>
+        <button class="btn" id="nextBtn">Next</button>
+      </div>
     </main>
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
   <script>
+    const container = document.getElementById('testimonials-container');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let testimonials = [];
+    let currentIndex = 0;
+
+    // Sidebar toggle
+    document.getElementById('burger').addEventListener('click',()=>{
+      document.getElementById('sidebar').classList.toggle('active');
+    });
+
+    // Load testimonials.json
     fetch('testimonials.json')
-      .then(res => {
-        if(!res.ok) throw new Error('testimonials.json not found');
-        return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
-        const container = document.getElementById('testimonials-container');
-        container.innerHTML = '';
-        data.forEach((t, idx) => {
-          const card = document.createElement('div');
-          card.className = 'testimonial-card';
-
-          const author = document.createElement('div');
-          author.className = 'testimonial-author';
-          author.textContent = t.name + " — " + t.role;
-
-          const content = document.createElement('div');
-          content.className = 'testimonial-content';
-          content.textContent = t.feedback;
-
-          card.appendChild(author);
-          card.appendChild(content);
-          container.appendChild(card);
-        });
+        testimonials = data;
+        showTestimonial(0);
       })
       .catch(err => {
-        document.getElementById('testimonials-container').textContent = 'Could not load testimonials.';
-        console.error('Error loading testimonials.json:', err);
+        container.textContent = "Could not load testimonials.";
+        console.error(err);
       });
+
+    function showTestimonial(index){
+      if(index < 0 || index >= testimonials.length) return;
+      currentIndex = index;
+      container.innerHTML = `
+        <div class="testimonial-card">
+          <div class="testimonial-author">${testimonials[index].name}</div>
+          <div class="testimonial-role">${testimonials[index].role}</div>
+          <div class="testimonial-content">"${testimonials[index].feedback}"</div>
+        </div>
+      `;
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === testimonials.length - 1;
+    }
+
+    prevBtn.addEventListener('click', ()=> showTestimonial(currentIndex-1));
+    nextBtn.addEventListener('click', ()=> showTestimonial(currentIndex+1));
   </script>
 </body>
 </html>
