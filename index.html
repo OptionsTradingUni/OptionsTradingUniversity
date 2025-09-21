@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <img src="branding/logo.jpeg" class="brand-logo" alt="Logo">
@@ -29,7 +28,6 @@
     </nav>
   </aside>
 
-  <!-- Page -->
   <div class="page">
     <header class="topbar">
       <button class="burger" id="burger">☰</button>
@@ -37,39 +35,37 @@
     </header>
 
     <main class="container">
-      <!-- Hero -->
       <section class="hero">
-        <h1>Learn Options Trading the Right Way</h1>
-        <p>Guided by real mentors, verified results, and step-by-step modules.</p>
+        <h1>Learn options with structure and mentorship</h1>
+        <p>Clear modules, live tools, and direct mentor access.</p>
         <div class="cta-row">
-          <a class="btn" href="modules.html">Explore Modules</a>
-          <button class="btn ghost" onclick="openTikTokModal()">Talk to a Mentor</button>
+          <a class="btn" href="modules.html">Explore modules</a>
+          <button class="btn ghost" onclick="openTikTokModal()">Talk to a mentor</button>
         </div>
       </section>
 
-      <!-- Stats -->
       <section class="stats">
-        <div class="stat"><div>Total Trades</div><h2 data-count="1700">0</h2></div>
-        <div class="stat"><div>Win Rate</div><h2 data-count="86">0</h2>%</div>
-        <div class="stat"><div>Avg Profit</div><h2 data-count="664">0</h2>$</div>
+        <div class="stat"><div>Total trades</div><h2 data-count="6500">0</h2></div>
+        <div class="stat"><div>Win rate</div><h2 data-count="86">0</h2></div>
+        <div class="stat"><div>Average profit</div><h2 data-count="664">0</h2></div>
       </section>
 
-      <!-- Live Profit Snapshot -->
       <section class="card">
-        <h2>Live Profit Snapshot</h2>
-        <div id="live-profit-box" style="font-size:18px;font-weight:600;color:#16a34a;"></div>
+        <h2>Live profit feed</h2>
+        <div class="ticker-wrap"><div id="live-ticker"></div></div>
       </section>
 
-      <!-- Navigation preview -->
       <section class="card">
-        <h2>Quick Navigation</h2>
+        <h2>Quick navigation</h2>
         <ul>
-          <li><a href="profits.html">View All Profit Snapshots</a></li>
-          <li><a href="lifestyle.html">See Lifestyle Gallery</a></li>
-          <li><a href="charts.html">Charts & Market Views</a></li>
-          <li><a href="chartvideo.html">Chart Video Walkthroughs</a></li>
-          <li><a href="modules.html">Learning Modules</a></li>
-          <li><a href="testimonials.html">Read Testimonials</a></li>
+          <li><a href="profits.html">Profit snapshots</a></li>
+          <li><a href="lifestyle.html">Lifestyle gallery</a></li>
+          <li><a href="charts.html">Charts</a></li>
+          <li><a href="chartvideo.html">Chart videos</a></li>
+          <li><a href="watchlist.html">Watchlist</a></li>
+          <li><a href="testimonials.html">Testimonials</a></li>
+          <li><a href="glossary.html">Glossary</a></li>
+          <li><a href="contact.html">Contact</a></li>
         </ul>
       </section>
     </main>
@@ -77,12 +73,11 @@
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
-  <!-- TikTok Modal -->
   <div class="modal-backdrop" id="tt-modal">
     <div class="modal">
       <button class="close" onclick="closeTikTokModal()">✕</button>
       <h3>Message on TikTok</h3>
-      <div class="suggest">Hi, I found Options Trading University. I’d like to join and get a trade review. — <i>Your name</i></div>
+      <div class="suggest">Hi — I found OTU. I’d like to join and get a trade review. — <i>Your name</i></div>
       <div style="text-align:right;margin-top:12px"><button class="btn ghost" onclick="closeTikTokModal()">Close</button></div>
     </div>
   </div>
