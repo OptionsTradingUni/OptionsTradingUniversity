@@ -1,102 +1,142 @@
 [
   {
-    "name": "Jessica Alvarez",
-    "role": "Beginner Trader",
-    "feedback": "I joined OTU after struggling with options for months. The mentorship gave me clarity and structure."
+    "name": "Emma Rodriguez",
+    "testimonial": "OTU’s step-by-step approach helped me understand risk management better. I used to overtrade, but now I’m focused and seeing steady gains.",
+    "profit": "$4,125 profit",
+    "photo": "faces/face1.jpeg",
+    "profitImage": "profits/profit6.jpeg"
   },
   {
-    "name": "Michael Chen",
-    "role": "Intermediate Trader",
-    "feedback": "The modules are practical and easy to follow. Each lesson connects to real examples. The community is also a big plus."
+    "name": "Liam Nguyen",
+    "testimonial": "The real-time trade breakdowns in OTU are a game-changer. I learned how to spot high-probability setups and avoid bad trades.",
+    "profit": "$2,950 profit",
+    "photo": "faces/face7.jpg",
+    "profitImage": "profits/profit7.jpeg"
   },
   {
-    "name": "David Thompson",
-    "role": "Full-Time Trader",
-    "feedback": "Before OTU I had blown two small accounts. With the strategies I learned here, I finally stayed consistent and protected my capital."
+    "name": "Sophia Kim",
+    "testimonial": "I was skeptical at first, but the community support in OTU is unreal. I got feedback on my trades within hours, which boosted my confidence.",
+    "profit": "$3,780 profit",
+    "photo": "faces/face8.jpg",
+    "profitImage": "profits/profit8.jpeg"
   },
   {
-    "name": "Sarah Patel",
-    "role": "Part-Time Trader",
-    "feedback": "What makes OTU different is accountability. You aren’t just watching videos, you are guided by mentors and peers daily."
+    "name": "Ethan Brooks",
+    "testimonial": "The mentorship sessions are worth their weight in gold. I learned how to read market patterns and now trade with a clear plan.",
+    "profit": "$5,620 profit",
+    "photo": "faces/face9.jpg",
+    "profitImage": "profits/profit9.jpeg"
   },
   {
-    "name": "Brandon Lewis",
-    "role": "Day Trader",
-    "feedback": "The live profit feed gave me confidence that these strategies are actually applied in real time, not just theory."
+    "name": "Ava Martinez",
+    "testimonial": "OTU’s focus on psychology helped me control my emotions during trades. I’m no longer chasing losses, and my account is growing.",
+    "profit": "$1,675 profit",
+    "photo": "faces/face10.jpg",
+    "profitImage": "profits/profit10.jpeg"
   },
   {
-    "name": "Emily Davis",
-    "role": "Beginner",
-    "feedback": "I joined as a complete beginner. The glossary and modules explained everything step by step. I finally understood Greeks and risk management."
+    "name": "Noah Sullivan",
+    "testimonial": "The video lessons are concise and actionable. I applied one of their strategies and saw results within my first week of trading.",
+    "profit": "$2,310 profit",
+    "photo": "faces/face11.jpg",
+    "profitImage": "profits/profit11.jpeg"
   },
   {
-    "name": "Anthony Wilson",
-    "role": "Mentorship Member",
-    "feedback": "Mentorship calls alone are worth the membership fee. OTU shows real trades and receipts, not just theory."
+    "name": "Isabella Carter",
+    "testimonial": "I love how OTU emphasizes discipline over luck. Their daily trade recaps helped me refine my entries and exits.",
+    "profit": "$4,890 profit",
+    "photo": "faces/face12.jpg",
+    "profitImage": "profits/profit12.jpeg"
   },
   {
-    "name": "Rachel Morgan",
-    "role": "Stock Trader",
-    "feedback": "I traded stocks for years but avoided options because they seemed complex. OTU simplified everything and now options are part of my strategy."
+    "name": "Jameson Lee",
+    "testimonial": "The Discord group is like having a trading team in your pocket. I’ve learned so much from other members’ questions and wins.",
+    "profit": "$3,200 profit",
+    "photo": "faces/face13.jpg",
+    "profitImage": "profits/profit13.jpeg"
   },
   {
-    "name": "Daniel Carter",
-    "role": "Swing Trader",
-    "feedback": "Transparent, supportive, and realistic. They don’t promise Lambos overnight. They teach you to manage risk and build consistency."
+    "name": "Mia Johnson",
+    "testimonial": "OTU taught me how to manage risk properly. I used to blow through my account, but now I’m consistent and profitable.",
+    "profit": "$2,750 profit",
+    "photo": "faces/face14.jpg",
+    "profitImage": "profits/profit14.jpeg"
   },
   {
-    "name": "Sophia Martinez",
-    "role": "Busy Professional",
-    "feedback": "I work full-time so I needed flexibility. OTU’s modules and recorded sessions fit perfectly into my schedule."
+    "name": "Lucas Brown",
+    "testimonial": "The live trading sessions showed me how pros approach the market. I’ve adopted their strategies and my results speak for themselves.",
+    "profit": "$6,430 profit",
+    "photo": "faces/face15.jpg",
+    "profitImage": "profits/profit15.jpeg"
   },
   {
-    "name": "Joshua Brooks",
-    "role": "New Member",
-    "feedback": "At first I thought this was another trading course, but the mentorship made all the difference. Real strategies, real results."
+    "name": "Olivia Davis",
+    "testimonial": "I was overwhelmed by trading jargon before OTU. Their clear explanations and examples made everything click for me.",
+    "profit": "$1,920 profit",
+    "photo": "faces/face16.jpg",
+    "profitImage": "profits/profit16.jpeg"
   },
   {
-    "name": "Hannah White",
-    "role": "Beginner",
-    "feedback": "I finally understand how to set up spreads and manage risk thanks to the simple breakdowns in the modules."
+    "name": "Mason Patel",
+    "testimonial": "OTU’s focus on backtesting gave me confidence in my setups. I now know why my trades work before I even place them.",
+    "profit": "$4,300 profit",
+    "photo": "faces/face17.jpg",
+    "profitImage": "profits/profit17.jpeg"
   },
   {
-    "name": "Kevin Johnson",
-    "role": "Options Enthusiast",
-    "feedback": "The profit snapshots motivated me to stay disciplined and not chase unrealistic gains. Slow and steady works."
+    "name": "Harper Wilson",
+    "testimonial": "The accountability groups in OTU keep me on track. Sharing my progress with others pushes me to stick to my trading plan.",
+    "profit": "$2,580 profit",
+    "photo": "faces/face18.jpg",
+    "profitImage": "profits/profit18.jpeg"
   },
   {
-    "name": "Maria Lopez",
-    "role": "Learner",
-    "feedback": "The glossary was surprisingly useful. It cleared up so many confusing terms I used to see online."
+    "name": "Elijah Moore",
+    "testimonial": "OTU’s strategies work across different markets. I’ve applied them to stocks and forex with consistent results.",
+    "profit": "$5,870 profit",
+    "photo": "faces/face19.jpg",
+    "profitImage": "profits/profit19.jpeg"
   },
   {
-    "name": "Christopher Green",
-    "role": "Community Member",
-    "feedback": "What I liked most is how real the community feels. People share both wins and mistakes, which is valuable."
+    "name": "Amelia Clark",
+    "testimonial": "The weekly Q&A sessions are fantastic. I got personalized advice that helped me fix my biggest trading mistakes.",
+    "profit": "$3,110 profit",
+    "photo": "faces/face20.jpg",
+    "profitImage": "profits/profit20.jpeg"
   },
   {
-    "name": "Olivia Baker",
-    "role": "Beginner",
-    "feedback": "I’ve tried YouTube and free courses but OTU put everything together in a structured way that finally made sense."
+    "name": "Benjamin Harris",
+    "testimonial": "OTU’s approach to position sizing changed how I trade. I’m no longer risking too much, and my profits are more predictable.",
+    "profit": "$4,670 profit",
+    "photo": "faces/face21.jpg",
+    "profitImage": "profits/profit21.jpeg"
   },
   {
-    "name": "Matthew Evans",
-    "role": "Student",
-    "feedback": "The watchlist tool is a game changer. I can follow along with the same stocks as the mentors."
+    "name": "Charlotte Walker",
+    "testimonial": "The community aspect of OTU is incredible. I’ve made friends who share the same goals, and we motivate each other daily.",
+    "profit": "$2,400 profit",
+    "photo": "faces/face22.jpg",
+    "profitImage": "profits/profit22.jpeg"
   },
   {
-    "name": "Chloe Richardson",
-    "role": "Lifestyle Member",
-    "feedback": "The lifestyle gallery isn’t just about flexing—it shows what’s possible if you put in the work."
+    "name": "Daniel Kim",
+    "testimonial": "OTU’s focus on real-world application sets it apart. Every lesson is backed by examples from actual trades, which makes learning easier.",
+    "profit": "$3,950 profit",
+    "photo": "faces/face23.jpg",
+    "profitImage": "profits/profit23.jpeg"
   },
   {
-    "name": "William Foster",
-    "role": "Swing Trader",
-    "feedback": "My first month I studied modules and asked questions. In month two I placed my first profitable spread."
+    "name": "Evelyn Turner",
+    "testimonial": "I started with a small account and was nervous, but OTU’s low-risk strategies helped me grow it steadily without stress.",
+    "profit": "$1,550 profit",
+    "photo": "faces/face24.jpg",
+    "profitImage": "profits/profit24.jpeg"
   },
   {
-    "name": "Grace Phillips",
-    "role": "Member",
-    "feedback": "The team is approachable. I was nervous to DM but they responded and helped me personally."
+    "name": "Gabriel Foster",
+    "testimonial": "The mentorship in OTU is top-notch. My mentor helped me identify my weaknesses and turn them into strengths over time.",
+    "profit": "$5,300 profit",
+    "photo": "faces/face25.jpg",
+    "profitImage": "profits/profit25.jpeg"
   }
 ]
