@@ -104,7 +104,7 @@
       margin-top: auto; background: #0b1328;
       color: #9cb2ff; text-align: center; padding: 12px;
     }
-    /* Modal */
+    /* TikTok Modal */
     .modal-backdrop {
       position: fixed; top:0; left:0; right:0; bottom:0;
       background: rgba(0,0,0,0.6);
@@ -131,11 +131,22 @@
       font-family: monospace;
       margin-top: 10px;
     }
-    @media(max-width:768px){
-      .sidebar { display: none; }
-      .page { margin-left: 0; }
-      .burger { display: block; }
+    /* Discount Popup (24h cadence) */
+    .popup-backdrop {
+      position: fixed; inset:0;
+      background: rgba(0,0,0,0.55);
+      display: none; align-items:center; justify-content:center;
+      z-index: 3000;
     }
+    .popup {
+      background:#fff; padding:20px; border-radius:12px;
+      max-width:420px; width:92%; box-shadow:0 12px 40px rgba(0,0,0,0.25);
+      text-align:center; position:relative;
+    }
+    .popup h2 { margin:0 0 12px; color:#2a7fff; }
+    .popup p { color:#333; margin:0 0 14px; }
+    .popup .close { position:absolute; top:12px; right:12px;
+      background:none; border:none; font-size:20px; cursor:pointer; color:#444; }
   </style>
 </head>
 <body class="blue-theme">
@@ -147,12 +158,7 @@
     </div>
     <nav class="side-nav">
       <a href="index.html" class="active">Home</a>
-    <!-- <p>This paragraph won't display.</p>  <a href="liveprofits.html">Live Profits</a> -->
       <a href="watchlist.html">Watchlist</a>
-     <!-- <p>This paragraph won't display.</p> <a href="profits.html">Profit Snapshots</a>
-      <a href="lifestyle.html">Lifestyle</a>
-      <a href="charts.html">Charts</a>
-      <a href="chartvideo.html">Videos</a> -->
       <a href="modules.html">Modules</a>
       <a href="glossary.html">Glossary</a>
       <a href="testimonials.html">Testimonials</a>
@@ -182,7 +188,6 @@
 
       <!-- Trading Stats -->
       <section class="stats">
-     <!-- <p></p>  <div class="stat"><h2 data-count="74">%%</h2><div>Win Rate</div></div> -->
         <div class="stat"><h2 data-count="2489">0+</h2><div>Total Trades</div></div>
         <div class="stat"><h2 data-count="789">0</h2><div>Avg Income $</div></div>
         <div class="stat"><h2 data-count="1300">0+</h2><div>Community Members</div></div>
@@ -216,6 +221,16 @@
     </div>
   </div>
 
+  <!-- Discount Popup (24h cadence) -->
+  <div class="popup-backdrop" id="discount-popup">
+    <div class="popup">
+      <button class="close" onclick="dismissPopup()">✕</button>
+      <h2>🎉 20% OFF Membership</h2>
+      <p>Limited time offer! Join our private signals & calls group with <b>20% discount</b>.<br>DM us on TikTok to claim before spots run out!</p>
+      <button class="btn" onclick="claimOffer()">Got it — Message Mentor</button>
+    </div>
+  </div>
+
   <script>
     // Sidebar toggle
     const burger=document.getElementById('burger');
@@ -241,13 +256,40 @@
       });
     });
 
-    // Modal controls
-    function openTikTokModal(){
-      document.getElementById("tt-modal").style.display="flex";
+    // TikTok modal controls
+    function openTikTokModal(){ document.getElementById("tt-modal").style.display="flex"; }
+    function closeTikTokModal(){ document.getElementById("tt-modal").style.display="none"; }
+
+    // ----- 24h Popup logic -----
+    const POPUP_KEY = "otuDiscountLastShownAt";
+    const DAY_MS = 24 * 60 * 60 * 1000;
+
+    function shouldShowPopup(){
+      try {
+        const ts = Number(localStorage.getItem(POPUP_KEY));
+        if (!ts) return true;                // never shown
+        return (Date.now() - ts) > DAY_MS;   // older than 24h
+      } catch(e){ return true; }
     }
-    function closeTikTokModal(){
-      document.getElementById("tt-modal").style.display="none";
+    function stampPopupShown(){
+      try { localStorage.setItem(POPUP_KEY, String(Date.now())); } catch(e){}
     }
+    function showPopup(){
+      if (shouldShowPopup()){
+        document.getElementById("discount-popup").style.display="flex";
+        // do not stamp yet; stamp on close/claim so 24h cadence starts then
+      }
+    }
+    function dismissPopup(){
+      document.getElementById("discount-popup").style.display="none";
+      stampPopupShown();
+    }
+    function claimOffer(){
+      dismissPopup();
+      openTikTokModal();
+    }
+    // Appear after 3s if eligible
+    setTimeout(showPopup, 3000);
   </script>
 </body>
 </html>
