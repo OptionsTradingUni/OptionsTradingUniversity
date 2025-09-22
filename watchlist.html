@@ -5,181 +5,62 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Watchlist - Options Trading University</title>
   <style>
-    /* ====== Base / Reset ====== */
     :root {
-      --blue:#2a7fff;
-      --pink:#ff4081;
-      --ink:#0f1a33;
-      --panel:#ffffff;
-      --page:#f4f7ff;
-      --line:#e3e9f2;
-      --nav:#0b1328;
-      --muted:#7e89a6;
-      --good:#0a8a4a;
-      --good-bg:#d4f5e9;
-      --bad:#c62828;
-      --bad-bg:#ffdada;
+      --blue:#2a7fff; --pink:#ff4081; --ink:#0f1a33;
+      --panel:#ffffff; --page:#f4f7ff; --line:#e3e9f2;
+      --nav:#0b1328; --good:#0a8a4a; --good-bg:#d4f5e9;
+      --bad:#c62828; --bad-bg:#ffdada;
     }
-    * { box-sizing:border-box; }
-    html,body { margin:0; padding:0; }
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
-      background: var(--page);
-      color: var(--ink);
-    }
-    a, a:visited, a:hover, a:active { text-decoration: none; color: inherit; outline: none; }
+    body { margin:0; font-family:sans-serif; background:var(--page); color:var(--ink); }
+    a { text-decoration:none; color:inherit; }
 
-    /* ====== Sidebar ====== */
-    .sidebar {
-      position: fixed; inset: 0 auto 0 0;
-      width: 220px; background: var(--nav); color: #fff; padding-top: 10px;
-      z-index: 1000;
-    }
-    .brand { display:flex; align-items:center; gap:10px; padding:10px 12px; }
-    .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
-    .brand span {
-      font-weight:900;
-      background: linear-gradient(90deg, var(--blue), var(--pink));
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
-    .side-nav { display:flex; flex-direction:column; padding:6px 8px; gap:4px; }
-    .side-nav a {
-      color:#d8e2ff; padding:10px 12px; border-radius:8px; font-weight:600; display:block;
-    }
-    .side-nav a:hover { background:#13224e; }
-    .side-nav a.active { background:#163067; }
+    /* Sidebar */
+    .sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:var(--nav);color:#fff;padding-top:10px;}
+    .brand{display:flex;align-items:center;gap:10px;padding:10px;font-weight:800;}
+    .brand-logo{width:30px;height:30px;border-radius:6px;object-fit:cover;}
+    .brand span{background:linear-gradient(90deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;}
+    .side-nav{display:flex;flex-direction:column;padding:10px;gap:5px;}
+    .side-nav a{color:#d8e2ff;padding:8px;border-radius:6px;font-weight:600;display:block;}
+    .side-nav a.active{background:#163067;}
 
-    /* ====== Page / Topbar ====== */
-    .page { margin-left: 220px; min-height:100vh; display:flex; flex-direction:column; }
-    .topbar {
-      background:#fff; border-bottom:1px solid var(--line);
-      display:flex; justify-content:space-between; align-items:center; gap:12px;
-      padding:10px 16px; position:sticky; top:0; z-index: 500;
-    }
-    .brand-inline {
-      font-weight:900; letter-spacing:.2px;
-      background: linear-gradient(90deg, var(--blue), var(--pink));
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
-    .burger {
-      display:none; font-size:20px; line-height:1;
-      background:none; border:none; color:var(--ink); cursor:pointer;
-      animation: shake 2s infinite;
-    }
-    @keyframes shake {
-      0%,100%{transform:translateX(0)}
-      20%{transform:translateX(-2px)}
-      40%{transform:translateX(2px)}
-      60%{transform:translateX(-2px)}
-      80%{transform:translateX(2px)}
-    }
-    .btn {
-      background: var(--blue); color:#fff; border:none; border-radius:6px;
-      padding:8px 14px; font-weight:700; cursor:pointer;
-    }
-    .btn:hover { filter: brightness(.95); }
+    /* Page */
+    .page{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
+    .container{max-width:1200px;margin:0 auto;padding:20px;}
+    .topbar{background:#fff;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:10px;}
+    .burger{display:none;font-size:20px;background:none;border:none;cursor:pointer;}
 
-    .container { max-width: 1200px; margin:0 auto; padding: 18px 16px 24px; }
+    /* Watchlist Horizontal */
+    .watchlist{display:flex;overflow-x:auto;gap:16px;padding:8px;scroll-snap-type:x mandatory;}
+    .stock-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:280px;max-width:300px;flex:0 0 auto;box-shadow:0 2px 6px rgba(0,0,0,.05);scroll-snap-align:start;}
+    .stock-header{display:flex;justify-content:space-between;align-items:center;}
+    .symbol{font-size:20px;font-weight:800;color:var(--blue);}
+    .price{font-size:20px;font-weight:900;}
+    .change{font-size:12px;font-weight:800;padding:4px 8px;border-radius:6px;}
+    .change.up{background:var(--good-bg);color:var(--good);}
+    .change.down{background:var(--bad-bg);color:var(--bad);}
+    .chart-wrap{margin-top:10px;}
+    canvas{width:100% !important;height:120px !important;}
 
-    /* ====== Watchlist Horizontal Strip ====== */
-    .watchlist {
-      display:flex; overflow-x:auto; gap:16px; padding: 4px 2px 8px;
-      scroll-snap-type: x mandatory;
-    }
-    .stock-card {
-      background: var(--panel); border:1px solid var(--line); border-radius:12px;
-      padding:14px; min-width:280px; max-width:300px; flex:0 0 auto;
-      box-shadow: 0 2px 6px rgba(0,0,0,.05);
-      scroll-snap-align: start;
-    }
-    .stock-header { display:flex; justify-content:space-between; align-items:center; gap:12px; }
-    .symbol {
-      font-size:20px; font-weight:800; color: var(--blue);
-    }
-    .price { font-size:20px; font-weight:900; }
-    .row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-    .chip {
-      font-size:12px; font-weight:700; padding:4px 8px; border-radius:20px; border:1px solid var(--line);
-      background:#f9fbff; color:#1c274c;
-    }
-    .change { font-size:12px; font-weight:800; padding:4px 8px; border-radius: 6px; }
-    .change.up { background: var(--good-bg); color: var(--good); }
-    .change.down { background: var(--bad-bg); color: var(--bad); }
+    /* News */
+    .news{margin-top:10px;background:#f6f9ff;border:1px solid var(--line);border-radius:8px;padding:8px;min-height:56px;position:relative;overflow:hidden;}
+    .headline{position:absolute;inset:auto 10px 10px 10px;opacity:0;transform:translateY(6px);transition:opacity .4s ease,transform .4s ease;font-size:13px;color:#21325b;}
+    .headline.active{opacity:1;transform:translateY(0);}
+    .badge{font-size:10px;font-weight:900;color:#fff;background:linear-gradient(90deg,var(--pink),var(--blue));padding:3px 6px;border-radius:4px;margin-right:6px;}
 
-    /* Sparkline */
-    .chart-wrap { margin-top:10px; }
-    canvas { width:100% !important; height:120px !important; }
-
-    /* News ticker (fade rotate) */
-    .news {
-      margin-top:10px; background:#f6f9ff; border:1px solid var(--line);
-      border-radius:8px; padding:8px 10px; min-height:56px; position:relative; overflow:hidden;
-    }
-    .headline {
-      position:absolute; inset:auto 10px 10px 10px; opacity:0; transform: translateY(6px);
-      transition: opacity .4s ease, transform .4s ease;
-      font-size:13px; line-height:1.35; color:#21325b;
-      display:flex; align-items:flex-start; gap:8px;
-    }
-    .headline.active { opacity:1; transform: translateY(0); }
-    .badge {
-      flex:0 0 auto;
-      font-size:10px; font-weight:900; letter-spacing:.4px;
-      color:#fff; background:linear-gradient(90deg, var(--pink), var(--blue));
-      padding:3px 6px; border-radius:4px; margin-top:1px;
-    }
-
-    /* Footer */
-    .footer { margin-top:auto; background: var(--nav); color:#9cb2ff; text-align:center; padding:12px; }
-
-    /* Modal */
-    .modal-backdrop {
-      position: fixed; inset:0; display:none; align-items:center; justify-content:center;
-      background: rgba(0,0,0,.55); z-index: 1200;
-    }
-    .modal {
-      background:#fff; border-radius:12px; padding:20px; max-width:420px; width:92%;
-      box-shadow: 0 12px 40px rgba(0,0,0,.25);
-    }
-    .modal h3 { margin: 0 0 8px; color: var(--blue); }
-    .modal .close {
-      float:right; background:none; border:none; color:#444; font-size:20px; cursor:pointer;
-    }
-    .suggest {
-      background:#f5f9ff; border:1px dashed var(--line);
-      border-radius:8px; padding:12px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      color:#2a3b67;
-    }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-      .container { padding: 14px 12px 24px; }
-    }
-    @media (max-width: 768px) {
-      .sidebar { display:none; }
-      .page { margin-left: 0; }
-      .burger { display:block; }
-    }
+    .footer{margin-top:auto;background:var(--nav);color:#9cb2ff;text-align:center;padding:12px;}
+    @media(max-width:768px){.sidebar{display:none;}.page{margin-left:0;}.burger{display:block;}}
   </style>
 </head>
 <body>
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <img src="branding/logo.jpeg" class="brand-logo" alt="Logo" />
-      <span>OTU</span>
-    </div>
+    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
     <nav class="side-nav">
       <a href="index.html">Home</a>
       <a href="watchlist.html" class="active">Watchlist</a>
-     <!-- <a href="profits.html">Profit Snapshots</a>
-      <a href="lifestyle.html">Lifestyle</a>
-      <a href="charts.html">Charts</a>
-      <a href="chartvideo.html">Videos</a> -->
       <a href="modules.html">Modules</a>
       <a href="glossary.html">Glossary</a>
       <a href="testimonials.html">Testimonials</a>
-      <a href="team.html">Team</a>
       <a href="contact.html">Contact</a>
       <a href="terms.html">Disclaimer</a>
     </nav>
@@ -188,275 +69,86 @@
   <!-- Page -->
   <div class="page">
     <header class="topbar">
-      <button class="burger" id="burger" aria-label="Open menu">☰</button>
+      <button class="burger" id="burger">☰</button>
       <div class="brand-inline">Options Trading University</div>
       <button class="btn" onclick="openTikTokModal()">Message a Mentor</button>
     </header>
 
     <main class="container">
-      <h1 style="margin:6px 0 8px; color:var(--blue);">📊 Live Watchlist</h1>
-      <p style="margin:0 0 14px; color:var(--muted);">Real-time quotes, sparkline, and fresh headlines </p>
-
-      <div id="watchlist" class="watchlist" aria-live="polite"></div>
-      <p id="error" style="display:none; color:#c62828; font-weight:700; margin-top:12px;">
-        ⚠️ Temporary data issue. Please retry shortly.
-      </p>
+      <h1 style="color:var(--blue)">📊 Live Watchlist</h1>
+      <p style="color:#555">Real-time prices, sparkline charts, and fresh headlines</p>
+      <div id="watchlist" class="watchlist"></div>
+      <p id="error" style="display:none;color:red;font-weight:700;">⚠️ Data issue. Please retry shortly.</p>
     </main>
 
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
-  <!-- TikTok Modal -->
-  <div class="modal-backdrop" id="tt-modal" role="dialog" aria-modal="true" aria-label="Message a Mentor">
-    <div class="modal">
-      <button class="close" onclick="closeTikTokModal()">✕</button>
-      <h3>Message on TikTok</h3>
-      <p style="margin-top:0">Send us a quick DM. Suggested message:</p>
-      <div class="suggest">
-        Hi — I found OTU. I'd like to connect with a mentor and get started. — <i>Your name</i>
-      </div>
-      <div style="text-align:right; margin-top:12px;">
-        <button class="btn" onclick="closeTikTokModal()">Close</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    /* ====== UI: Sidebar + Modal ====== */
-    const burger = document.getElementById('burger');
-    const sidebar = document.getElementById('sidebar');
-    burger.addEventListener('click', () => {
-      const isShown = getComputedStyle(sidebar).display !== 'none';
-      sidebar.style.display = isShown ? 'none' : 'block';
-    });
-    function openTikTokModal(){ document.getElementById('tt-modal').style.display='flex'; }
-    function closeTikTokModal(){ document.getElementById('tt-modal').style.display='none'; }
+    const burger=document.getElementById('burger');const sidebar=document.getElementById('sidebar');
+    burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
 
-    /* ====== Data Setup ====== */
-    const symbols = ["AAPL","TSLA","MSFT","AMZN","NVDA"];
-    const FINNHUB_KEY = "d38hegpr01qlbdj5i6h0d38hegpr01qlbdj5i6hg";
+    const symbols=["AAPL","TSLA","MSFT","AMZN","NVDA"];
+    const API="d38hegpr01qlbdj5i6h0d38hegpr01qlbdj5i6hg";
+    const list=document.getElementById("watchlist"),err=document.getElementById("error");
 
-    const $list = document.getElementById('watchlist');
-    const $error = document.getElementById('error');
-
-    // In-memory caches to preserve quota
-    const cache = {
-      quote: new Map(),     // sym -> { data, ts }
-      candle: new Map(),    // sym -> { data, ts }
-      news: new Map()       // sym -> { data, ts, idx }
-    };
-    const TTL = {
-      quote: 60 * 1000,     // 1 min
-      candle: 15 * 60 * 1000, // 15 min
-      news: 30 * 60 * 1000    // 30 min
-    };
-
-    /* ====== Fetch Helpers (with TTL cache) ====== */
-    async function cachedFetch(key, url, ttl, bucket){
-      const now = Date.now();
-      const hit = bucket.get(key);
-      if (hit && now - hit.ts < ttl) return hit.data;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('HTTP '+res.status);
-      const json = await res.json();
-      bucket.set(key, { data: json, ts: now });
-      return json;
-    }
+    function el(tag,cls,html){const n=document.createElement(tag);if(cls)n.className=cls;if(html!=null)n.innerHTML=html;return n;}
+    function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
     async function getQuote(sym){
-      const url = `https://finnhub.io/api/v1/quote?symbol=${sym}&token=${FINNHUB_KEY}`;
-      return cachedFetch(sym, url, TTL.quote, cache.quote);
+      const r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${API}`);return r.json();
     }
-
     async function getCandles(sym){
-      // last 7 days, 30-minute resolution where available
-      const to = Math.floor(Date.now()/1000);
-      const from = to - 7*24*60*60;
-      const url = `https://finnhub.io/api/v1/stock/candle?symbol=${sym}&resolution=30&from=${from}&to=${to}&token=${FINNHUB_KEY}`;
-      return cachedFetch(sym, url, TTL.candle, cache.candle);
+      const to=Math.floor(Date.now()/1000),from=to-7*24*60*60;
+      const r=await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${sym}&resolution=30&from=${from}&to=${to}&token=${API}`);
+      return r.json();
     }
-
     async function getNews(sym){
-      // last 7 days
-      const to = new Date();
-      const from = new Date(Date.now() - 7*24*60*60*1000);
-      const fmt = d => d.toISOString().slice(0,10);
-      const url = `https://finnhub.io/api/v1/company-news?symbol=${sym}&from=${fmt(from)}&to=${fmt(to)}&token=${FINNHUB_KEY}`;
-      return cachedFetch(sym, url, TTL.news, cache.news);
+      const to=new Date(),from=new Date(Date.now()-7*24*60*60*1000);
+      const fmt=d=>d.toISOString().slice(0,10);
+      const r=await fetch(`https://finnhub.io/api/v1/company-news?symbol=${sym}&from=${fmt(from)}&to=${fmt(to)}&token=${API}`);
+      return r.json();
     }
 
-    /* ====== UI Builders ====== */
-    function el(tag, cls, html){
-      const n = document.createElement(tag);
-      if (cls) n.className = cls;
-      if (html != null) n.innerHTML = html;
-      return n;
+    function buildCard(sym,quote){
+      const card=el("div","stock-card");
+      const header=el("div","stock-header");
+      header.append(el("div","symbol",sym));
+      const price=el("div","price",`$${(quote.c||0).toFixed(2)}`);
+      const chg=el("div","change "+(quote.dp>=0?"up":"down"),(quote.dp!=null?`${quote.dp.toFixed(2)}%`:"—"));
+      header.append(el("div",null).appendChild(price)&&price,chg);
+      const chart=el("div","chart-wrap");const canvas=el("canvas");canvas.id=`spark-${sym}`;chart.append(canvas);
+      const newsWrap=el("div","news");newsWrap.id=`news-${sym}`;
+      card.append(header,chart,newsWrap);
+      return {card,canvas,newsWrap};
     }
 
-    function formatVol(v){
-      if (!v && v !== 0) return "—";
-      if (v >= 1e9) return (v/1e9).toFixed(2)+'B';
-      if (v >= 1e6) return (v/1e6).toFixed(2)+'M';
-      if (v >= 1e3) return (v/1e3).toFixed(1)+'K';
-      return String(v);
+    function drawSpark(canvas,candles){
+      if(!candles||candles.s!=="ok")return;
+      const ctx=canvas.getContext("2d");if(canvas._chart)canvas._chart.destroy();
+      canvas._chart=new Chart(ctx,{type:"line",data:{labels:candles.t.map(()=>""),datasets:[{data:candles.c,borderColor:"#2a7fff",borderWidth:2,pointRadius:0,fill:false,tension:.25}]},options:{plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},responsive:true,maintainAspectRatio:false}});
     }
 
-    function buildCard(sym, quote){
-      const card = el('div', 'stock-card');
-
-      const header = el('div','stock-header');
-      const left = el('div');
-      const right = el('div', 'row');
-
-      left.append(
-        el('div','symbol', sym)
-      );
-
-      const price = el('div','price', `$${(quote?.c ?? 0).toFixed ? quote.c.toFixed(2) : '—'}`);
-      const chgPct = (quote?.dp ?? null);
-      const chg = el('div', `change ${chgPct>=0?'up':'down'}`, (chgPct!=null? `${chgPct.toFixed(2)}%` : '—') );
-      const vol = el('div','chip', `Vol: ${formatVol(quote?.v)}`);
-
-      right.append(price, chg, vol);
-      header.append(left, right);
-
-      const chartWrap = el('div','chart-wrap');
-      const canvas = el('canvas'); canvas.id = `spark-${sym}`;
-      chartWrap.append(canvas);
-
-      const newsWrap = el('div','news'); newsWrap.id = `news-${sym}`;
-      // headlines will be appended later
-
-      card.append(header, chartWrap, newsWrap);
-      return { card, canvas, newsWrap };
+    function startNewsRotator(wrap,items){
+      const list=(items||[]).filter(x=>x.headline).slice(0,3);
+      if(!list.length){wrap.textContent="No recent headlines.";return;}
+      wrap.innerHTML="";list.forEach((n,i)=>{const h=el("div","headline"+(i===0?" active":""),`<span class="badge">NEWS</span><span>${escapeHtml(n.headline)}</span>`);wrap.appendChild(h);});
+      let idx=0;if(wrap._rot)clearInterval(wrap._rot);
+      wrap._rot=setInterval(()=>{const nodes=[...wrap.querySelectorAll(".headline")];nodes.forEach(n=>n.classList.remove("active"));idx=(idx+1)%nodes.length;nodes[idx].classList.add("active");},6000);
     }
 
-    function drawSparkline(canvas, candles, accent='#2a7fff'){
-      if (!candles || candles.s !== 'ok' || !candles.c || candles.c.length === 0) return;
-      const ctx = canvas.getContext('2d');
-      // Destroy prior chart instance if any (avoid duplicates on refresh)
-      if (canvas._chart) { canvas._chart.destroy(); }
-
-      canvas._chart = new Chart(ctx,{
-        type:'line',
-        data:{
-          labels: candles.t.map(()=>''), // hide labels
-          datasets:[{
-            data: candles.c,
-            borderColor: accent,
-            borderWidth: 2,
-            pointRadius: 0,
-            fill: false,
-            tension: 0.25
-          }]
-        },
-        options:{
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins:{ legend:{ display:false }, tooltip:{ enabled:false } },
-          scales:{ x:{ display:false }, y:{ display:false } }
-        }
-      });
+    async function render(sym){
+      try{
+        const [q,c,n]=await Promise.all([getQuote(sym),getCandles(sym),getNews(sym)]);
+        const {card,canvas,newsWrap}=buildCard(sym,q);list.appendChild(card);
+        drawSpark(canvas,c);startNewsRotator(newsWrap,n);
+      }catch(e){console.error(e);err.style.display="block";}
     }
 
-    function startNewsRotator(sym, wrapEl, items){
-      // Keep only the top 3 relevant headlines
-      const list = (items||[])
-        .filter(x => x && x.headline)
-        .sort((a,b)=> (b.datetime||0)-(a.datetime||0))
-        .slice(0,3);
-
-      if (list.length === 0) {
-        wrapEl.textContent = 'No recent headlines.';
-        return;
-      }
-
-      // Clear old children
-      wrapEl.innerHTML = '';
-
-      // Create headline nodes
-      list.forEach((n,i)=>{
-        const h = el('div','headline'+(i===0?' active':''), `
-          <span class="badge">NEWS</span>
-          <span>${escapeHtml(n.headline)}</span>
-        `);
-        wrapEl.appendChild(h);
-      });
-
-      // Rotate every 6s
-      let idx = 0;
-      if (wrapEl._rot) clearInterval(wrapEl._rot);
-      wrapEl._rot = setInterval(()=>{
-        const nodes = Array.from(wrapEl.querySelectorAll('.headline'));
-        nodes.forEach(n => n.classList.remove('active'));
-        idx = (idx + 1) % nodes.length;
-        nodes[idx].classList.add('active');
-      }, 6000);
-    }
-
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, c => (
-        {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]
-      ));
-    }
-
-    /* ====== Render Flow ====== */
-    async function renderSymbol(sym){
-      try {
-        const [quote, candles, news] = await Promise.all([
-          getQuote(sym),
-          getCandles(sym),
-          getNews(sym)
-        ]);
-
-        const { card, canvas, newsWrap } = buildCard(sym, quote);
-        $list.appendChild(card);
-
-        drawSparkline(canvas, candles, '#2a7fff');
-        startNewsRotator(sym, newsWrap, news);
-      } catch (e) {
-        console.error('Load error for', sym, e);
-        $error.style.display = 'block';
-      }
-    }
-
-    async function loadAll(){
-      $list.innerHTML = '';
-      // Stagger calls slightly to avoid burst (helps with rate limits)
-      for (let i=0;i<symbols.length;i++){
-        await new Promise(r => setTimeout(r, 250)); // 250ms delay between cards
-        await renderSymbol(symbols[i]);
-      }
-    }
-
-    // Initial load + soft refresh plan
+    async function loadAll(){list.innerHTML="";for(const sym of symbols){await render(sym);}}
     loadAll();
-    // Quotes refresh every 2 minutes (chart + news remain cached longer)
-    setInterval(async ()=>{
-      try {
-        for (const sym of symbols) {
-          // Only refresh quote values in-place to save quota and avoid re-drawing charts/news
-          const quote = await getQuote(sym);
-          const card = $list.querySelector(`#spark-${sym}`)?.closest('.stock-card');
-          if (!card || !quote) continue;
-
-          const priceEl = card.querySelector('.price');
-          const chgEl = card.querySelector('.change');
-          const volEl = card.querySelector('.chip');
-
-          priceEl.textContent = `$${(quote.c||0).toFixed(2)}`;
-          chgEl.textContent = (quote.dp!=null) ? `${quote.dp.toFixed(2)}%` : '—';
-          chgEl.classList.toggle('up', (quote.dp||0) >= 0);
-          chgEl.classList.toggle('down', (quote.dp||0) < 0);
-          volEl.textContent = `Vol: ${formatVol(quote.v)}`;
-        }
-      } catch (e) {
-        console.warn('Soft refresh error', e);
-      }
-    }, 120000); // 2 minutes
-
   </script>
 </body>
 </html>
