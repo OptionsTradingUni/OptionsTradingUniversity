@@ -6,63 +6,53 @@
   <title>Watchlist - Options Trading University</title>
   <style>
     :root {
-      --blue:#2a7fff; --pink:#ff4081; --ink:#0f1a33;
-      --panel:#ffffff; --page:#f4f7ff; --line:#e3e9f2;
-      --nav:#0b1328; --muted:#7e89a6;
-      --good:#0a8a4a; --good-bg:#d4f5e9;
-      --bad:#c62828; --bad-bg:#ffdada;
+      --blue:#2a7fff;
+      --pink:#ff4081;
+      --ink:#0f1a33;
+      --panel:#ffffff;
+      --page:#f4f7ff;
+      --line:#e3e9f2;
+      --nav:#0b1328;
+      --muted:#7e89a6;
+      --good:#0a8a4a;
+      --good-bg:#d4f5e9;
+      --bad:#c62828;
+      --bad-bg:#ffdada;
     }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    body { font-family:Arial,sans-serif; background:var(--page); color:var(--ink); }
-
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:sans-serif;background:var(--page);color:var(--ink);}
+    a{text-decoration:none;color:inherit;}
     /* Sidebar */
-    .sidebar { position:fixed;top:0;left:0;bottom:0;width:220px;background:var(--nav);color:#fff;padding-top:10px; }
-    .brand { display:flex;align-items:center;gap:10px;padding:10px 12px;font-weight:800; }
-    .brand-logo { width:30px;height:30px;border-radius:6px;object-fit:cover; }
-    .brand span { background:linear-gradient(90deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900; }
-    .side-nav { display:flex;flex-direction:column;padding:6px 8px;gap:4px; }
-    .side-nav a { color:#d8e2ff;padding:10px 12px;border-radius:8px;font-weight:600; }
-    .side-nav a:hover { background:#13224e; }
-    .side-nav a.active { background:#163067; }
+    .sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:var(--nav);color:#fff;padding-top:10px;z-index:1000;}
+    .brand{display:flex;align-items:center;gap:10px;padding:10px;}
+    .brand-logo{width:30px;height:30px;border-radius:6px;object-fit:cover;}
+    .brand span{font-weight:900;background:linear-gradient(90deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .side-nav{display:flex;flex-direction:column;padding:10px;gap:5px;}
+    .side-nav a{color:#d8e2ff;padding:8px;border-radius:6px;font-weight:600;}
+    .side-nav a.active{background:#163067;}
 
-    /* Page / Topbar */
-    .page { margin-left:220px;min-height:100vh;display:flex;flex-direction:column; }
-    .topbar { background:#fff;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:10px 16px; }
-    .brand-inline { font-weight:900;background:linear-gradient(90deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
-    .burger { display:none;font-size:20px;background:none;border:none;cursor:pointer;animation:shake 2s infinite; }
-    @keyframes shake {0%,100%{transform:translateX(0)}20%{transform:translateX(-2px)}40%{transform:translateX(2px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
-    .btn { background:var(--blue);color:#fff;border:none;border-radius:6px;padding:8px 14px;font-weight:700;cursor:pointer; }
-    .btn:hover { filter:brightness(.95); }
+    /* Page */
+    .page{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
+    .topbar{background:#fff;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:10px;}
+    .brand-inline{font-weight:900;background:linear-gradient(90deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .burger{display:none;font-size:20px;background:none;border:none;cursor:pointer;}
+    .btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:8px 14px;cursor:pointer;font-weight:600;}
 
-    .container { max-width:1200px;margin:0 auto;padding:18px 16px 24px; }
+    .container{max-width:1200px;margin:0 auto;padding:20px;}
 
-    /* Watchlist */
-    .watchlist { display:flex;overflow-x:auto;gap:16px;padding:8px;scroll-snap-type:x mandatory; }
-    .stock-card { background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:260px;flex:0 0 auto;box-shadow:0 2px 6px rgba(0,0,0,.05);scroll-snap-align:start; }
-    .stock-header { display:flex;justify-content:space-between;align-items:center;gap:12px; }
-    .symbol { font-size:20px;font-weight:800;color:var(--blue); }
-    .price { font-size:20px;font-weight:900; }
-    .change { font-size:12px;font-weight:800;padding:4px 8px;border-radius:6px; }
-    .change.up { background:var(--good-bg);color:var(--good); }
-    .change.down { background:var(--bad-bg);color:var(--bad); }
-
-    /* Logo */
-    .logo-wrap { margin:10px auto;text-align:center; }
-    .logo-wrap img { max-height:60px; max-width:100px; object-fit:contain; }
-
-    /* News */
-    .news { margin-top:10px;background:#f6f9ff;border:1px solid var(--line);border-radius:8px;padding:8px;min-height:56px;font-size:13px;color:#21325b; }
-    .news div { margin:4px 0; }
-
-    /* Footer */
-    .footer { margin-top:auto;background:var(--nav);color:#9cb2ff;text-align:center;padding:12px; }
-
-    /* Modal */
-    .modal-backdrop { position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);z-index:1200; }
-    .modal { background:#fff;border-radius:12px;padding:20px;max-width:420px;width:92%;box-shadow:0 12px 40px rgba(0,0,0,.25); }
-    .modal h3 { margin:0 0 8px;color:var(--blue); }
-    .modal .close { float:right;background:none;border:none;color:#444;font-size:20px;cursor:pointer; }
-    .suggest { background:#f5f9ff;border:1px dashed var(--line);border-radius:8px;padding:12px;font-family:monospace; }
+    /* Grid Watchlist */
+    .watchlist{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+    .stock-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.05);}
+    .stock-header{display:flex;align-items:center;justify-content:space-between;}
+    .logo{width:50px;height:50px;object-fit:contain;border-radius:6px;background:#fff;border:1px solid var(--line);}
+    .symbol{font-size:18px;font-weight:800;color:var(--blue);}
+    .price{font-size:20px;font-weight:900;}
+    .change{font-size:13px;padding:3px 8px;border-radius:6px;font-weight:700;}
+    .change.up{background:var(--good-bg);color:var(--good);}
+    .change.down{background:var(--bad-bg);color:var(--bad);}
+    .news{margin-top:10px;font-size:13px;color:var(--muted);}
+    .news a{display:block;margin-bottom:4px;color:var(--ink);font-weight:600;}
+    .footer{margin-top:auto;background:var(--nav);color:#9cb2ff;text-align:center;padding:12px;}
 
     @media(max-width:768px){.sidebar{display:none;}.page{margin-left:0;}.burger{display:block;}}
   </style>
@@ -70,14 +60,13 @@
 <body>
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo" alt="Logo" /><span>OTU</span></div>
+    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
     <nav class="side-nav">
       <a href="index.html">Home</a>
       <a href="watchlist.html" class="active">Watchlist</a>
       <a href="modules.html">Modules</a>
       <a href="glossary.html">Glossary</a>
       <a href="testimonials.html">Testimonials</a>
-      <a href="team.html">Team</a>
       <a href="contact.html">Contact</a>
       <a href="terms.html">Disclaimer</a>
     </nav>
@@ -93,76 +82,76 @@
 
     <main class="container">
       <h1 style="color:var(--blue)">📊 Live Watchlist</h1>
-      <p style="color:var(--muted)">Logos, quotes, and latest headlines for top tickers</p>
+      <p style="color:var(--muted)">Logos, price, % change, and the latest news per ticker.</p>
       <div id="watchlist" class="watchlist"></div>
-      <p id="error" style="display:none;color:#c62828;font-weight:700;margin-top:12px;">⚠️ Data issue. Try again later.</p>
+      <p id="error" style="display:none;color:red;">⚠️ Temporary data issue. Please retry shortly.</p>
     </main>
 
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
   <!-- TikTok Modal -->
-  <div class="modal-backdrop" id="tt-modal">
-    <div class="modal">
-      <button class="close" onclick="closeTikTokModal()">✕</button>
-      <h3>Message on TikTok</h3>
-      <p>Suggested DM:</p>
-      <div class="suggest">Hi — I found OTU. I'd like to connect with a mentor. — <i>Your name</i></div>
-      <div style="text-align:right;margin-top:12px;"><button class="btn" onclick="closeTikTokModal()">Close</button></div>
+  <div class="modal-backdrop" id="tt-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:2000;">
+    <div style="background:#fff;border-radius:10px;padding:20px;max-width:400px;width:90%;">
+      <button onclick="closeTikTokModal()" style="float:right;border:none;background:none;font-size:20px;cursor:pointer;">✕</button>
+      <h3 style="color:var(--blue)">Message on TikTok</h3>
+      <p>Send us a DM with this message:</p>
+      <div style="background:#f5f9ff;padding:10px;border-radius:6px;font-family:monospace;">
+        Hi — I found OTU. I'd like to connect with a mentor and get started. — <i>Your name</i>
+      </div>
     </div>
   </div>
 
   <script>
-    const burger=document.getElementById('burger');const sidebar=document.getElementById('sidebar');
-    burger.addEventListener('click',()=>{sidebar.style.display=(sidebar.style.display==='block'?'none':'block')});
+    const burger=document.getElementById('burger');
+    const sidebar=document.getElementById('sidebar');
+    burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
     function openTikTokModal(){document.getElementById('tt-modal').style.display='flex';}
     function closeTikTokModal(){document.getElementById('tt-modal').style.display='none';}
 
     const symbols=["AAPL","TSLA","MSFT","AMZN","NVDA"];
-    const KEY="d38hegpr01qlbdj5i6h0d38hegpr01qlbdj5i6hg";
-    const list=document.getElementById("watchlist"), errorEl=document.getElementById("error");
+    const FINNHUB_KEY="d38hegpr01qlbdj5i6h0d38hegpr01qlbdj5i6hg";
+    const list=document.getElementById("watchlist");
+    const error=document.getElementById("error");
 
-    async function getQuote(sym){
-      const r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${KEY}`);
-      return r.json();
-    }
-    async function getProfile(sym){
-      const r=await fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${sym}&token=${KEY}`);
-      return r.json();
-    }
-    async function getNews(sym){
-      const to=new Date(), from=new Date(Date.now()-7*24*60*60*1000);
-      const fmt=d=>d.toISOString().slice(0,10);
-      const r=await fetch(`https://finnhub.io/api/v1/company-news?symbol=${sym}&from=${fmt(from)}&to=${fmt(to)}&token=${KEY}`);
-      return r.json();
+    async function getJson(url){
+      const res=await fetch(url);
+      if(!res.ok) throw new Error(res.status);
+      return res.json();
     }
 
-    async function render(sym){
+    async function loadSymbol(sym){
       try{
-        const [q,p,n]=await Promise.all([getQuote(sym),getProfile(sym),getNews(sym)]);
-        const card=document.createElement("div");card.className="stock-card";
-        const changeClass=q.dp>=0?"up":"down";
+        const [quote,profile,news]=await Promise.all([
+          getJson(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${FINNHUB_KEY}`),
+          getJson(`https://finnhub.io/api/v1/stock/profile2?symbol=${sym}&token=${FINNHUB_KEY}`),
+          getJson(`https://finnhub.io/api/v1/company-news?symbol=${sym}&from=2024-09-01&to=2025-09-22&token=${FINNHUB_KEY}`)
+        ]);
+
+        const card=document.createElement("div");
+        card.className="stock-card";
         card.innerHTML=`
           <div class="stock-header">
-            <div class="symbol">${sym}</div>
-            <div>
-              <div class="price">$${q.c?.toFixed(2)||"—"}</div>
-              <div class="change ${changeClass}">${q.dp?.toFixed(2)||"—"}%</div>
+            <img src="${profile.logo||'branding/logo.jpeg'}" class="logo" alt="${sym} logo">
+            <div style="text-align:right">
+              <div class="symbol">${sym}</div>
+              <div class="price">$${(quote.c||0).toFixed(2)}</div>
+              <div class="change ${(quote.dp||0)>=0?'up':'down'}">${quote.dp?.toFixed(2)||0}%</div>
             </div>
           </div>
-          <div class="logo-wrap"><img src="${p.logo||''}" alt="${sym} logo"/></div>
+          <div class="news">
+            ${(news||[]).slice(0,2).map(n=>`<a href="${n.url}" target="_blank">${n.headline}</a>`).join('')}
+          </div>
         `;
-        const newsDiv=document.createElement("div");newsDiv.className="news";
-        const news=(n||[]).slice(0,2);
-        newsDiv.innerHTML=news.length?news.map(x=>`<div>📰 ${x.headline}</div>`).join(""):"No recent headlines.";
-        card.appendChild(newsDiv);
         list.appendChild(card);
-      }catch(e){console.error(e);errorEl.style.display="block";}
+      }catch(e){console.error(e);error.style.display="block";}
     }
 
-    (async function(){
-      for(const sym of symbols){await render(sym);}
-    })();
+    async function loadAll(){
+      list.innerHTML="";
+      for(const sym of symbols){await loadSymbol(sym);}
+    }
+    loadAll();
   </script>
 </body>
 </html>
