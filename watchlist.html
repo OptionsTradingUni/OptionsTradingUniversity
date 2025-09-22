@@ -3,16 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Watchlist</title>
+  <title>Watchlist - OTU</title>
   <style>
     body{margin:0;font-family:sans-serif;background:#f4f7ff;color:#0f1a33;}
-
-    /* 🔧 Global anchor reset */
-    a, a:visited, a:hover, a:active {
-      text-decoration:none !important;
-      color:inherit !important;
-      outline:none;
-    }
+    a,a:visited,a:hover,a:active{text-decoration:none;color:inherit;outline:none;}
 
     /* Sidebar */
     .sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:#0b1328;color:#fff;padding-top:10px;}
@@ -25,21 +19,27 @@
 
     /* Page */
     .page{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
-    .container{max-width:900px;margin:0 auto;padding:20px;}
+    .container{max-width:100%;margin:0 auto;padding:20px;}
     .topbar{background:#fff;border-bottom:1px solid #e3e9f2;display:flex;justify-content:space-between;align-items:center;padding:10px;}
     .burger{display:none;font-size:20px;background:none;border:none;cursor:pointer;animation:shake 2s infinite;}
     @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-2px);}40%{transform:translateX(2px);}60%{transform:translateX(-2px);}80%{transform:translateX(2px);}}
     .brand-inline{font-weight:900;background:linear-gradient(90deg,#2a7fff,#ff4081);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
-    /* Watchlist Cards */
-    .watchlist{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:20px;}
-    .stock-card{background:#fff;border:1px solid #e3e9f2;border-radius:10px;padding:16px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.04);transition:0.3s;}
-    .stock-card:hover{background:#f0f6ff;}
-    .symbol{font-size:18px;font-weight:700;color:#2a7fff;}
-    .price{font-size:20px;font-weight:800;margin:6px 0;}
+    /* Horizontal Watchlist */
+    .watchlist{display:flex;overflow-x:auto;gap:16px;padding-bottom:10px;scroll-snap-type:x mandatory;}
+    .stock-card{background:#fff;border:1px solid #e3e9f2;border-radius:10px;padding:16px;min-width:260px;max-width:280px;flex:0 0 auto;box-shadow:0 2px 6px rgba(0,0,0,0.05);scroll-snap-align:start;}
+    .stock-header{display:flex;justify-content:space-between;align-items:center;}
+    .symbol{font-size:20px;font-weight:700;color:#2a7fff;}
+    .price{font-size:22px;font-weight:800;margin-left:10px;}
     .change{font-size:14px;padding:4px 8px;border-radius:6px;display:inline-block;}
     .change.up{background:#d4f5e9;color:#0a8a4a;}
     .change.down{background:#ffdada;color:#c62828;}
+
+    .options-stats{margin-top:10px;font-size:14px;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+    .options-stats div{background:#f9fbff;border:1px solid #e3e9f2;padding:8px;border-radius:6px;text-align:center;}
+
+    .chart-container{margin-top:12px;}
+    canvas{width:100%!important;height:120px!important;}
 
     .footer{margin-top:auto;background:#0b1328;color:#9cb2ff;text-align:center;padding:12px;}
     @media(max-width:768px){.sidebar{display:none;}.page{margin-left:0;}.burger{display:block;}}
@@ -49,37 +49,21 @@
     .btn:hover { background:#1e5fd9; }
 
     /* Modal */
-    .modal-backdrop {
-      position: fixed; top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.6);
-      display: none; align-items:center; justify-content:center;
-      z-index:2000;
-    }
-    .modal {
-      background:#fff; padding:20px; border-radius:10px; max-width:400px;
-      box-shadow:0 2px 10px rgba(0,0,0,0.3); text-align:left;
-    }
-    .modal h3 { margin-top:0; color:#2a7fff; }
-    .modal .close {
-      float:right; background:none; border:none; font-size:20px;
-      cursor:pointer; color:#444;
-    }
-    .suggest {
-      background:#f5f9ff; padding:12px; border-radius:6px;
-      font-family:monospace; margin-top:10px;
-    }
+    .modal-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:2000;}
+    .modal{background:#fff;padding:20px;border-radius:10px;max-width:400px;box-shadow:0 2px 10px rgba(0,0,0,0.3);text-align:left;}
+    .modal h3{margin-top:0;color:#2a7fff;}
+    .modal .close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:#444;}
+    .suggest{background:#f5f9ff;padding:12px;border-radius:6px;font-family:monospace;margin-top:10px;}
   </style>
 </head>
 <body>
+  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
     <nav class="side-nav">
       <a href="index.html">Home</a>
-   <!-- <p>This paragraph won't display.</p>    <a href="watchlist.html" class="active">Watchlist</a>
+      <a href="watchlist.html" class="active">Watchlist</a>
       <a href="profits.html">Profit Snapshots</a>
-      <a href="lifestyle.html">Lifestyle</a>
-      <a href="charts.html">Charts</a>
-      <a href="chartvideo.html">Videos</a> -->
       <a href="modules.html">Modules</a>
       <a href="glossary.html">Glossary</a>
       <a href="testimonials.html">Testimonials</a>
@@ -88,6 +72,7 @@
     </nav>
   </aside>
 
+  <!-- Page -->
   <div class="page">
     <header class="topbar">
       <button class="burger" id="burger">☰</button>
@@ -97,7 +82,7 @@
 
     <main class="container">
       <h1 style="color:#2a7fff">📊 Live Watchlist</h1>
-      <p style="color:#555">Tracking real-time market data</p>
+      <p style="color:#555">Tracking real-time market data with options activity</p>
       <div id="watchlist" class="watchlist"></div>
       <p id="error" style="color:red;display:none;">⚠️ API quota reached or data unavailable. Try again later.</p>
     </main>
@@ -111,59 +96,85 @@
       <button class="close" onclick="closeTikTokModal()">✕</button>
       <h3>Message on TikTok</h3>
       <p>Send us a DM directly on TikTok. Suggested message:</p>
-      <div class="suggest">
-        Hi — I found OTU. I'd like to connect with a mentor and get started. — <i>Your name</i>
-      </div>
-      <div style="text-align:right;margin-top:12px">
-        <button class="btn" onclick="closeTikTokModal()">Close</button>
-      </div>
+      <div class="suggest">Hi — I found OTU. I'd like to connect with a mentor and get started. — <i>Your name</i></div>
+      <div style="text-align:right;margin-top:12px"><button class="btn" onclick="closeTikTokModal()">Close</button></div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     const burger=document.getElementById('burger');
     const sidebar=document.getElementById('sidebar');
     burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
 
-    async function loadWatchlist(){
-      const symbols=["AAPL","TSLA","MSFT","AMZN","NVDA"];
-      const apiKey="26ba5f44e4a94961aabe2882bbfd975e";
-      const container=document.getElementById("watchlist");
-      const error=document.getElementById("error");
+    const symbols=["AAPL","TSLA","MSFT","AMZN","NVDA"];
+    const apiKey="d38hegpr01qlbdj5i6h0d38hegpr01qlbdj5i6hg"; // Finnhub API key
+    const container=document.getElementById("watchlist");
+    const error=document.getElementById("error");
 
+    async function loadStock(sym){
       try {
-        for(const sym of symbols){
-          const url=`https://api.twelvedata.com/quote?symbol=${sym}&apikey=${apiKey}`;
-          const res=await fetch(url);
-          const data=await res.json();
-          if(!data || data.code){
-            error.style.display="block";
-            continue;
-          }
-          const changeClass=parseFloat(data.percent_change)>=0?"up":"down";
-          const card=document.createElement("div");
-          card.className="stock-card";
-          card.innerHTML=`
-            <div class="symbol">${data.symbol}</div>
-            <div class="price">$${parseFloat(data.close).toFixed(2)}</div>
-            <div class="change ${changeClass}">${data.percent_change}%</div>
-          `;
-          container.appendChild(card);
+        const [quoteRes,optionRes,candleRes]=await Promise.all([
+          fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${apiKey}`).then(r=>r.json()),
+          fetch(`https://finnhub.io/api/v1/stock/option-chain?symbol=${sym}&token=${apiKey}`).then(r=>r.json()),
+          fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${sym}&resolution=5&count=20&token=${apiKey}`).then(r=>r.json())
+        ]);
+
+        const changeClass=quoteRes.dp>=0?"up":"down";
+        let openInterest=0,calls=0,puts=0;
+        if(optionRes.data){
+          optionRes.data.forEach(o=>{
+            openInterest+=o.openInterest||0;
+            if(o.optionType==="call") calls+=o.volume||0;
+            if(o.optionType==="put") puts+=o.volume||0;
+          });
+        }
+
+        const card=document.createElement("div");
+        card.className="stock-card";
+        card.innerHTML=`
+          <div class="stock-header">
+            <div class="symbol">${sym}</div>
+            <div class="price">$${quoteRes.c.toFixed(2)}</div>
+          </div>
+          <div class="change ${changeClass}">${quoteRes.dp.toFixed(2)}%</div>
+          <div class="options-stats">
+            <div>Vol: ${quoteRes.v || '-'}</div>
+            <div>OI: ${openInterest}</div>
+            <div>Calls: ${calls}</div>
+            <div>Puts: ${puts}</div>
+            <div>Volatility: ${quoteRes.h - quoteRes.l}</div>
+            <div>Change: ${quoteRes.d.toFixed(2)}</div>
+          </div>
+          <div class="chart-container"><canvas id="chart-${sym}"></canvas></div>
+        `;
+        container.appendChild(card);
+
+        if(candleRes.s==="ok"){
+          const ctx=document.getElementById(`chart-${sym}`).getContext("2d");
+          new Chart(ctx,{
+            type:"line",
+            data:{labels:candleRes.t.map(t=>new Date(t*1000).toLocaleTimeString()),
+                  datasets:[{label:sym,data:candleRes.c,borderColor:"#2a7fff",tension:0.3,fill:false}]},
+            options:{scales:{x:{display:false},y:{display:true}}}
+          });
         }
       } catch(e){
+        console.error("Error loading stock:",sym,e);
         error.style.display="block";
       }
     }
-    loadWatchlist();
 
-    // Modal
-    function openTikTokModal(){
-      document.getElementById("tt-modal").style.display="flex";
+    async function loadWatchlist(){
+      container.innerHTML="";
+      for(const sym of symbols){ await loadStock(sym); }
     }
-    function closeTikTokModal(){
-      document.getElementById("tt-modal").style.display="none";
-    }
+
+    loadWatchlist();
+    setInterval(loadWatchlist,60000); // refresh every 60s
+
+    function openTikTokModal(){document.getElementById("tt-modal").style.display="flex";}
+    function closeTikTokModal(){document.getElementById("tt-modal").style.display="none";}
   </script>
 </body>
 </html>
-
