@@ -6,61 +6,110 @@
   <title>Watchlist - Options Trading University</title>
   <style>
     :root {
-      --blue:#2a7fff; --pink:#ff4081; --ink:#0f1a33;
-      --panel:#ffffff; --page:#f4f7ff; --line:#e3e9f2;
-      --nav:#0b1328; --good:#0a8a4a; --good-bg:#d4f5e9;
-      --bad:#c62828; --bad-bg:#ffdada;
+      --blue:#2a7fff;
+      --pink:#ff4081;
+      --ink:#0f1a33;
+      --panel:#ffffff;
+      --page:#f4f7ff;
+      --line:#e3e9f2;
+      --nav:#0b1328;
+      --muted:#7e89a6;
+      --good:#0a8a4a;
+      --good-bg:#d4f5e9;
+      --bad:#c62828;
+      --bad-bg:#ffdada;
     }
-    body { margin:0; font-family:sans-serif; background:var(--page); color:var(--ink); }
+    body { margin:0; font-family:Arial, sans-serif; background:var(--page); color:var(--ink); }
     a { text-decoration:none; color:inherit; }
 
     /* Sidebar */
-    .sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:var(--nav);color:#fff;padding-top:10px;}
-    .brand{display:flex;align-items:center;gap:10px;padding:10px;font-weight:800;}
-    .brand-logo{width:30px;height:30px;border-radius:6px;object-fit:cover;}
-    .brand span{background:linear-gradient(90deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;}
-    .side-nav{display:flex;flex-direction:column;padding:10px;gap:5px;}
-    .side-nav a{color:#d8e2ff;padding:8px;border-radius:6px;font-weight:600;display:block;}
-    .side-nav a.active{background:#163067;}
+    .sidebar {
+      position:fixed; inset:0 auto 0 0;
+      width:220px; background:var(--nav); color:#fff; padding-top:10px;
+      z-index:1000;
+    }
+    .brand { display:flex; align-items:center; gap:10px; padding:10px 12px; }
+    .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
+    .brand span {
+      font-weight:900;
+      background:linear-gradient(90deg, var(--blue), var(--pink));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .side-nav { display:flex; flex-direction:column; padding:6px 8px; gap:4px; }
+    .side-nav a { color:#d8e2ff; padding:10px 12px; border-radius:8px; font-weight:600; }
+    .side-nav a:hover { background:#13224e; }
+    .side-nav a.active { background:#163067; }
 
     /* Page */
-    .page{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
-    .container{max-width:1200px;margin:0 auto;padding:20px;}
-    .topbar{background:#fff;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:10px;}
-    .burger{display:none;font-size:20px;background:none;border:none;cursor:pointer;}
+    .page { margin-left:220px; min-height:100vh; display:flex; flex-direction:column; }
+    .topbar {
+      background:#fff; border-bottom:1px solid var(--line);
+      display:flex; justify-content:space-between; align-items:center;
+      padding:10px 16px; position:sticky; top:0; z-index:500;
+    }
+    .brand-inline {
+      font-weight:900;
+      background:linear-gradient(90deg,var(--blue),var(--pink));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .burger { display:none; font-size:20px; background:none; border:none; cursor:pointer; }
+    .btn { background:var(--blue); color:#fff; border:none; border-radius:6px; padding:8px 14px; font-weight:700; cursor:pointer; }
+    .btn:hover { filter:brightness(.95); }
+    .container { max-width:1200px; margin:0 auto; padding:20px; }
 
-    /* Watchlist Horizontal */
-    .watchlist{display:flex;overflow-x:auto;gap:16px;padding:8px;scroll-snap-type:x mandatory;}
-    .stock-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:280px;max-width:300px;flex:0 0 auto;box-shadow:0 2px 6px rgba(0,0,0,.05);scroll-snap-align:start;}
-    .stock-header{display:flex;justify-content:space-between;align-items:center;}
-    .symbol{font-size:20px;font-weight:800;color:var(--blue);}
-    .price{font-size:20px;font-weight:900;}
-    .change{font-size:12px;font-weight:800;padding:4px 8px;border-radius:6px;}
-    .change.up{background:var(--good-bg);color:var(--good);}
-    .change.down{background:var(--bad-bg);color:var(--bad);}
-    .chart-wrap{margin-top:10px;}
-    canvas{width:100% !important;height:120px !important;}
+    /* Watchlist Cards */
+    .watchlist { display:flex; flex-wrap:wrap; gap:16px; }
+    .stock-card {
+      background:var(--panel); border:1px solid var(--line); border-radius:12px;
+      padding:14px; width:280px; box-shadow:0 2px 6px rgba(0,0,0,.05);
+    }
+    .stock-header { display:flex; justify-content:space-between; align-items:center; }
+    .symbol { font-size:20px; font-weight:800; color:var(--blue); }
+    .price { font-size:20px; font-weight:900; }
+    .change { font-size:12px; font-weight:800; padding:4px 8px; border-radius:6px; }
+    .change.up { background:var(--good-bg); color:var(--good); }
+    .change.down { background:var(--bad-bg); color:var(--bad); }
+
+    /* Chart */
+    .chart-wrap { margin-top:10px; }
+    canvas { width:100% !important; height:120px !important; }
 
     /* News */
-    .news{margin-top:10px;background:#f6f9ff;border:1px solid var(--line);border-radius:8px;padding:8px;min-height:56px;position:relative;overflow:hidden;}
-    .headline{position:absolute;inset:auto 10px 10px 10px;opacity:0;transform:translateY(6px);transition:opacity .4s ease,transform .4s ease;font-size:13px;color:#21325b;}
-    .headline.active{opacity:1;transform:translateY(0);}
-    .badge{font-size:10px;font-weight:900;color:#fff;background:linear-gradient(90deg,var(--pink),var(--blue));padding:3px 6px;border-radius:4px;margin-right:6px;}
+    .news {
+      margin-top:10px; background:#f6f9ff; border:1px solid var(--line);
+      border-radius:8px; padding:8px; min-height:50px; font-size:13px; color:#21325b;
+    }
 
-    .footer{margin-top:auto;background:var(--nav);color:#9cb2ff;text-align:center;padding:12px;}
-    @media(max-width:768px){.sidebar{display:none;}.page{margin-left:0;}.burger{display:block;}}
+    /* Footer */
+    .footer { margin-top:auto; background:var(--nav); color:#9cb2ff; text-align:center; padding:12px; }
+
+    /* Modal */
+    .modal-backdrop {
+      position:fixed; inset:0; background:rgba(0,0,0,.55);
+      display:none; align-items:center; justify-content:center; z-index:1200;
+    }
+    .modal { background:#fff; border-radius:12px; padding:20px; max-width:420px; width:92%; }
+    .modal h3 { margin:0 0 8px; color:var(--blue); }
+    .modal .close { float:right; background:none; border:none; font-size:20px; cursor:pointer; }
+
+    @media (max-width:768px){
+      .sidebar{display:none;}
+      .page{margin-left:0;}
+      .burger{display:block;}
+    }
   </style>
 </head>
 <body>
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
+    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo" alt="Logo" /><span>OTU</span></div>
     <nav class="side-nav">
       <a href="index.html">Home</a>
       <a href="watchlist.html" class="active">Watchlist</a>
       <a href="modules.html">Modules</a>
       <a href="glossary.html">Glossary</a>
       <a href="testimonials.html">Testimonials</a>
+      <a href="team.html">Team</a>
       <a href="contact.html">Contact</a>
       <a href="terms.html">Disclaimer</a>
     </nav>
@@ -75,80 +124,96 @@
     </header>
 
     <main class="container">
-      <h1 style="color:var(--blue)">📊 Live Watchlist</h1>
-      <p style="color:#555">Real-time prices, sparkline charts, and fresh headlines</p>
+      <h1 style="color:var(--blue);">📊 Live Watchlist</h1>
+      <p style="color:var(--muted);">Daily price charts + latest company headlines</p>
       <div id="watchlist" class="watchlist"></div>
-      <p id="error" style="display:none;color:red;font-weight:700;">⚠️ Data issue. Please retry shortly.</p>
+      <p id="error" style="display:none; color:#c62828; font-weight:700;">⚠️ Temporary data issue. Please retry shortly.</p>
     </main>
 
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
-  <!-- Charts -->
+  <!-- Modal -->
+  <div class="modal-backdrop" id="tt-modal">
+    <div class="modal">
+      <button class="close" onclick="closeTikTokModal()">✕</button>
+      <h3>Message on TikTok</h3>
+      <p>Send us a quick DM:</p>
+      <div style="background:#f5f9ff;padding:12px;border-radius:8px;">
+        Hi — I found OTU. I'd like to connect with a mentor and get started. — <i>Your name</i>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    const burger=document.getElementById('burger');const sidebar=document.getElementById('sidebar');
-    burger.addEventListener('click',()=> sidebar.style.display=sidebar.style.display==='block'?'none':'block');
+    const burger=document.getElementById("burger");
+    const sidebar=document.getElementById("sidebar");
+    burger.addEventListener("click",()=> sidebar.style.display=sidebar.style.display==="block"?"none":"block");
+
+    function openTikTokModal(){ document.getElementById("tt-modal").style.display="flex"; }
+    function closeTikTokModal(){ document.getElementById("tt-modal").style.display="none"; }
 
     const symbols=["AAPL","TSLA","MSFT","AMZN","NVDA"];
-    const API="d38hegpr01qlbdj5i6h0d38hegpr01qlbdj5i6hg";
-    const list=document.getElementById("watchlist"),err=document.getElementById("error");
-
-    function el(tag,cls,html){const n=document.createElement(tag);if(cls)n.className=cls;if(html!=null)n.innerHTML=html;return n;}
-    function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+    const KEY="d38hegpr01qlbdj5i6h0d38hegpr01qlbdj5i6hg";
+    const $list=document.getElementById("watchlist"), $error=document.getElementById("error");
 
     async function getQuote(sym){
-      const r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${API}`);return r.json();
+      const r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${KEY}`);
+      return r.json();
     }
     async function getCandles(sym){
-      const to=Math.floor(Date.now()/1000),from=to-7*24*60*60;
-      const r=await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${sym}&resolution=30&from=${from}&to=${to}&token=${API}`);
+      const to=Math.floor(Date.now()/1000);
+      const from=to-30*24*60*60;
+      const r=await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${sym}&resolution=D&from=${from}&to=${to}&token=${KEY}`);
       return r.json();
     }
     async function getNews(sym){
-      const to=new Date(),from=new Date(Date.now()-7*24*60*60*1000);
-      const fmt=d=>d.toISOString().slice(0,10);
-      const r=await fetch(`https://finnhub.io/api/v1/company-news?symbol=${sym}&from=${fmt(from)}&to=${fmt(to)}&token=${API}`);
+      const to=new Date(), from=new Date(Date.now()-7*24*60*60*1000);
+      const f=d=>d.toISOString().slice(0,10);
+      const r=await fetch(`https://finnhub.io/api/v1/company-news?symbol=${sym}&from=${f(from)}&to=${f(to)}&token=${KEY}`);
       return r.json();
     }
 
-    function buildCard(sym,quote){
-      const card=el("div","stock-card");
-      const header=el("div","stock-header");
-      header.append(el("div","symbol",sym));
-      const price=el("div","price",`$${(quote.c||0).toFixed(2)}`);
-      const chg=el("div","change "+(quote.dp>=0?"up":"down"),(quote.dp!=null?`${quote.dp.toFixed(2)}%`:"—"));
-      header.append(el("div",null).appendChild(price)&&price,chg);
-      const chart=el("div","chart-wrap");const canvas=el("canvas");canvas.id=`spark-${sym}`;chart.append(canvas);
-      const newsWrap=el("div","news");newsWrap.id=`news-${sym}`;
-      card.append(header,chart,newsWrap);
-      return {card,canvas,newsWrap};
+    function buildCard(sym, q){
+      const card=document.createElement("div"); card.className="stock-card";
+      const header=document.createElement("div"); header.className="stock-header";
+      header.innerHTML=`<div class="symbol">${sym}</div>
+        <div class="price">$${q.c.toFixed(2)}</div>
+        <div class="change ${q.dp>=0?"up":"down"}">${q.dp.toFixed(2)}%</div>`;
+      const chart=document.createElement("canvas"); chart.id=`chart-${sym}`;
+      const news=document.createElement("div"); news.className="news"; news.id=`news-${sym}`;
+      card.append(header, chart, news);
+      return {card,chart,news};
     }
 
-    function drawSpark(canvas,candles){
-      if(!candles||candles.s!=="ok")return;
-      const ctx=canvas.getContext("2d");if(canvas._chart)canvas._chart.destroy();
-      canvas._chart=new Chart(ctx,{type:"line",data:{labels:candles.t.map(()=>""),datasets:[{data:candles.c,borderColor:"#2a7fff",borderWidth:2,pointRadius:0,fill:false,tension:.25}]},options:{plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},responsive:true,maintainAspectRatio:false}});
-    }
-
-    function startNewsRotator(wrap,items){
-      const list=(items||[]).filter(x=>x.headline).slice(0,3);
-      if(!list.length){wrap.textContent="No recent headlines.";return;}
-      wrap.innerHTML="";list.forEach((n,i)=>{const h=el("div","headline"+(i===0?" active":""),`<span class="badge">NEWS</span><span>${escapeHtml(n.headline)}</span>`);wrap.appendChild(h);});
-      let idx=0;if(wrap._rot)clearInterval(wrap._rot);
-      wrap._rot=setInterval(()=>{const nodes=[...wrap.querySelectorAll(".headline")];nodes.forEach(n=>n.classList.remove("active"));idx=(idx+1)%nodes.length;nodes[idx].classList.add("active");},6000);
+    function drawChart(canvas,candles){
+      if(candles.s!=="ok")return;
+      const ctx=canvas.getContext("2d");
+      if(canvas._chart)canvas._chart.destroy();
+      canvas._chart=new Chart(ctx,{type:"line",data:{
+        labels:candles.t.map(()=>""),datasets:[{data:candles.c,borderColor:"#2a7fff",borderWidth:2,pointRadius:0,fill:false,tension:.25}]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}}}
+      });
     }
 
     async function render(sym){
       try{
         const [q,c,n]=await Promise.all([getQuote(sym),getCandles(sym),getNews(sym)]);
-        const {card,canvas,newsWrap}=buildCard(sym,q);list.appendChild(card);
-        drawSpark(canvas,c);startNewsRotator(newsWrap,n);
-      }catch(e){console.error(e);err.style.display="block";}
+        const {card,chart,news}=buildCard(sym,q);
+        $list.appendChild(card);
+        drawChart(chart,c);
+        if(n.length>0){
+          news.textContent=n[0].headline;
+        }else{
+          news.textContent="No recent headlines.";
+        }
+      }catch(e){console.error(e);$error.style.display="block";}
     }
 
-    async function loadAll(){list.innerHTML="";for(const sym of symbols){await render(sym);}}
-    loadAll();
+    (async()=>{
+      for(const s of symbols) await render(s);
+    })();
   </script>
 </body>
 </html>
