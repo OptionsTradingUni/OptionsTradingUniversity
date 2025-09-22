@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Testimonials - Options Trading University</title>
   <style>
     body { margin:0; font-family:Arial, sans-serif; background:#f5f9ff; color:#222; }
@@ -11,7 +12,7 @@
       position:fixed; top:0; left:0; bottom:0;
       width:220px; background:#0b1328; color:#fff;
       transform:translateX(-220px); transition:transform .3s ease;
-      padding:20px;
+      padding:20px; z-index:1000;
     }
     .sidebar.active { transform:translateX(0); }
     .sidebar h2 { margin:0 0 20px; color:#ffd166; }
@@ -29,55 +30,41 @@
       justify-content:space-between; align-items:center;
     }
     .burger { font-size:20px; background:none; border:none; color:#fff; cursor:pointer; }
-    .btn {
-      background:#fff; color:#2a7fff; border:none; padding:8px 14px;
-      border-radius:6px; font-weight:600; cursor:pointer;
-    }
-    .btn:hover { background:#eaf1ff; }
+    .btn { background:#fff; color:#2a7fff; border:none; padding:8px 14px; border-radius:6px; cursor:pointer; font-weight:600; }
 
-    h1 { margin:20px 0; font-size:1.8em; color:#2a7fff; }
+    h1 { margin:20px 0; font-size:1.8em; color:#2a7fff; text-align:center; }
 
     /* Testimonial Card */
     .testimonial-card {
       background:#fff; border-radius:8px; padding:20px;
       box-shadow:0 3px 8px rgba(0,0,0,.1);
-      margin:20px auto; max-width:600px; text-align:center;
+      margin:20px auto; max-width:700px;
+    }
+    .testimonial-header {
+      display:flex; align-items:center; gap:12px;
+      margin-bottom:12px;
+    }
+    .testimonial-header img {
+      width:60px; height:60px; border-radius:50%; object-fit:cover;
     }
     .testimonial-author { font-weight:700; font-size:1.1em; color:#2a7fff; }
-    .testimonial-role { font-size:.9em; color:#777; margin-left:6px; }
+    .testimonial-profit { color:green; font-weight:700; font-size:1em; }
+    .testimonial-proof img {
+      margin-top:12px; max-width:100%; border-radius:8px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.15);
+    }
     .testimonial-content { margin-top:12px; font-style:italic; line-height:1.5; color:#333; }
 
     /* Nav Buttons */
     .nav-buttons { margin-top:20px; text-align:center; }
-    .nav-buttons .btn { margin:0 6px; }
+    .nav-buttons .btn {
+      background:#2a7fff; color:#fff;
+      margin:0 8px;
+    }
+    .nav-buttons .btn:hover { background:#1e5fd9; }
 
-    /* Modal */
-    .modal-backdrop {
-      position: fixed; top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.6);
-      display: none; align-items: center; justify-content: center;
-      z-index: 2000;
-    }
-    .modal {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 400px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      text-align: left;
-    }
-    .modal h3 { margin-top:0; color:#2a7fff; }
-    .modal .close {
-      float: right; background: none; border: none;
-      font-size: 20px; cursor: pointer; color:#444;
-    }
-    .suggest {
-      background: #f5f9ff;
-      padding: 12px;
-      border-radius: 6px;
-      font-family: monospace;
-      margin-top: 10px;
-    }
+    /* Footer */
+    .footer { margin-top:40px; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
   </style>
 </head>
 <body>
@@ -86,6 +73,7 @@
     <h2>OTU</h2>
     <a href="index.html">Home</a>
     <a href="modules.html">Modules</a>
+    <a href="glossary.html">Glossary</a>
     <a href="testimonials.html" class="active">Testimonials</a>
     <a href="contact.html">Contact</a>
     <a href="terms.html">Disclaimer</a>
@@ -107,21 +95,8 @@
         <button class="btn" id="nextBtn">Next</button>
       </div>
     </main>
-  </div>
 
-  <!-- TikTok Modal -->
-  <div class="modal-backdrop" id="tt-modal">
-    <div class="modal">
-      <button class="close" onclick="closeTikTokModal()">✕</button>
-      <h3>Message on TikTok</h3>
-      <p class="small">To join the community or request a trade review, send a private DM on TikTok. Suggested message:</p>
-      <div class="suggest">
-        Hi — I found your Options Trading University page. I'd like a trade review and to join the waitlist. — <i>Your name</i>
-      </div>
-      <div style="text-align:right;margin-top:12px">
-        <button class="btn" onclick="closeTikTokModal()">Close</button>
-      </div>
-    </div>
+    <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
   <script>
@@ -130,7 +105,6 @@
       document.getElementById("sidebar").classList.toggle("active");
     });
 
-    // Testimonials
     let testimonials = [];
     let currentIndex = 0;
 
@@ -139,10 +113,17 @@
       const t = testimonials[currentIndex];
       document.getElementById("testimonial-container").innerHTML = `
         <div class="testimonial-card">
-          <div class="testimonial-author">${t.name}
-            ${t.role ? `<span class="testimonial-role">${t.role}</span>` : ""}
+          <div class="testimonial-header">
+            <img src="${t.photo}" alt="${t.name}">
+            <div>
+              <div class="testimonial-author">${t.name}</div>
+              <div class="testimonial-profit">${t.profit}</div>
+            </div>
           </div>
-          <div class="testimonial-content">"${t.testimonial || t.feedback}"</div>
+          <div class="testimonial-proof">
+            <img src="${t.profitImage}" alt="Profit proof">
+          </div>
+          <div class="testimonial-content">"${t.testimonial}"</div>
         </div>
       `;
     }
@@ -166,13 +147,8 @@
         console.error(err);
       });
 
-    // Modal controls
-    function openTikTokModal(){
-      document.getElementById("tt-modal").style.display="flex";
-    }
-    function closeTikTokModal(){
-      document.getElementById("tt-modal").style.display="none";
-    }
+    // TikTok modal placeholder
+    function openTikTokModal(){ alert("Open TikTok DM modal here"); }
   </script>
 </body>
 </html>
