@@ -2,42 +2,94 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Options Trading University</title>
   <style>
-    body { margin:0; font-family:Arial, sans-serif; background:#eaf1ff; color:#0f1a33; }
-    a, a:visited, a:hover, a:active { text-decoration:none!important; color:inherit!important; outline:none; }
+    body {
+      margin:0; font-family:Arial,sans-serif;
+      background:#eaf1ff; color:#0f1a33;
+    }
+    a { text-decoration:none; color:inherit; }
 
-    .sidebar { position:fixed; top:0; left:0; bottom:0; width:220px; background:#0b1328; color:#fff; padding:10px; }
+    /* Sidebar */
+    .sidebar { position:fixed; top:0; left:0; bottom:0;
+      width:220px; background:#0b1328; color:#fff; padding:10px;
+    }
     .brand { display:flex; align-items:center; gap:10px; padding:10px; font-weight:800; }
     .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
-    .brand-text, .brand-inline { background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900; }
-    
-    .side-nav { display:flex; flex-direction:column; gap:10px; }
+    .brand-text, .brand-inline {
+      background:linear-gradient(90deg,#2a7fff,#ff4081);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      font-weight:900;
+    }
+    .side-nav { display:flex; flex-direction:column; gap:10px; padding:10px; }
     .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; }
     .side-nav a.active { background:#163067; }
 
+    /* Page */
     .page { margin-left:220px; display:flex; flex-direction:column; min-height:100vh; }
-    .container { max-width:900px; margin:auto; padding:20px; }
+    .container { max-width:900px; margin:0 auto; padding:20px; }
 
-    .topbar { background:#fff; border-bottom:1px solid #e3e9f2; display:flex; justify-content:space-between; align-items:center; padding:10px; position:sticky; top:0; z-index:500; }
-    .burger { display:none; font-size:24px; background:none; border:none; cursor:pointer; }
-    @media(max-width:768px){
-      .sidebar { display:none; }
-      .page { margin-left:0; }
-      .burger { display:block; }
+    /* Topbar */
+    .topbar { background:#fff; border-bottom:1px solid #e3e9f2;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:10px; position:sticky; top:0; z-index:500;
     }
-
-    .btn { background:#2a7fff; color:#fff; padding:10px 16px; border:none; border-radius:6px; font-weight:600; cursor:pointer; }
+    .burger { display:none; font-size:22px; background:none; border:none; cursor:pointer; }
+    .btn { background:#2a7fff; color:#fff; border:none; border-radius:6px; padding:10px 16px; font-weight:600; cursor:pointer; }
     .btn.ghost { background:#fff; color:#2a7fff; border:2px solid #2a7fff; }
 
+    /* Hero */
+    .hero { background:linear-gradient(180deg,#2a7fff20,#eaf1ff);
+      padding:40px 20px; border-radius:12px; text-align:center; margin-bottom:20px;
+    }
+    .hero h1 { color:#2a7fff; font-size:28px; margin:0; }
+    .hero p { color:#444; font-size:16px; margin:10px 0 20px; }
+    .cta-row { display:flex; justify-content:center; gap:12px; }
+
+    /* Stats */
+    .stats { display:flex; justify-content:center; gap:20px; margin:20px 0; flex-wrap:wrap; }
+    .stat { text-align:center; background:#fff; padding:16px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.05); min-width:150px; }
+    .stat h2 { margin:0; font-size:22px; color:#1749d4; }
+
+    /* Motivation section */
+    .card.image-card {
+      background:url('Lifestyle/life1.jpeg') center/cover no-repeat;
+      color:#fff; text-shadow:0 1px 3px rgba(0,0,0,0.6);
+      padding:20px; border-radius:12px; margin:20px 0;
+    }
+    .image-card h2 { margin:0 0 10px; }
+    .image-card p { margin:6px 0; }
+
+    /* Footer */
+    .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
+
+    /* Modal */
     .modal-backdrop { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); z-index:2000; }
     .modal { background:#fff; padding:20px; border-radius:10px; max-width:400px; width:90%; text-align:left; position:relative; }
     .modal .close { position:absolute; top:10px; right:10px; background:none; border:none; font-size:20px; cursor:pointer; color:#444; }
     .suggest { background:#f5f9ff; padding:12px; border-radius:6px; font-family:monospace; margin-top:10px; }
+
+    /* Discount Popup */
+    .popup-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.55);
+      display:none; align-items:center; justify-content:center; z-index:3000;
+    }
+    .popup { background:#fff; padding:20px; border-radius:12px; max-width:420px; width:92%;
+      box-shadow:0 12px 40px rgba(0,0,0,0.25); text-align:center; position:relative;
+    }
+    .popup h2 { margin:0 0 12px; color:#2a7fff; }
+    .popup p { color:#333; margin:0 0 14px; }
+    .popup .close { position:absolute; top:12px; right:12px; background:none; border:none; font-size:20px; cursor:pointer; color:#444; }
+
+    @media(max-width:768px){
+      .sidebar{display:none;}
+      .page{margin-left:0;}
+      .burger{display:block;}
+    }
   </style>
 </head>
 <body>
+  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <img src="branding/logo.jpeg" class="brand-logo" alt="Logo">
@@ -54,6 +106,7 @@
     </nav>
   </aside>
 
+  <!-- Page -->
   <div class="page">
     <header class="topbar">
       <button class="burger" id="burger">☰</button>
@@ -62,23 +115,34 @@
     </header>
 
     <main class="container">
+      <!-- Hero -->
       <section class="hero">
         <h1>Learn Options with Mentorship</h1>
         <p>Learn the strategies, master the mindset, and grow alongside a community of traders who win together.</p>
-        <div style="margin-top:20px;">
+        <div class="cta-row">
           <a class="btn" href="modules.html">Start Learning</a>
           <a class="btn ghost" href="testimonials.html">Success Stories</a>
         </div>
       </section>
 
-      <section class="stats" style="margin-top:40px;">
+      <!-- Stats -->
+      <section class="stats">
         <div class="stat"><h2 data-count="2489">0+</h2><div>Total Trades</div></div>
         <div class="stat"><h2 data-count="789">0</h2><div>Avg Income $</div></div>
         <div class="stat"><h2 data-count="1300">0+</h2><div>Community Members</div></div>
       </section>
+
+      <!-- Motivation -->
+      <section class="card image-card">
+        <h2>Why Choose OTU?</h2>
+        <p>Every trader starts small, but with the right knowledge and mentorship you can scale with confidence. 
+        Our proven modules, real mentors, and community-driven support help you avoid rookie mistakes and 
+        focus on disciplined growth.</p>
+        <p style="font-weight:700;color:#ffd166">📈 Don’t trade alone. Join a network that wins together.</p>
+      </section>
     </main>
 
-    <footer class="footer" style="padding:20px; text-align:center; color:#9cb2ff; background:#0b1328;">© 2025 Options Trading University</footer>
+    <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
   <!-- Modal -->
@@ -91,80 +155,50 @@
         Hi — I found OTU. I'd like to connect with a mentor and get started. — <i>Your name</i>
       </div>
       <div style="text-align:right; margin-top:12px;">
-        <button class="btn" id="modalCloseBtn">Close</button>
+        <button class="btn ghost" id="modalCloseBtn">Close</button>
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <!-- Discount Popup -->
+  <div class="popup-backdrop" id="discount-popup">
+    <div class="popup">
+      <button class="close" onclick="dismissPopup()">✕</button>
+      <h2>🎉 20% OFF Membership</h2>
+      <p>Limited time offer! Join our private signals & calls group with <b>20% discount</b>.<br>DM us on TikTok to claim before spots run out!</p>
+      <button class="btn" onclick="dismissPopup()">Got it — Message Mentor</button>
+    </div>
+  </div>
+
   <script>
-    document.addEventListener('DOMContentLoaded', function(){
-
-      // init EmailJS
-      try {
-        emailjs.init("XNaU6g1Q9JefQK51J");
-      } catch(e){
-        console.warn("EmailJS init failed", e);
-      }
-
+    document.addEventListener("DOMContentLoaded",()=>{
       // Sidebar toggle
-      const burger = document.getElementById('burger');
-      const sidebar = document.getElementById('sidebar');
-      burger.addEventListener('click', () => {
-        if (sidebar.style.display === 'block') {
-          sidebar.style.display = 'none';
-        } else {
-          sidebar.style.display = 'block';
-        }
+      document.getElementById("burger").addEventListener("click",()=>{
+        const sidebar=document.getElementById("sidebar");
+        sidebar.style.display=sidebar.style.display==="block"?"none":"block";
       });
-
-      // Modal open/close
-      const mentorBtn = document.getElementById('mentorBtn');
-      const ttModal = document.getElementById('tt-modal');
-      const modalClose = document.getElementById('modalClose');
-      const modalCloseBtn = document.getElementById('modalCloseBtn');
-
-      mentorBtn.addEventListener('click', () => {
-        ttModal.style.display = 'flex';
-
-        // Send email when clicked
-        const params = new URLSearchParams(window.location.search);
-        const ref = params.get("from") || "default";
-        emailjs.send("service_4o276ak", "template_xrd10jb", {
-          referral: ref,
-          page: window.location.href,
-          email_to: "c50814398@gmail.com"
-        }).then(res=>{
-          console.log("Email sent");
-        }).catch(err=>{
-          console.warn("Email send failed", err);
-        });
+      // Modal
+      const modal=document.getElementById("tt-modal");
+      document.getElementById("mentorBtn").addEventListener("click",()=>{ modal.style.display="flex"; });
+      document.getElementById("modalClose").addEventListener("click",()=>{ modal.style.display="none"; });
+      document.getElementById("modalCloseBtn").addEventListener("click",()=>{ modal.style.display="none"; });
+      // Animate stats
+      document.querySelectorAll(".stat h2").forEach(el=>{
+        let target=+el.dataset.count, current=0, step=Math.ceil(target/100);
+        const interval=setInterval(()=>{
+          current+=step;
+          if(current>=target){ current=target; clearInterval(interval); }
+          el.textContent=current+(el.dataset.count.includes("%")?"%":"+");
+        },30);
       });
-
-      modalClose.addEventListener('click', () => {
-        ttModal.style.display = 'none';
-      });
-      modalCloseBtn.addEventListener('click', () => {
-        ttModal.style.display = 'none';
-      });
-
-      // Stats animation
-      document.querySelectorAll(".stat h2").forEach(el => {
-        let target = +el.dataset.count;
-        let current = 0;
-        let increment = Math.ceil(target / 100);
-        const interval = setInterval(() => {
-          current += increment;
-          if (current >= target) {
-            current = target;
-            clearInterval(interval);
-          }
-          el.textContent = current + (el.dataset.count.includes("%") ? "%" : "+");
-        }, 30);
-      });
-
+      // Discount popup (24h cadence)
+      const POPUP_KEY="otuDiscountLastShownAt";
+      const DAY_MS=24*60*60*1000;
+      function shouldShow(){ const ts=+localStorage.getItem(POPUP_KEY); return !ts || (Date.now()-ts)>DAY_MS; }
+      function stamp(){ localStorage.setItem(POPUP_KEY, Date.now()); }
+      window.dismissPopup=()=>{ document.getElementById("discount-popup").style.display="none"; stamp(); };
+      if(shouldShow()) setTimeout(()=>{ document.getElementById("discount-popup").style.display="flex"; },3000);
     });
   </script>
-
 </body>
 </html>
