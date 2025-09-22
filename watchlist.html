@@ -7,51 +7,62 @@
   <style>
     :root {
       --blue:#2a7fff; --pink:#ff4081; --ink:#0f1a33;
-      --panel:#fff; --page:#f4f7ff; --line:#e3e9f2;
+      --panel:#ffffff; --page:#f4f7ff; --line:#e3e9f2;
       --nav:#0b1328; --muted:#7e89a6;
       --good:#0a8a4a; --good-bg:#d4f5e9;
       --bad:#c62828; --bad-bg:#ffdada;
     }
-    body{margin:0;font-family:sans-serif;background:var(--page);color:var(--ink);}
-    a{text-decoration:none;color:inherit}
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:Arial,sans-serif; background:var(--page); color:var(--ink); }
 
     /* Sidebar */
-    .sidebar{position:fixed;inset:0 auto 0 0;width:220px;background:var(--nav);color:#fff;padding-top:10px;}
-    .brand{display:flex;align-items:center;gap:10px;padding:10px;}
-    .brand-logo{width:30px;height:30px;border-radius:6px;object-fit:cover;}
-    .brand span{font-weight:900;background:linear-gradient(90deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .side-nav{display:flex;flex-direction:column;padding:8px;gap:4px;}
-    .side-nav a{color:#d8e2ff;padding:10px;border-radius:8px;font-weight:600;}
-    .side-nav a.active{background:#163067;}
+    .sidebar { position:fixed;top:0;left:0;bottom:0;width:220px;background:var(--nav);color:#fff;padding-top:10px; }
+    .brand { display:flex;align-items:center;gap:10px;padding:10px 12px;font-weight:800; }
+    .brand-logo { width:30px;height:30px;border-radius:6px;object-fit:cover; }
+    .brand span { background:linear-gradient(90deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900; }
+    .side-nav { display:flex;flex-direction:column;padding:6px 8px;gap:4px; }
+    .side-nav a { color:#d8e2ff;padding:10px 12px;border-radius:8px;font-weight:600; }
+    .side-nav a:hover { background:#13224e; }
+    .side-nav a.active { background:#163067; }
 
-    /* Page */
-    .page{margin-left:220px;min-height:100vh;display:flex;flex-direction:column;}
-    .topbar{background:#fff;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:10px 16px;}
-    .brand-inline{font-weight:900;background:linear-gradient(90deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .burger{display:none;font-size:20px;background:none;border:none;cursor:pointer;}
-    .btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:8px 14px;font-weight:700;cursor:pointer;}
-    .btn:hover{filter:brightness(.95);}
-    .container{max-width:1100px;margin:0 auto;padding:16px;}
+    /* Page / Topbar */
+    .page { margin-left:220px;min-height:100vh;display:flex;flex-direction:column; }
+    .topbar { background:#fff;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:10px 16px; }
+    .brand-inline { font-weight:900;background:linear-gradient(90deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+    .burger { display:none;font-size:20px;background:none;border:none;cursor:pointer;animation:shake 2s infinite; }
+    @keyframes shake {0%,100%{transform:translateX(0)}20%{transform:translateX(-2px)}40%{transform:translateX(2px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
+    .btn { background:var(--blue);color:#fff;border:none;border-radius:6px;padding:8px 14px;font-weight:700;cursor:pointer; }
+    .btn:hover { filter:brightness(.95); }
 
-    /* Watchlist Cards */
-    .watchlist{display:flex;overflow-x:auto;gap:16px;padding-bottom:12px;}
-    .stock-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:300px;max-width:320px;flex:0 0 auto;box-shadow:0 2px 6px rgba(0,0,0,.05);}
-    .stock-header{display:flex;justify-content:space-between;align-items:center;}
-    .symbol{font-size:20px;font-weight:800;color:var(--blue);}
-    .price{font-size:20px;font-weight:900;}
-    .change{font-size:12px;font-weight:800;padding:4px 8px;border-radius:6px;}
-    .change.up{background:var(--good-bg);color:var(--good);}
-    .change.down{background:var(--bad-bg);color:var(--bad);}
-    .chart-wrap{margin-top:10px;height:120px;}
-    .news{margin-top:10px;background:#f6f9ff;border:1px solid var(--line);border-radius:8px;padding:8px;min-height:56px;font-size:13px;color:#21325b;}
+    .container { max-width:1200px;margin:0 auto;padding:18px 16px 24px; }
 
-    .footer{margin-top:auto;background:var(--nav);color:#9cb2ff;text-align:center;padding:12px;}
+    /* Watchlist */
+    .watchlist { display:flex;overflow-x:auto;gap:16px;padding:8px;scroll-snap-type:x mandatory; }
+    .stock-card { background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:260px;flex:0 0 auto;box-shadow:0 2px 6px rgba(0,0,0,.05);scroll-snap-align:start; }
+    .stock-header { display:flex;justify-content:space-between;align-items:center;gap:12px; }
+    .symbol { font-size:20px;font-weight:800;color:var(--blue); }
+    .price { font-size:20px;font-weight:900; }
+    .change { font-size:12px;font-weight:800;padding:4px 8px;border-radius:6px; }
+    .change.up { background:var(--good-bg);color:var(--good); }
+    .change.down { background:var(--bad-bg);color:var(--bad); }
+
+    /* Logo */
+    .logo-wrap { margin:10px auto;text-align:center; }
+    .logo-wrap img { max-height:60px; max-width:100px; object-fit:contain; }
+
+    /* News */
+    .news { margin-top:10px;background:#f6f9ff;border:1px solid var(--line);border-radius:8px;padding:8px;min-height:56px;font-size:13px;color:#21325b; }
+    .news div { margin:4px 0; }
+
+    /* Footer */
+    .footer { margin-top:auto;background:var(--nav);color:#9cb2ff;text-align:center;padding:12px; }
 
     /* Modal */
-    .modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);z-index:1200;}
-    .modal{background:#fff;border-radius:12px;padding:20px;max-width:420px;width:92%;box-shadow:0 12px 40px rgba(0,0,0,.25);}
-    .modal h3{margin:0 0 8px;color:var(--blue);}
-    .modal .close{float:right;background:none;border:none;color:#444;font-size:20px;cursor:pointer;}
+    .modal-backdrop { position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);z-index:1200; }
+    .modal { background:#fff;border-radius:12px;padding:20px;max-width:420px;width:92%;box-shadow:0 12px 40px rgba(0,0,0,.25); }
+    .modal h3 { margin:0 0 8px;color:var(--blue); }
+    .modal .close { float:right;background:none;border:none;color:#444;font-size:20px;cursor:pointer; }
+    .suggest { background:#f5f9ff;border:1px dashed var(--line);border-radius:8px;padding:12px;font-family:monospace; }
 
     @media(max-width:768px){.sidebar{display:none;}.page{margin-left:0;}.burger{display:block;}}
   </style>
@@ -59,7 +70,7 @@
 <body>
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo"><span>OTU</span></div>
+    <div class="brand"><img src="branding/logo.jpeg" class="brand-logo" alt="Logo" /><span>OTU</span></div>
     <nav class="side-nav">
       <a href="index.html">Home</a>
       <a href="watchlist.html" class="active">Watchlist</a>
@@ -77,116 +88,81 @@
     <header class="topbar">
       <button class="burger" id="burger">☰</button>
       <div class="brand-inline">Options Trading University</div>
-      <button class="btn" onclick="openModal()">Message a Mentor</button>
+      <button class="btn" onclick="openTikTokModal()">Message a Mentor</button>
     </header>
 
     <main class="container">
       <h1 style="color:var(--blue)">📊 Live Watchlist</h1>
-      <p style="color:var(--muted)">Daily charts + latest company-specific news</p>
+      <p style="color:var(--muted)">Logos, quotes, and latest headlines for top tickers</p>
       <div id="watchlist" class="watchlist"></div>
-      <p id="error" style="display:none;color:#c62828;font-weight:700;">⚠️ Data issue. Please retry.</p>
+      <p id="error" style="display:none;color:#c62828;font-weight:700;margin-top:12px;">⚠️ Data issue. Try again later.</p>
     </main>
 
     <footer class="footer">© 2025 Options Trading University</footer>
   </div>
 
-  <!-- Modal -->
+  <!-- TikTok Modal -->
   <div class="modal-backdrop" id="tt-modal">
     <div class="modal">
-      <button class="close" onclick="closeModal()">✕</button>
+      <button class="close" onclick="closeTikTokModal()">✕</button>
       <h3>Message on TikTok</h3>
       <p>Suggested DM:</p>
-      <div style="background:#f5f9ff;border:1px dashed var(--line);padding:10px;border-radius:6px;">
-        Hi — I found OTU. I'd like to connect with a mentor and get started. — <i>Your name</i>
-      </div>
-      <div style="text-align:right;margin-top:12px;">
-        <button class="btn" onclick="closeModal()">Close</button>
-      </div>
+      <div class="suggest">Hi — I found OTU. I'd like to connect with a mentor. — <i>Your name</i></div>
+      <div style="text-align:right;margin-top:12px;"><button class="btn" onclick="closeTikTokModal()">Close</button></div>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+    const burger=document.getElementById('burger');const sidebar=document.getElementById('sidebar');
+    burger.addEventListener('click',()=>{sidebar.style.display=(sidebar.style.display==='block'?'none':'block')});
+    function openTikTokModal(){document.getElementById('tt-modal').style.display='flex';}
+    function closeTikTokModal(){document.getElementById('tt-modal').style.display='none';}
+
     const symbols=["AAPL","TSLA","MSFT","AMZN","NVDA"];
-    const FINNHUB_KEY="d38hegpr01qlbdj5i6h0d38hegpr01qlbdj5i6hg";
-    const list=document.getElementById("watchlist");
-    const errorEl=document.getElementById("error");
+    const KEY="d38hegpr01qlbdj5i6h0d38hegpr01qlbdj5i6hg";
+    const list=document.getElementById("watchlist"), errorEl=document.getElementById("error");
 
-    // Sidebar toggle
-    document.getElementById("burger").addEventListener("click",()=> {
-      sidebar.style.display=sidebar.style.display==="block"?"none":"block";
-    });
-    function openModal(){document.getElementById("tt-modal").style.display="flex";}
-    function closeModal(){document.getElementById("tt-modal").style.display="none";}
-
-    // API calls
     async function getQuote(sym){
-      const res=await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${FINNHUB_KEY}`);
-      return res.json();
+      const r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${KEY}`);
+      return r.json();
     }
-    async function getCandles(sym){
-      const to=Math.floor(Date.now()/1000),from=to-30*24*60*60;
-      const res=await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${sym}&resolution=D&from=${from}&to=${to}&token=${FINNHUB_KEY}`);
-      return res.json();
+    async function getProfile(sym){
+      const r=await fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${sym}&token=${KEY}`);
+      return r.json();
     }
     async function getNews(sym){
-      const to=new Date(),from=new Date(Date.now()-7*24*60*60*1000);
-      const f=d=>d.toISOString().slice(0,10);
-      const res=await fetch(`https://finnhub.io/api/v1/company-news?symbol=${sym}&from=${f(from)}&to=${f(to)}&token=${FINNHUB_KEY}`);
-      return res.json();
+      const to=new Date(), from=new Date(Date.now()-7*24*60*60*1000);
+      const fmt=d=>d.toISOString().slice(0,10);
+      const r=await fetch(`https://finnhub.io/api/v1/company-news?symbol=${sym}&from=${fmt(from)}&to=${fmt(to)}&token=${KEY}`);
+      return r.json();
     }
 
-    // Draw chart
-    function drawChart(canvas,data){
-      if(!data||data.s!=="ok") return;
-      if(canvas._chart) canvas._chart.destroy();
-      canvas._chart=new Chart(canvas.getContext("2d"),{
-        type:"line",
-        data:{labels:data.t.map(()=>""),datasets:[{data:data.c,borderColor:"#2a7fff",borderWidth:2,pointRadius:0,tension:0.25}]},
-        options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:false}}}
-      });
-    }
-
-    // Build card
     async function render(sym){
       try{
-        const [q,c,n]=await Promise.all([getQuote(sym),getCandles(sym),getNews(sym)]);
-        const card=document.createElement("div"); card.className="stock-card"; card.id="card-"+sym;
+        const [q,p,n]=await Promise.all([getQuote(sym),getProfile(sym),getNews(sym)]);
+        const card=document.createElement("div");card.className="stock-card";
+        const changeClass=q.dp>=0?"up":"down";
         card.innerHTML=`
           <div class="stock-header">
             <div class="symbol">${sym}</div>
             <div>
-              <div class="price" id="price-${sym}">$${q.c.toFixed(2)}</div>
-              <div class="change ${q.dp>=0?"up":"down"}" id="chg-${sym}">${q.dp.toFixed(2)}%</div>
+              <div class="price">$${q.c?.toFixed(2)||"—"}</div>
+              <div class="change ${changeClass}">${q.dp?.toFixed(2)||"—"}%</div>
             </div>
           </div>
+          <div class="logo-wrap"><img src="${p.logo||''}" alt="${sym} logo"/></div>
         `;
-        const chart=document.createElement("canvas"); chart.id="chart-"+sym;
-        card.appendChild(Object.assign(document.createElement("div"),{className:"chart-wrap"})).appendChild(chart);
-        const news=document.createElement("div"); news.className="news"; news.id="news-"+sym;
-        const relevant=(n||[]).filter(x=>x.related&&x.related.includes(sym)).slice(0,2);
-        news.innerHTML=relevant.length?relevant.map(x=>`<div>📰 ${x.headline}</div>`).join(""):"No recent headlines.";
-        card.appendChild(news); list.appendChild(card);
-        drawChart(chart,c);
+        const newsDiv=document.createElement("div");newsDiv.className="news";
+        const news=(n||[]).slice(0,2);
+        newsDiv.innerHTML=news.length?news.map(x=>`<div>📰 ${x.headline}</div>`).join(""):"No recent headlines.";
+        card.appendChild(newsDiv);
+        list.appendChild(card);
       }catch(e){console.error(e);errorEl.style.display="block";}
     }
 
-    // Load all
-    (async()=>{for(const s of symbols){await render(s);}})();
-
-    // Auto-refresh quotes only
-    setInterval(async()=>{
-      for(const s of symbols){
-        try{
-          const q=await getQuote(s);
-          document.getElementById("price-"+s).textContent=`$${q.c.toFixed(2)}`;
-          const chgEl=document.getElementById("chg-"+s);
-          chgEl.textContent=`${q.dp.toFixed(2)}%`;
-          chgEl.className="change "+(q.dp>=0?"up":"down");
-        }catch(e){console.warn("Refresh fail",s,e);}
-      }
-    },120000); // 2 min
+    (async function(){
+      for(const sym of symbols){await render(sym);}
+    })();
   </script>
 </body>
 </html>
