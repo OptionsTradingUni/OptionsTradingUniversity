@@ -6,23 +6,29 @@
   <title>Options Trading University</title>
   <style>
     body.blue-theme { margin:0; font-family:Arial,sans-serif; background:#eaf1ff; color:#0f1a33; }
-    a, a:visited, a:hover, a:active { text-decoration:none !important; color:inherit !important; outline:none; }
+    a,a:visited,a:hover,a:active { text-decoration:none!important; color:inherit!important; outline:none; }
 
     /* Sidebar */
     .sidebar { position:fixed; top:0; left:0; bottom:0; width:220px; background:#0b1328; color:#fff; padding-top:10px; }
     .brand { display:flex; align-items:center; gap:10px; padding:10px; font-weight:800; }
     .brand-logo { width:30px; height:30px; border-radius:6px; object-fit:cover; }
-    .brand-text, .brand-inline { background:linear-gradient(90deg,#2a7fff,#ff4081); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900; }
+    .brand-text,.brand-inline {
+      background:linear-gradient(90deg,#2a7fff,#ff4081);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;
+    }
     .side-nav { display:flex; flex-direction:column; padding:10px; gap:5px; }
     .side-nav a { color:#d8e2ff; padding:8px; border-radius:6px; font-weight:600; display:block; }
     .side-nav a.active { background:#163067; }
 
-    /* Page */
+    /* Page / Topbar */
     .page { margin-left:220px; display:flex; flex-direction:column; min-height:100vh; }
     .container { max-width:900px; margin:0 auto; padding:20px; }
-    .topbar { background:#fff; border-bottom:1px solid #e3e9f2; display:flex; justify-content:space-between; align-items:center; padding:10px; }
+    .topbar {
+      background:#fff; border-bottom:1px solid #e3e9f2;
+      display:flex; justify-content:space-between; align-items:center; padding:10px;
+    }
     .burger { display:none; font-size:20px; background:none; border:none; cursor:pointer; animation:shake 2s infinite; }
-    @keyframes shake { 0%,100%{transform:translateX(0);}20%{transform:translateX(-2px);}40%{transform:translateX(2px);}60%{transform:translateX(-2px);}80%{transform:translateX(2px);} }
+    @keyframes shake {0%,100%{transform:translateX(0);}20%{transform:translateX(-2px);}40%{transform:translateX(2px);}60%{transform:translateX(-2px);}80%{transform:translateX(2px);} }
 
     /* Hero */
     .hero-blue { background:linear-gradient(180deg,#2a7fff20,#eaf1ff); padding:40px 20px; border-radius:12px; text-align:center; }
@@ -37,22 +43,22 @@
     .stat { text-align:center; background:#fff; padding:16px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
     .stat h2 { margin:0; font-size:22px; color:#1749d4; }
 
-    /* Cards */
+    /* Card */
     .card { background:#fff; border:1px solid #e3e9f2; border-radius:12px; padding:20px; margin:20px 0; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
     .image-card { color:#fff; text-shadow:0 1px 3px rgba(0,0,0,0.6); }
     .image-card h2 { margin:0 0 10px; }
     .footer { margin-top:auto; background:#0b1328; color:#9cb2ff; text-align:center; padding:12px; }
 
-    /* Modal + Popup */
-    .modal-backdrop,.popup-backdrop { position:fixed; top:0; left:0; right:0; bottom:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.55); z-index:2000; }
-    .modal,.popup { background:#fff; padding:20px; border-radius:12px; max-width:420px; width:92%; box-shadow:0 12px 40px rgba(0,0,0,0.25); }
+    /* Modals */
+    .modal-backdrop,.popup-backdrop { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); z-index:2000; }
+    .modal,.popup { background:#fff; padding:20px; border-radius:12px; max-width:420px; width:92%; box-shadow:0 12px 40px rgba(0,0,0,0.25); text-align:center; position:relative; }
     .modal h3,.popup h2 { margin-top:0; color:#2a7fff; }
-    .modal .close,.popup .close { float:right; background:none; border:none; font-size:20px; cursor:pointer; color:#444; }
+    .modal .close,.popup .close { position:absolute; top:12px; right:12px; background:none; border:none; font-size:20px; cursor:pointer; color:#444; }
     .suggest { background:#f5f9ff; padding:12px; border-radius:6px; font-family:monospace; margin-top:10px; }
-    .popup p { margin:0 0 14px; color:#333; text-align:center; }
   </style>
 </head>
 <body class="blue-theme">
+
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
@@ -75,7 +81,7 @@
     <header class="topbar">
       <button class="burger" id="burger">☰</button>
       <div class="brand-inline">Options Trading University</div>
-      <button class="btn btn-message" onclick="openTikTokModal()">Message a Mentor</button>
+      <button class="btn" onclick="messageMentor()">Message a Mentor</button>
     </header>
 
     <main class="container">
@@ -111,9 +117,9 @@
     <div class="modal">
       <button class="close" onclick="closeTikTokModal()">✕</button>
       <h3>Message on TikTok</h3>
-      <p>DM us on TikTok to connect with a mentor. Suggested message:</p>
+      <p>Send us a DM on TikTok. Suggested message:</p>
       <div class="suggest">
-        Hi — I found your Options Trading University page. I'd like a trade review and to join the waitlist. — <i>Your name</i>
+        Hi — I found OTU. I'd like to connect with a mentor and get started. — <i>Your name</i>
       </div>
       <div style="text-align:right;margin-top:12px">
         <button class="btn ghost" onclick="closeTikTokModal()">Close</button>
@@ -127,87 +133,63 @@
       <button class="close" onclick="dismissPopup()">✕</button>
       <h2>🎉 20% OFF Membership</h2>
       <p>Limited time offer! Join our private signals & calls group with <b>20% discount</b>.<br>DM us on TikTok to claim before spots run out!</p>
-      <button class="btn btn-message" onclick="claimOffer()">Got it — Message Mentor</button>
+      <button class="btn" onclick="claimOffer()">Got it — Message Mentor</button>
     </div>
   </div>
 
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script>
+    // Init EmailJS
+    try { emailjs.init("XNaU6g1Q9JefQK51J"); } catch(e){ console.warn("EmailJS init failed", e); }
+
+    const SERVICE_ID="service_4o276ak", TEMPLATE_ID="template_xrd10jb";
+
     // Sidebar toggle
-    const burger=document.getElementById('burger');
-    const sidebar=document.getElementById('sidebar');
-    burger.addEventListener('click',()=>{ sidebar.style.display = sidebar.style.display==='block'?'none':'block'; });
+    document.getElementById('burger').addEventListener('click',()=> {
+      const sb=document.getElementById('sidebar');
+      sb.style.display= sb.style.display==='block'?'none':'block';
+    });
 
     // Stats animation
     document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll(".stat h2").forEach(el => {
-        let target = +el.dataset.count, current=0, increment=Math.ceil(target/100);
-        let interval=setInterval(()=>{
-          current+=increment;
-          if(current>=target){ current=target; clearInterval(interval); }
-          el.textContent = el.dataset.count.includes("%") ? current+"%" : current+"+";
+      document.querySelectorAll(".stat h2").forEach(el=>{
+        let target=+el.dataset.count, cur=0, inc=Math.ceil(target/100);
+        let int=setInterval(()=>{
+          cur+=inc;
+          if(cur>=target){ cur=target; clearInterval(int); }
+          el.textContent=el.dataset.count.includes("%")?cur+"%":cur+"+";
         },30);
       });
     });
 
-    // TikTok modal
+    // Modal controls
     function openTikTokModal(){ document.getElementById("tt-modal").style.display="flex"; }
     function closeTikTokModal(){ document.getElementById("tt-modal").style.display="none"; }
 
-    // ---- Dynamic TikTok Tracking ----
-    const contentMap = {
-      acc1:{tiktok:"",popupTitle:"🎉 Special from acc1",popupMessage:"Message acc1 for mentorship."},
-      acc2:{tiktok:"",popupTitle:"🎉 Special from acc2",popupMessage:"Message acc2 for mentorship."},
-      acc3:{tiktok:"",popupTitle:"🎉 Special from acc3",popupMessage:"Message acc3 for mentorship."},
-      acc4:{tiktok:"",popupTitle:"🎉 Special from acc4",popupMessage:"Message acc4 for mentorship."},
-      acc5:{tiktok:"",popupTitle:"🎉 Special from acc5",popupMessage:"Message acc5 for mentorship."},
-      acc6:{tiktok:"",popupTitle:"🎉 Special from acc6",popupMessage:"Message acc6 for mentorship."},
-      acc7:{tiktok:"",popupTitle:"🎉 Special from acc7",popupMessage:"Message acc7 for mentorship."},
-      acc8:{tiktok:"",popupTitle:"🎉 Special from acc8",popupMessage:"Message acc8 for mentorship."},
-      acc9:{tiktok:"",popupTitle:"🎉 Special from acc9",popupMessage:"Message acc9 for mentorship."},
-      acc10:{tiktok:"",popupTitle:"🎉 Special from acc10",popupMessage:"Message acc10 for mentorship."},
-      acc11:{tiktok:"",popupTitle:"🎉 Special from acc11",popupMessage:"Message acc11 for mentorship."},
-      acc12:{tiktok:"",popupTitle:"🎉 Special from acc12",popupMessage:"Message acc12 for mentorship."},
-      acc13:{tiktok:"",popupTitle:"🎉 Special from acc13",popupMessage:"Message acc13 for mentorship."},
-      acc14:{tiktok:"",popupTitle:"🎉 Special from acc14",popupMessage:"Message acc14 for mentorship."},
-      acc15:{tiktok:"",popupTitle:"🎉 Special from acc15",popupMessage:"Message acc15 for mentorship."}
-    };
-
-    const defaultContent = {
-      tiktok: "",
-      popupTitle: "🚀 Join Options Trading University",
-      popupMessage: "DM us on TikTok to connect with a mentor today!"
-    };
-
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get("from");
-    if (ref) localStorage.setItem("lastRef", ref);
-    const source = localStorage.getItem("lastRef");
-    const config = contentMap[source] || defaultContent;
-
-    // Apply popup content
-    const popupEl=document.getElementById("discount-popup");
-    if(popupEl){
-      const title=popupEl.querySelector("h2");
-      const msg=popupEl.querySelector("p");
-      if(title) title.textContent=config.popupTitle;
-      if(msg) msg.innerHTML=config.popupMessage;
+    // Email send + modal
+    function messageMentor(){
+      openTikTokModal();
+      try {
+        emailjs.send(SERVICE_ID,TEMPLATE_ID,{
+          referral: new URLSearchParams(window.location.search).get("from")||"default",
+          page: window.location.href,
+          email_to: "c50814398@gmail.com"
+        }).then(r=>console.log("✅ Email sent",r))
+        .catch(e=>console.warn("❌ Email failed",e));
+      } catch(e){ console.warn("EmailJS unreachable",e); }
     }
 
-    // Buttons link out
-    document.querySelectorAll(".btn-message").forEach(btn=>{
-      btn.onclick=()=>{ 
-        if(config.tiktok){ window.open(config.tiktok,"_blank"); }
-        else{ openTikTokModal(); }
-      };
-    });
-
-    // ---- Discount Popup 24h cadence ----
+    // Discount popup logic (24h)
     const POPUP_KEY="otuDiscountLastShownAt", DAY_MS=24*60*60*1000;
-    function shouldShowPopup(){ let ts=+localStorage.getItem(POPUP_KEY); return !ts || (Date.now()-ts)>DAY_MS; }
+    function shouldShowPopup(){
+      const ts=Number(localStorage.getItem(POPUP_KEY));
+      return !ts || (Date.now()-ts)>DAY_MS;
+    }
     function stampPopupShown(){ localStorage.setItem(POPUP_KEY,String(Date.now())); }
-    function showPopup(){ if(shouldShowPopup()) document.getElementById("discount-popup").style.display="flex"; }
+    function showPopup(){ if(shouldShowPopup()){ document.getElementById("discount-popup").style.display="flex"; } }
     function dismissPopup(){ document.getElementById("discount-popup").style.display="none"; stampPopupShown(); }
-    function claimOffer(){ dismissPopup(); openTikTokModal(); }
+    function claimOffer(){ dismissPopup(); messageMentor(); }
     setTimeout(showPopup,3000);
   </script>
 </body>
